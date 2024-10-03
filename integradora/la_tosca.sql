@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-09-2024 a las 01:47:51
+-- Tiempo de generación: 03-10-2024 a las 20:44:42
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -36,6 +36,17 @@ CREATE TABLE `cliente` (
   `correo` varchar(150) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `cliente`
+--
+
+INSERT INTO `cliente` (`ID_cliente`, `Nombres`, `Apellido_P`, `Apellido_M`, `Telefono`, `correo`) VALUES
+(1, 'Juan', 'Pérez', 'García', '5551234567', 'juan.perez@example.com'),
+(2, 'María', 'Lopez', 'Martínez', '5552345678', 'maria.lopez@example.com'),
+(3, 'Carlos', 'Sánchez', 'Ramírez', '5553456789', 'carlos.sanchez@example.com'),
+(4, 'Laura', 'Gómez', 'Hernández', '5554567890', 'laura.gomez@example.com'),
+(5, 'Pedro', 'Torres', 'Cruz', '5555678901', 'pedro.torres@example.com');
+
 -- --------------------------------------------------------
 
 --
@@ -45,8 +56,20 @@ CREATE TABLE `cliente` (
 CREATE TABLE `detalle_o` (
   `ID_detalle` int(11) NOT NULL,
   `ID_product` int(11) DEFAULT NULL,
-  `cantidad_p` int(11) NOT NULL
+  `cantidad_p` int(11) NOT NULL,
+  `Importe` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `detalle_o`
+--
+
+INSERT INTO `detalle_o` (`ID_detalle`, `ID_product`, `cantidad_p`, `Importe`) VALUES
+(1, 1, 2, 0.00),
+(2, 2, 1, 0.00),
+(3, 1, 3, 0.00),
+(4, 3, 1, 0.00),
+(5, 2, 2, 0.00);
 
 -- --------------------------------------------------------
 
@@ -63,6 +86,17 @@ CREATE TABLE `direccion` (
   `ID_cliente` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `direccion`
+--
+
+INSERT INTO `direccion` (`id_direccion`, `calle`, `numero`, `colonia`, `id_zona`, `ID_cliente`) VALUES
+(1, 'Calle A', '101', 'Colonia A', 1, 1),
+(2, 'Calle B', '202', 'Colonia B', 2, 2),
+(3, 'Calle C', '303', 'Colonia C', 3, 3),
+(4, 'Calle D', '404', 'Colonia D', 4, 4),
+(5, 'Calle E', '505', 'Colonia E', 5, 5);
+
 -- --------------------------------------------------------
 
 --
@@ -75,6 +109,7 @@ CREATE TABLE `empleado` (
   `Apellido_P` varchar(50) NOT NULL,
   `Apellido_M` varchar(50) DEFAULT NULL,
   `Cargo` enum('empleado','admin') NOT NULL,
+  `correo` varchar(100) NOT NULL,
   `Telefono` varchar(20) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `estatus` enum('activo','inactivo') NOT NULL
@@ -84,8 +119,12 @@ CREATE TABLE `empleado` (
 -- Volcado de datos para la tabla `empleado`
 --
 
-INSERT INTO `empleado` (`ID_Empleados`, `Nombres`, `Apellido_P`, `Apellido_M`, `Cargo`, `Telefono`, `password`, `estatus`) VALUES
-(1, 'admin', '123', '123', 'admin', '42122213', 'admin', 'activo');
+INSERT INTO `empleado` (`ID_Empleados`, `Nombres`, `Apellido_P`, `Apellido_M`, `Cargo`, `correo`, `Telefono`, `password`, `estatus`) VALUES
+(1, 'Ana', 'Méndez', 'Ríos', 'admin', '', '5556789012', 'admin', 'activo'),
+(2, 'Luis', 'Hernández', 'Pérez', 'empleado', '', '5557890123', 'empleado123', 'activo'),
+(3, 'Sofía', 'Cruz', 'Ramírez', 'empleado', '', '5558901234', 'empleado456', 'activo'),
+(4, 'Jorge', 'Salas', 'García', 'empleado', '', '5559012345', 'empleado789', 'activo'),
+(5, 'Clara', 'Pérez', 'González', 'empleado', '', '5550123456', 'empleado012', 'activo');
 
 -- --------------------------------------------------------
 
@@ -95,10 +134,8 @@ INSERT INTO `empleado` (`ID_Empleados`, `Nombres`, `Apellido_P`, `Apellido_M`, `
 
 CREATE TABLE `orden` (
   `ID_orden` int(11) NOT NULL,
-  `calle` varchar(100) DEFAULT NULL,
-  `numero` varchar(10) DEFAULT NULL,
-  `colonia` varchar(100) NOT NULL,
   `Fecha` date NOT NULL,
+  `Hora` time NOT NULL,
   `Estatus` enum('activo','proceso','cancelado') NOT NULL,
   `Precio_total` decimal(10,2) DEFAULT NULL,
   `ID_cliente` int(11) DEFAULT NULL,
@@ -106,6 +143,17 @@ CREATE TABLE `orden` (
   `ID_Empleados` int(11) DEFAULT NULL,
   `tipo_pago` enum('Efectivo','tarjeta','deposito') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `orden`
+--
+
+INSERT INTO `orden` (`ID_orden`, `Fecha`, `Hora`, `Estatus`, `Precio_total`, `ID_cliente`, `ID_detalle`, `ID_Empleados`, `tipo_pago`) VALUES
+(1, '2024-09-01', '00:00:00', 'activo', 200.00, 1, 1, 1, 'Efectivo'),
+(2, '2024-09-02', '00:00:00', 'proceso', 150.00, 2, 2, 1, 'tarjeta'),
+(3, '2024-09-03', '00:00:00', 'activo', 300.00, 3, 3, 2, 'deposito'),
+(4, '2024-09-04', '00:00:00', 'cancelado', 120.00, 4, 4, 2, 'Efectivo'),
+(5, '2024-09-05', '00:00:00', 'activo', 250.00, 5, 5, 2, 'tarjeta');
 
 -- --------------------------------------------------------
 
@@ -122,6 +170,29 @@ CREATE TABLE `producto` (
   `estatus` enum('agotado','existente') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `producto`
+--
+
+INSERT INTO `producto` (`ID_product`, `Nombre`, `tipo`, `Categoria`, `precio`, `estatus`) VALUES
+(1, 'Producto A', 'suelto', 'Categoria 1', 100.00, 'existente'),
+(2, 'Producto B', 'unitario', 'Categoria 2', 75.00, 'existente'),
+(3, 'Producto C', 'suelto', 'Categoria 3', 50.00, 'agotado'),
+(4, 'Producto D', 'unitario', 'Categoria 1', 120.00, 'existente'),
+(5, 'Producto E', 'suelto', 'Categoria 2', 90.00, 'existente');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `vis_maspedidos`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `vis_maspedidos` (
+`ID_product` int(11)
+,`Nombre` varchar(100)
+,`total_orders` bigint(21)
+);
+
 -- --------------------------------------------------------
 
 --
@@ -133,6 +204,26 @@ CREATE TABLE `zona` (
   `nombre_colonia` varchar(100) NOT NULL,
   `costo_zona` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `zona`
+--
+
+INSERT INTO `zona` (`ID_zona`, `nombre_colonia`, `costo_zona`) VALUES
+(1, 'Colonia A', 10.00),
+(2, 'Colonia B', 15.00),
+(3, 'Colonia C', 20.00),
+(4, 'Colonia D', 25.00),
+(5, 'Colonia E', 30.00);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `vis_maspedidos`
+--
+DROP TABLE IF EXISTS `vis_maspedidos`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vis_maspedidos`  AS SELECT `p`.`ID_product` AS `ID_product`, `p`.`Nombre` AS `Nombre`, count(`d`.`ID_detalle`) AS `total_orders` FROM (`producto` `p` join `detalle_o` `d` on(`p`.`ID_product` = `d`.`ID_product`)) GROUP BY `p`.`ID_product`, `p`.`Nombre` ;
 
 --
 -- Índices para tablas volcadas
@@ -194,43 +285,43 @@ ALTER TABLE `zona`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `ID_cliente` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle_o`
 --
 ALTER TABLE `detalle_o`
-  MODIFY `ID_detalle` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `direccion`
 --
 ALTER TABLE `direccion`
-  MODIFY `id_direccion` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `empleado`
 --
 ALTER TABLE `empleado`
-  MODIFY `ID_Empleados` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID_Empleados` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `orden`
 --
 ALTER TABLE `orden`
-  MODIFY `ID_orden` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_orden` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `ID_product` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_product` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `zona`
 --
 ALTER TABLE `zona`
-  MODIFY `ID_zona` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_zona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas
