@@ -14,13 +14,16 @@
 table {
     width: 90%;
     margin: 10% auto;
+    border-collapse: collapse;
 }
 th {
     background-color: var(--color-primary);
     color: var(--color-white);
+    border-right: 2px solid var(--color-white);
 }
 td {
     padding: 1%;
+    border-right: 2px solid var(--color-primary);
 }
 
 tr:nth-child(odd){
