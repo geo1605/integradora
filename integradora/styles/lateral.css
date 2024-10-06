@@ -18,6 +18,7 @@
 body {
   display: flex;
   flex-direction: column;
+  font-family: Arial, Helvetica, sans-serif;
 }
 main {
   margin-left: 6%;
@@ -26,7 +27,7 @@ main {
 aside {
   display: flex;
   flex-direction: column;
-  position: absolute;
+  position: fixed;
   background-color: var(--color-primary);
   width: 2%; /* Ancho automático */
   padding: 1%;
@@ -59,11 +60,16 @@ aside nav ul li {
   transition: 0.5s;
 }
 
-.selected {
+li .selected {
   color: #F9D279;
+  scale: 1.5;
 }
 .lateral:hover {
   scale: 1.2;
+  transition: 0.5s;
+}
+li .selected:hover {
+  scale: 1.5;
   transition: 0.5s;
 }
 .tooltip {
@@ -86,11 +92,6 @@ a.lateral:hover .tooltip {
   display: block; /* Mostrar el tooltip al pasar el cursor */
 }
 
-/* Estilos generales */
-body {
-  font-size: 16px;
-  background-color: white;
-}
 
 /* Media query para pantallas menores de 837px */
 @media (max-width: 1000px) {
@@ -102,6 +103,6 @@ body {
       width: 7%; /* Hacer que la barra lateral ocupe todo el ancho */
 }
 .material-symbols-outlined {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
 }
 }
