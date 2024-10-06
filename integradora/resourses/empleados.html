@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Empleados</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+        <link rel="stylesheet" href="../styles/lateral.css">
+        <link rel="stylesheet" href="../styles/tablas.css">
+    </head>
+    <body>
+        <aside>
+            <img src="#" alt="logotipo">
+            <nav>
+            <ul>
+                <li><a href="admin_gph.html" class="lateral">
+                    <span class="material-symbols-outlined">query_stats</span>
+                    <span class="tooltip">estadísticas</span>
+                    </a></li>
+                <li><a href="productos.html" class="lateral">
+                    <span class="material-symbols-outlined">inventory</span>
+                    <span class="tooltip">Productos</span>
+                </a></li>
+                <li><a href="#" class="lateral selected">
+                    <span class="material-symbols-outlined">person</span>
+                    <span class="tooltip">Empleados</span>
+                </a></li>
+                <li><a href="#" class="lateral">
+                    <span class="material-symbols-outlined">map</span>
+                    <span class="tooltip">direcciones</span>
+                </a></li>
+            </ul>
+            </nav>
+        </aside>
+        <main>
+            
+            <form action="" id="busquedas">
+                <h2>Empleados</h2>
+                <input id="Search_principal" type="search" placeholder="Buscar">
+                <input id="Bot_busqueda" class="bot" type="submit" value="buscar">
+            </form>
+        <table>
+            <thead>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Cargo</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Estatus</th>
+                <th>Acciones</th>
+            </thead>
+
+            <tr>
+                <td>1</td>
+                <td>Juan Emiliano Hernandez</td>
+                <td>empleado</td>
+                <td>gagas@gagga.com</td>
+                <td>6131131232</td>
+                <td class="positive">activo</td>
+                <td class="acciones">
+                    <button class="B_editar">editar</button>
+                    <button class="B_eliminar">eliminar</button>
+                </td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Juan Emiliano Hernandez perez</td>
+                <td class="positive">admin</td>
+                <td>gagas@gagga.com</td>
+                <td>6131131232</td>
+                <td class="negative">inactivo</td>
+                <td class="acciones">
+                    <button class="B_editar">editar</button>
+                    <button class="B_eliminar">eliminar</button>
+                </td>
+            </tr>
+        </table>
+        </main>
+</body>
+</html>

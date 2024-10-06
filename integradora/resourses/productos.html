@@ -14,7 +14,7 @@
         <img src="#" alt="logotipo">
         <nav>
         <ul>
-            <li><a href="#" class="lateral">
+            <li><a href="admin_gph.html" class="lateral">
                 <span class="material-symbols-outlined">query_stats</span>
                 <span class="tooltip">estadísticas</span>
                 </a></li>
@@ -22,7 +22,7 @@
                 <span class="material-symbols-outlined">inventory</span>
                 <span class="tooltip">Productos</span>
             </a></li>
-            <li><a href="#" class="lateral">
+            <li><a href="empleados.html" class="lateral">
                 <span class="material-symbols-outlined">person</span>
                 <span class="tooltip">Empleados</span>
             </a></li>
@@ -34,14 +34,17 @@
         </nav>
     </aside>
     <main>
+        
         <form action="" id="busquedas">
-            <input id="Search_principal" type="search" placeholder="Buscar">
+            <h2>Productos</h2>
+            <input type="button" class="bot" value="nuevo" >
             <select class="js-example-basic-single" name="state">
                 <option value="" selected disabled>categoría</option>
                 <option value="AL">Alabama</option>
                 <option value="WY">Wyoming</option>
             </select>
-            <input id="Bot_busqueda" type="submit" value="buscar">
+            <input id="Search_principal" type="search" placeholder="Buscar">
+            <input id="Bot_busqueda"  class="bot" type="submit" value="buscar">
         </form>
         <table>
             <thead>
@@ -59,7 +62,7 @@
                 <td>kg</td>
                 <td>carne</td>
                 <td>100.00</td>
-                <td class="existente"><li>existente</li></td>
+                <td class="positive"><li>existente</li></td>
                 <td class="acciones">
                     <button class="B_editar">editar</button>
                     <button class="B_eliminar">eliminar</button>
@@ -71,7 +74,7 @@
                 <td>kg1</td>
                 <td>carne1</td>
                 <td>100.001</td>
-                <td class="agotado"><li>agotado</li></td>
+                <td class="negative"><li>agotado</li></td>
                 <td class="acciones">
                     <button class="B_editar">editar</button>
                     <button class="B_eliminar">eliminar</button>
@@ -83,7 +86,7 @@
                 <td>kg1</td>
                 <td>carne1</td>
                 <td>100.001</td>
-                <td class="agotado"><li>agotado</li></td>
+                <td class="negative"><li>agotado</li></td>
                 <td class="acciones">
                     <button class="B_editar">editar</button>
                     <button class="B_eliminar">eliminar</button>
@@ -95,7 +98,7 @@
                 <td>kg1</td>
                 <td>carne1</td>
                 <td>100.001</td>
-                <td class="agotado"><li>agotado</li></td>
+                <td class="negative"><li>agotado</li></td>
                 <td class="acciones">
                     <button class="B_editar">editar</button>
                     <button class="B_eliminar">eliminar</button>
@@ -107,7 +110,7 @@
                 <td>kg1</td>
                 <td>carne1</td>
                 <td>100.001</td>
-                <td class="agotado"><li>agotado</li></td>
+                <td class="negative"><li>agotado</li></td>
                 <td class="acciones">
                     <button class="B_editar">editar</button>
                     <button class="B_eliminar">eliminar</button>
@@ -119,55 +122,7 @@
                 <td>kg1</td>
                 <td>carne1</td>
                 <td>100.001</td>
-                <td class="agotado"><li>agotado</li></td>
-                <td class="acciones">
-                    <button class="B_editar">editar</button>
-                    <button class="B_eliminar">eliminar</button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Carne1</td>
-                <td>kg1</td>
-                <td>carne1</td>
-                <td>100.001</td>
-                <td class="agotado"><li>agotado</li></td>
-                <td class="acciones">
-                    <button class="B_editar">editar</button>
-                    <button class="B_eliminar">eliminar</button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Carne1</td>
-                <td>kg1</td>
-                <td>carne1</td>
-                <td>100.001</td>
-                <td class="agotado"><li>agotado</li></td>
-                <td class="acciones">
-                    <button class="B_editar">editar</button>
-                    <button class="B_eliminar">eliminar</button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Carne1</td>
-                <td>kg1</td>
-                <td>carne1</td>
-                <td>100.001</td>
-                <td class="agotado"><li>agotado</li></td>
-                <td class="acciones">
-                    <button class="B_editar">editar</button>
-                    <button class="B_eliminar">eliminar</button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Carne1</td>
-                <td>kg1</td>
-                <td>carne1</td>
-                <td>100.001</td>
-                <td class="agotado"><li>agotado</li></td>
+                <td class="negative"><li>agotado</li></td>
                 <td class="acciones">
                     <button class="B_editar">editar</button>
                     <button class="B_eliminar">eliminar</button>
