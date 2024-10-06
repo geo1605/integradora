@@ -9,7 +9,13 @@
     --color-brown: #A65C3D;
     --color-black: #000000;
 }
-
+body {
+    background: rgb(139,36,55);
+    background: linear-gradient(339deg, rgba(139,36,55,1) 0%, rgba(200,80,42,1) 53%, rgba(249,210,121,1) 100%);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
 main {
     padding: 2%;
 }
@@ -17,26 +23,32 @@ main {
 main h2 {
     font-size: 2.5rem;
     text-align: center;
+    color: var(--color-white
+    );
 }
 
 table {
     width: 90%;
     margin: 5% auto;
-    border-collapse: collapse;
-    font-size: 0.8rem;
+    border-spacing: 0; /* Changed to collapse for better cell alignment */
+    font-size: 0.85rem; /* Slight increase in font size */
+    border-radius: 5px;
     border: 1px solid var(--color-primary);
 }
 
 th {
     background-color: var(--color-primary);
     color: var(--color-white);
+    border: 1px solid var(--color-primary);
+    padding: 1%;
 }
 
 td {
-    padding-top: 1%;
+    padding-top: 1% 0;
     text-align: center;
     border-right: 1px solid var(--color-primary);
 }
+
 
 tr:nth-child(odd) {
     background: var(--color-white);
@@ -44,6 +56,18 @@ tr:nth-child(odd) {
 
 tr:nth-child(even) {
     background: var(--color-background);
+}
+tr:first-child th:first-child {
+    border-top-left-radius: 4px;
+}
+tr:first-child th:last-child {
+    border-top-right-radius: 4px;
+}
+tr:last-child td:first-child {
+    border-bottom-left-radius: 4px;
+}
+tr:last-child td:last-child {
+    border-bottom-right-radius: 4px;
 }
 
 .negative {
@@ -57,12 +81,24 @@ tr:nth-child(even) {
     padding: 1%;
 }
 .B_editar, .B_eliminar {
-    padding: 1%;
+    padding: 1% 0;
     border: 0;
     border-radius: 30px;
     cursor: pointer;
     color: var(--color-white);
     width: 40%;
+    transition: 0.5;
+}
+.B_editar:hover, .B_eliminar:hover {
+    scale: 1.1;
+    background-color: transparent;
+    transition: 0.5s;
+}
+.B_editar:hover {
+    color: var(--color-secondary);
+}
+.B_eliminar:hover {
+    color: var(--color-primary);
 }
 button .material-symbols-outlined {
     font-size: 1rem;
@@ -71,10 +107,12 @@ button .material-symbols-outlined {
 .B_editar {
     background-color: var(--color-secondary);
     margin-left: 10%;
+    border: 1px solid var(--color-secondary);
 }
 
 .B_eliminar {
     background-color: var(--color-primary);
+    border: 1px solid var(--color-primary);
 }
 
 /* Sección de búsqueda */
@@ -95,6 +133,8 @@ button .material-symbols-outlined {
 }
 
 .bot {
+    display: flex;
+    flex-direction: row;
     background-color: var(--color-primary);
     color: var(--color-white);
     border: 2px solid var(--color-primary); /* Reducir grosor del borde */
@@ -104,6 +144,9 @@ button .material-symbols-outlined {
     transition: 0.3s;
     cursor: pointer;
     margin: 5px 5px; /* Ajuste de margen */
+}
+.bot span {
+    margin-right: 10%;
 }
 
 .bot:hover {
@@ -129,6 +172,26 @@ button .material-symbols-outlined {
     align-items: center;
 }
 
+
+/*tabla clientes*/
+#ver_direccion {
+    width: 50%;
+    height: auto;
+    border: 1px solid #5095d0;
+    border-radius: 3px;
+    color: #5095d0;
+    transition: 0.5s;
+    cursor: pointer;
+    text-decoration: none;
+}
+#ver_direccion:hover {
+    color: var(--color-white);
+    background: #5095d0;
+    transition: 0.5s;
+}
+#Ndirecciones {
+    font-size: 1.5rem;
+}
 /* Adaptación para dispositivos más pequeños */
 @media (max-width: 768px) {
     table {
