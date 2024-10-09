@@ -1,0 +1,116 @@
+:root {
+    --color-primary: #8B2437;
+    --color-secondary: #F37022;
+    --color-white: #FFFFFF;
+    --color-accent: #F9D279;
+    --color-danger: #C8502A;
+    --color-gray-dark: #4A4A4A;
+    --color-background: #F2E4D6;
+    --color-brown: #A65C3D;
+    --color-black: #000000;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Asegura que padding y border no alteren el tamaño de los elementos */
+}
+
+body {
+    background: rgb(139,36,55);
+    background: linear-gradient(339deg, rgba(139,36,55,1) 0%, rgba(200,80,42,1) 53%, rgba(249,210,121,1) 100%);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100vh; /* Ajuste de altura para cubrir toda la pantalla */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+    width: 80%;
+    border-radius: 30px;
+    background-color: var(--color-background);
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+    padding: 2% 5%;
+    height: auto;
+    margin: 1% auto;
+}
+
+form {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr); /* 12 columnas de ancho */
+    gap: 1rem; /* Espacio entre elementos */
+}
+
+h2 {
+    grid-column: span 12; /* Título ocupa todo el ancho */
+    margin-bottom: 0.1rem;
+    text-align: center;
+}
+.continuos {
+    display: contents;
+}
+#contDicc {
+    display: contents;
+}
+
+/* Clases de tamaño */
+.full {
+    grid-column: span 12; /* Ocupa todo el ancho */
+}
+
+.medio {
+    grid-column: span 6; /* Ocupa la mitad del ancho */
+}
+
+.tercio {
+    grid-column: span 4; /* Ocupa un tercio del ancho */
+}
+
+.cuarto {
+    grid-column: span 3; /* Ocupa un cuarto del ancho */
+}
+
+input[required], select[required] {
+    border: 2px solid var(--color-primary); /* Borde de los campos obligatorios */
+    background-color: #fff5f5; /* Fondo ligeramente rojo */
+}
+
+label::after {
+    content: " *";
+    color: var(--color-primary); /* Asterisco rojo para los campos obligatorios */
+}
+
+input, button {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.5rem; /* Bordes redondeados */
+    border: 1px solid #ccc; /* Borde general */
+    margin-bottom: 1rem; /* Espacio entre los campos */
+}
+
+button {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--color-danger);
+}
+
+input[type="submit"] {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: var(--color-danger);
+}
