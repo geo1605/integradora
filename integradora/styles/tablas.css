@@ -276,3 +276,22 @@ button .material-symbols-outlined {
         width: 95%; /* Ocupa todo el ancho en pantallas muy pequeñas */
     }
 }
+
+
+/* seccion del main */
+
+nav {
+    display: flex;
+    width: 100%;
+    justify-content: space-between; /* Distribuir los elementos a lo largo del header */
+  }
+
+  header {
+    background-color: #333; /* Cambié el color de fondo para contrastar con el texto blanco */
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px; /* Bordes redondeados */
+  }
+  
