@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="../styles/lateral.css">
     <link rel="stylesheet" href="../styles/tablas.css">
+    <link rel="stylesheet" href="../styles/formularios.css">
 </head>
 <body>
     <aside>
-        <a href="" id="logotipo"><span class="tooltip">Inicio</span> logo </a>
+        <!--<a href="" id="logotipo"><span class="tooltip">Inicio</span> logo </a> -->
         <nav>
         <ul>
             <li><a href="admin_gph.html" class="lateral">
@@ -41,7 +42,7 @@
     <main>
         <form action="" id="busquedas">
             <h2>Zonas</h2>
-            <button class="bot"><span class="material-symbols-outlined">
+            <button class="bot" type="button" onclick="addpopup()"><span class="material-symbols-outlined">
                 add_circle
                 </span> Añadir</button>
                 <div id="barra_busqueda">
@@ -68,5 +69,20 @@
             </tr>
         </table>
     </main>
+
+    <div id="Popup">
+        
+        <form action="" class="modificacion" id="productos">
+                <h2>Formulario Producto</h2>
+                <button id="salirP" type="button" onclick="colapsePopup()">X</button>
+            
+                <input type="text" class="medio" name="NombreZ" placeholder="Nombre zona">
+                <input type="text" class="medio" name="costo" placeholder="Costo adicional">
+
+            <input type="submit" class="full" value="Enviar">
+        </form>
+    </div>
+
+    <script src="../js/formulario.js"></script>
 </body>
 </html>

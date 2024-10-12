@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="../styles/lateral.css">
     <link rel="stylesheet" href="../styles/tablas.css">
+    <link rel="stylesheet" href="../styles/formularios.css">
 </head>
 <body>
     <aside>
-        <img src="#" alt="logotipo">
+        <!--<img src="#" alt="logotipo"> -->
         <nav>
         <ul>
             <li><a href="clientes.html" class="lateral">
@@ -24,12 +25,12 @@
     <main>
         <form action="" id="busquedas">
             <h2 id="Ndirecciones">Direcciones Juan Perez</h2>
-            <button class="bot"><span class="material-symbols-outlined">
+            <button class="bot" type="button" onclick="addpopup()"><span class="material-symbols-outlined">
                 add_circle
                 </span> Añadir</button>
                 <div id="barra_busqueda">
                     <select class="js-example-basic-single" name="state">
-                        <option value="" selected disabled>categoría</option>
+                        <option value="" selected disabled>Zonas</option>
                         <option value="AL">Alabama</option>
                         <option value="WY">Wyoming</option>
                     </select>
@@ -60,7 +61,31 @@
             </tr>
         </table>
     </main>
-    
+
+    <div id="Popup">
+        
+        <form action="" class="modificacion" id="productos">
+                <h2>Formulario Direcciones</h2>
+                <button id="salirP" type="button" onclick="colapsePopup()">X</button>
+            
+                <input type="text" class="medio" name="calle" placeholder="Calle">
+                <input type="text" class="medio" name="colonia" placeholder="Colonia">
+                <div class="contSel cuarto">
+                    <select class=" js-example-basic-single " name="state">
+                        <option value="" selected disabled>Zona</option>
+                            <option value="AL">Alabama</option>
+                            <option value="WY">Wyoming</option>
+                        </select>
+                </div>
+                    
+                <input type="text" name="numeroEC" class="cuarto" placeholder="Numero Exterior">
+                <input type="text" name="numeroIC" class="cuarto" placeholder="Numero Interior">
+                <input type="text" name="CP" class="cuarto" placeholder="Codigo Postal">
+        </form>
+    </div>
+
+
+    <script src="../js/formulario.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
@@ -68,5 +93,6 @@
             $('.js-example-basic-single').select2();
         });
     </script>
+    
 </body>
 </html>
