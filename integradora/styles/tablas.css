@@ -40,7 +40,7 @@ th {
     background-color: var(--color-primary);
     color: var(--color-white);
     border: 1px solid var(--color-primary);
-    padding: 1%;
+    font-size: 0.8rem;
 }
 
 td {
@@ -77,8 +77,11 @@ tr:last-child td:last-child {
 .positive {
     color: rgb(54, 185, 54);
 }
+
 .acciones {
     padding: 1%;
+    display: flex;
+    flex-direction: column;
 }
 .B_editar, .B_eliminar {
     padding: 1% 0;
@@ -86,11 +89,13 @@ tr:last-child td:last-child {
     border-radius: 30px;
     cursor: pointer;
     color: var(--color-white);
-    width: 40%;
     transition: 0.5;
+    width: 95%;
+    margin: 2% auto;
+    font-size: 0.7rem;
 }
 .B_editar:hover, .B_eliminar:hover {
-    scale: 1.1;
+    scale: 1.01;
     background-color: transparent;
     transition: 0.5s;
 }
@@ -106,7 +111,6 @@ button .material-symbols-outlined {
 
 .B_editar {
     background-color: var(--color-secondary);
-    margin-left: 10%;
     border: 1px solid var(--color-secondary);
 }
 
@@ -213,19 +217,12 @@ button .material-symbols-outlined {
 @media (max-width: 768px) {
     table {
         width: 100%;
-        font-size: 0.8rem;
+        font-size: 0.5rem;
+        
+        overflow-x: auto;
     }
 
-    .acciones {
-        display: flex;
-        flex-direction: column;
-    }
 
-    .B_editar, .B_eliminar {
-        width: 100%;
-        margin: 5% auto;
-        font-size: 0.7rem;
-    }
 
     #busquedas {
         width: 100%;
@@ -264,6 +261,7 @@ button .material-symbols-outlined {
 
     table {
         font-size: 0.6rem;
+        display: block;
     }
 
     .bot {

@@ -59,22 +59,22 @@
                 <th>acciones</th>
             </thead>
             <tr>
-                <td>1</td>
-                <td>zona alamedas-no se</td>
-                <td>costo</td>
+                <td id="ID1">1</td>
+                <td id="nombre_colonia1">zona alamedas-no se</td>
+                <td id="costo_zona1" >50</td>
                 <td class="acciones">
-                    <button class="B_editar"><span class="material-symbols-outlined">edit</span></button>
+                    <button class="B_editar" onclick="updateZona(1)"><span class="material-symbols-outlined">edit</span></button>
                     <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
                 </td>
             </tr>
         </table>
     </main>
 
-    <div id="Popup">
+    <div id="addPopup" class="Popup">
         
         <form action="" class="modificacion" id="productos">
                 <h2>Formulario Producto</h2>
-                <button id="salirP" type="button" onclick="colapsePopup()">X</button>
+                <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
             
                 <input type="text" class="medio" name="NombreZ" placeholder="Nombre zona">
                 <input type="text" class="medio" name="costo" placeholder="Costo adicional">
@@ -82,6 +82,7 @@
             <input type="submit" class="full" value="Enviar">
         </form>
     </div>
+    <div id="upPopup" class="Popup"></div>
 
     <script src="../js/formulario.js"></script>
 </body>

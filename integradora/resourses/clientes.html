@@ -54,40 +54,49 @@
             <thead>
                 <th>ID</th>
                 <th>Nombre</th>
+                <th>Apellido paterno</th>
+                <th>Apellido Materno</th>
                 <th>Teléfono</th>
                 <th>direcciones</th>
                 <th>correo</th>
+                <th>Estatus</th>
                 <th>acciones</th>
             </thead>
-            <tr>
-                <td>1</td>
-                <td>Juan perez dominguez</td>
-                <td>51325326</td>
-                <td><a href="direcciones.html"> <button id="ver_direccion">ver</button> </a></td>
-                <td>gawgawg@gags.com</td>
-                <td class="acciones">
-                    <button class="B_editar"><span class="material-symbols-outlined">edit</span></button>
-                    <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
-                </td>
-            </tr>
+            <tbody>
+                <tr>
+                    <td id="ID1">1</td>
+                    <td id="nombre1">Juan</td>
+                    <td id="ApellidoP1">perez</td>
+                    <td id="ApellidoM1">dominguez</td>
+                    <td id="telefono1">51325326</td>
+                    <td><a href="direcciones.html"> <button id="ver_direccion">ver</button> </a></td>
+                    <td id="correo1">gawgawg@gags.com</td>
+                    <td id="estatus1">Activo</td>
+                    <td class="acciones">
+                        <button class="B_editar" onclick="updateCliente(1)"><span class="material-symbols-outlined">edit</span></button>
+                        <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
+                    </td>
+                </tr>
+                <!-- Aquí puedes agregar más filas según sea necesario -->
+            </tbody>
         </table>
     </main>
     
-    <div id="Popup">
+    <div id="addPopup" class="Popup">
         <form action="" id="cliente" class="modificacion">
             <h2>Formulario Clientes</h2>
-            <button id="salirP" type="button" onclick="colapsePopup()">X</button>
-                <input type="text" class="tercio" name="NombreC" placeholder="Nombre(s)">
-                <input type="text" class="tercio" name="PaternoC" placeholder="Apellido Paterno">
-                <input type="text" class="tercio" name="MaternoC" placeholder="Apellido Materno">
+            <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
+            <input type="text" class="tercio" name="NombreC" placeholder="Nombre(s)">
+            <input type="text" class="tercio" name="PaternoC" placeholder="Apellido Paterno">
+            <input type="text" class="tercio" name="MaternoC" placeholder="Apellido Materno">
             <input type="text" class="medio" name="telefonoC" placeholder="teléfono" required>
             <input type="text" class="medio" name="correoC" placeholder="correo">
             <div id="contDicc"></div>
             <button type="button" class="full" id="B_direcciones" onclick="agregarDireccion()">Añadir dirección</button>
-
             <input type="submit" class="cuarto" value="Enviar">
         </form>
     </div>
+    <div id="upPopup" class="Popup"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>

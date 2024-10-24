@@ -43,30 +43,33 @@
             <thead>
                 <th>ID</th>
                 <th>calle</th>
-                <th>Numero</th>
+                <th>Numero Exterior</th>
+                <th>Numero Interior</th>
                 <th>Colonia</th>
                 <th>zona</th>
                 <th>acciones</th>
             </thead>
             <tr>
-                <td>1</td>
-                <td>san mateo</td>
-                <td>340</td>
-                <td>hipódromo</td>
-                <td>zona alamedas-no se</td>
+                <td id="ID1">1</td>
+                <td id="calle1">san mateo</td>
+                <td id="num_ext1">340</td>
+                <td id="num_int1"></td>
+
+                <td id="colonia1">hipódromo</td>
+                <td id="zona1">zona alamedas-no se</td>
                 <td class="acciones">
-                    <button class="B_editar"><span class="material-symbols-outlined">edit</span></button>
+                    <button class="B_editar" onclick="updateDireccion(1)"><span class="material-symbols-outlined">edit</span></button>
                     <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
                 </td>
             </tr>
         </table>
     </main>
 
-    <div id="Popup">
+    <div id="addPopup" class="Popup">
         
         <form action="" class="modificacion" id="productos">
                 <h2>Formulario Direcciones</h2>
-                <button id="salirP" type="button" onclick="colapsePopup()">X</button>
+                <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
             
                 <input type="text" class="medio" name="calle" placeholder="Calle">
                 <input type="text" class="medio" name="colonia" placeholder="Colonia">
@@ -81,8 +84,10 @@
                 <input type="text" name="numeroEC" class="cuarto" placeholder="Numero Exterior">
                 <input type="text" name="numeroIC" class="cuarto" placeholder="Numero Interior">
                 <input type="text" name="CP" class="cuarto" placeholder="Codigo Postal">
+                <input type="submit" value="enviar" class="full">
         </form>
     </div>
+    <div id="upPopup" class="Popup"></div>
 
 
     <script src="../js/formulario.js"></script>

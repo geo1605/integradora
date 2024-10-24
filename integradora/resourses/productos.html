@@ -66,85 +66,25 @@
             <th>acciones</th>
             </thead>
             <tr>
-                <td>1</td>
-                <td>Carne</td>
-                <td>kg</td>
-                <td>carne</td>
-                <td>100.00</td>
-                <td class="positive"><li>existente</li></td>
+                <td id="ID1">2</td>
+                <td id="nombre1">Carne0</td>
+                <td id="tipo1">kg0</td>
+                <td id="categoria1">carne0</td>
+                <td id="precio1">100.001</td>
+                <td id="estatus1" class="negative"><li>agotado</li></td>
                 <td class="acciones">
-                    <button class="B_editar"><span class="material-symbols-outlined">edit</span></button>
-                    <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
-                </td>
-             </tr>
-             <tr>
-                <td>2</td>
-                <td>Carne1</td>
-                <td>kg1</td>
-                <td>carne1</td>
-                <td>100.001</td>
-                <td class="negative"><li>agotado</li></td>
-                <td class="acciones">
-                    <button class="B_editar"><span class="material-symbols-outlined">edit</span></button>
-                    <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Carne1</td>
-                <td>kg1</td>
-                <td>carne1</td>
-                <td>100.001</td>
-                <td class="negative"><li>agotado</li></td>
-                <td class="acciones">
-                    <button class="B_editar"><span class="material-symbols-outlined">edit</span></button>
-                    <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Carne1</td>
-                <td>kg1</td>
-                <td>carne1</td>
-                <td>100.001</td>
-                <td class="negative"><li>agotado</li></td>
-                <td class="acciones">
-                    <button class="B_editar"><span class="material-symbols-outlined">edit</span></button>
-                    <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Carne1</td>
-                <td>kg1</td>
-                <td>carne1</td>
-                <td>100.001</td>
-                <td class="negative"><li>agotado</li></td>
-                <td class="acciones">
-                    <button class="B_editar"><span class="material-symbols-outlined">edit</span></button>
-                    <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Carne1</td>
-                <td>kg1</td>
-                <td>carne1</td>
-                <td>100.001</td>
-                <td class="negative"><li>agotado</li></td>
-                <td class="acciones">
-                    <button class="B_editar"><span class="material-symbols-outlined">edit</span></button>
+                    <button class="B_editar" onclick="updateProducto(1)"><span class="material-symbols-outlined">edit</span></button>
                     <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
                 </td>
             </tr>
         </table>
     </main>
 
-    <div id="Popup">
+    <div id="addPopup" class="Popup">
         
         <form action="" class="modificacion" id="productos">
                 <h2>Formulario Producto</h2>
-                <button id="salirP" type="button" onclick="colapsePopup()">X</button>
+                <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
             
                 <input type="text" class="full" name="NombreC" placeholder="Nombre">
                 <select class="tercio" name="" id="tipo">
@@ -165,8 +105,9 @@
             <input type="submit" class="full" value="Enviar">
         </form>
     </div>
+    <div id="upPopup" class="Popup"></div>
     
-
+    <script src="../js/formulario.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
@@ -174,6 +115,6 @@
             $('.js-example-basic-single').select2();
         });
     </script>
-    <script src="../js/formulario.js"></script>
+    
 </body>
 </html>

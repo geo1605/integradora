@@ -52,7 +52,9 @@
         <table>
             <thead>
                 <th>ID</th>
-                <th>Nombre</th>
+                <th>Nombre(s)</th>
+                <th>Apellido Paterno</th>
+                <th>Apellido materno</th>
                 <th>Cargo</th>
                 <th>Correo</th>
                 <th>Teléfono</th>
@@ -61,26 +63,16 @@
             </thead>
 
             <tr>
-                <td>1</td>
-                <td>Juan Emiliano Hernandez</td>
-                <td>empleado</td>
-                <td>gagas@gagga.com</td>
-                <td>6131131232</td>
-                <td class="positive">activo</td>
+                <td id="ID1">1</td>
+                <td id="nombre1">Juan Emiliano </td>
+                <td id="ApellidoP1">Hernandez</td>
+                <td id="ApellidoM1">carlos</td>
+                <td id="cargo1">empleado</td>
+                <td id="correo1">gagas@gagga.com</td>
+                <td id="numero1">6131131232</td>
+                <td id="estatus1" class="positive">activo</td>
                 <td class="acciones">
-                    <button class="B_editar"><span class="material-symbols-outlined">edit</span></button>
-                    <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
-                </td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Juan Emiliano Hernandez perez</td>
-                <td class="positive">admin</td>
-                <td>gagas@gagga.com</td>
-                <td>6131131232</td>
-                <td class="negative">inactivo</td>
-                <td class="acciones">
-                    <button class="B_editar"><span class="material-symbols-outlined">edit</span></button>
+                    <button class="B_editar" onclick="updateEmp(1)"><span class="material-symbols-outlined">edit</span></button>
                     <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
                 </td>
             </tr>
@@ -88,10 +80,10 @@
         </main>
 
 
-        <div id="Popup">
+        <div id="addPopup" class="Popup">
             <form action="" class="modificacion"  id="empleados">
                 <h2>Formulario Producto</h2>
-                <button id="salirP" type="button" onclick="colapsePopup()">X</button>
+                <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
             
                 <input type="text" class="tercio" name="NombreC" placeholder="Nombre(s)">
                 <input type="text" class="tercio" name="PaternoC" placeholder="Apellido Paterno">
@@ -107,7 +99,16 @@
                 <input type="submit" class="full" value="Enviar">
             </form>
         </div>
+        <div id="upPopup" class="Popup"></div>
 
+    <script>
+        function colapsePopup() {
+    let pop = document.querySelector(".Popup");
+    if (pop) {
+        pop.style.display = "none";
+    }
+    }
+    </script>
     <script src="../js/formulario.js"></script>
 </body>
 </html>
