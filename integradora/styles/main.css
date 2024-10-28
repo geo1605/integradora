@@ -1,23 +1,178 @@
-/* styles.css */
-header {
-    background-color: #f0f0f0;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .logo img {
-    width: 100px;
-  }
-  
+:root {
+  --color-primary: #8B2437;
+  --color-secondary: #F37022;
+  --color-white: #FFFFFF;
+  --color-accent: #F9D279;
+  --color-danger: #C8502A;
+  --color-gray-dark: #4A4A4A;
+  --color-background: #F2E4D6;
+  --color-brown: #A65C3D;
+  --color-black: #000000;
+  --color-green: #36b932;
+}
+body {
+  background: rgb(139,36,55);
+  background: linear-gradient(339deg, rgba(139,36,55,1) 0%, rgba(200,80,42,1) 53%, rgba(249,210,121,1) 100%);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
 
+#acciones {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  width: 100%;
+}
+#acciones button {
+  width: 100%;
+  cursor: pointer;
+  padding: 5px 0.5rem;
+  border: 0;
+}
+.completar {
+  background-color: var(--color-green);
+  color: var(--color-white);
+  transition: 0.5s;
+}
+.completar:hover {
+  background-color: transparent;
+  color: var(--color-green);
+}
+.proceso {
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  transition: 0.5s;
+}
+.proceso:hover {
+  background-color: transparent;
+  color: var(--color-secondary);
+}
+.cancelado {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  transition: 0.5s;
+}
+.cancelado:hover {
+  background-color: transparent;
+  color: var(--color-primary);
+}
+
+
+/* Creacion orden */
+
+/*Productos */
+#contenedor {
+  width: 90%;
+  height: 60vh;
+  margin-top: 5%;
+  padding: 1%;
+  background-color: var(--color-white);
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+}
+#contenedor h2 {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  color: var(--color-primary);
+}
+#contenedor section {
+  width: 95%;
+}
+#contenedor .bot {
+  width: 50%; 
+  box-sizing: border-box; 
+  height: 5vh;
+  display: flex;
+  flex-direction: row;
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  border: 2px solid var(--color-secondary);
+  border-radius: 30px;
+  padding: 2%;
+  font-size: 0.9rem;
+  transition: 0.3s;
+  cursor: pointer;
+  margin: 2% auto 0 auto ; /* Centra el botón horizontalmente */
+  align-items: center;
+  justify-content: center;
+}
+
+#contenedor .bot span {
+  margin-right: 5%;
+}
+#contenedor .bot:hover {
+  background-color: var(--color-white);
+  color: var(--color-secondary);
+  transition: 0.3s;
+}
+
+#infoP .js-example-basic-single {
+  width: 65%;
+}
+.productos {
+  margin-bottom: 3%;
+  overflow-y: auto;
+  height: 40vh;
+}
+.productos input{
+  width: 20%;
+  font-size: 1rem;
+  padding: 1% 5px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  margin-left: 2%;
   
-  .nav-links {
-    list-style: none;
-    display: flex;
+}
+
+
+/*Clientes */ 
+#infoC {
+  text-align: right;
+}
+#infoC .js-example-basic-single {
+  width: 95%;
+
+}
+#direccion {
+  margin-left: auto;
+  width: 80%;
+  margin-top: 10%;
+  display: flex;
+  grid-template-columns: repeat(2,1fr);
+  gap: 1rem;
+  justify-content: right;
+}
+#direccion .js-example-basic-single {
+  width: 100%;
+}
+#direccion .bot{
+  width: 10%;
+  font-size: 0.5rem;
+  margin: 0;
+  border-radius: 100%;
+  position: relative;
+}
+#direccion .bot:hover .tooltip {
+  display: block; /* Mostrar el tooltip al pasar el cursor */
+}
+
+
+
+
+#costos {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+/* adaptabilidad de todo */
+@media (max-width:760px) {
+  #acciones {
+    grid-template-columns: repeat(1,1fr);
   }
-  
-  .nav-links li {
-    margin-left: 10px;
+  main button .material-symbols-outlined {
+    font-size: 1rem;
   }
+  #acciones button {
+    padding: 1% 1%;
+  }
+}

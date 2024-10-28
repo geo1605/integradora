@@ -12,14 +12,26 @@
 </head>
 <body>
     <aside>
-        <!--<img src="#" alt="logotipo"> -->
+        <!--<a href="" id="logotipo"><span class="tooltip">Inicio</span> logo </a> -->
         <nav>
         <ul>
+            <li><a href="main.html" class="lateral">
+            <span class="material-symbols-outlined">
+                checklist
+                </span>
+            <span class="tooltip">tabla ordenes</span>
+            </a></li>
+            <li><a href="crearOrden.html" class="lateral">
+                <span class="material-symbols-outlined">
+                    edit_square
+                </span>
+                <span class="tooltip">crear Orden</span>
+                </a></li>
             <li><a href="admin_gph.html" class="lateral">
                 <span class="material-symbols-outlined">query_stats</span>
                 <span class="tooltip">estadísticas</span>
                 </a></li>
-            <li><a href="#" class="lateral selected">
+            <li><a href="productos.html" class="lateral selected">
                 <span class="material-symbols-outlined">inventory</span>
                 <span class="tooltip">Productos</span>
             </a></li>
@@ -37,6 +49,12 @@
             </a></li>
         </ul>
         </nav>
+        <button id="user">
+        <span class="material-symbols-outlined">
+            account_circle
+        </span>
+        <span class="tooltip">usuario</span>
+        </button>
     </aside>
     <main>
         
@@ -65,7 +83,38 @@
             <th>Estatus</th>
             <th>acciones</th>
             </thead>
-            <tr>
+            <tbody id="productos-body">
+                <!-- Aquí se insertarán las filas dinámicamente -->
+            </tbody>
+            <script>
+                fetch('http://localhost:5000/productos')
+                    .then(response => response.json())
+                    .then(productos => {
+                        let productosHTML = '';  // Inicializa una variable para almacenar las filas
+            
+                        productos.forEach(emp => {
+                            productosHTML += `
+                            <tr>
+                <td id="ID${emp.ID_product}">${emp.ID_product}</td>
+                <td id="nombre${emp.ID_product}">${emp.Nombre}</td>
+                <td id="tipo${emp.ID_product}">${emp.tipo}</td>
+                <td id="categoria${emp.ID_product}">${emp.Categoria}</td>
+                <td id="precio${emp.ID_product}">${emp.precio}</td>
+                <td id="estatus${emp.ID_product}" class="${emp.estatus === 1 ? 'positive' : 'negative'}"><li>${emp.estatus === 1 ? 'Existente' : 'agotado'}</li></td>
+                <td class="acciones">
+                    <button class="B_editar" onclick="updateProducto(${emp.ID_product})"><span class="material-symbols-outlined">edit</span></button>
+                    <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
+                </td>
+            </tr>
+                            `;
+                    });
+        
+                    // Insertar las filas dinámicamente en el tbody
+                    document.getElementById("productos-body").innerHTML = productosHTML;
+                })
+                .catch(error => console.error('Error al cargar los productos:', error));
+        </script>
+            <!-- <tr>
                 <td id="ID1">2</td>
                 <td id="nombre1">Carne0</td>
                 <td id="tipo1">kg0</td>
@@ -76,7 +125,7 @@
                     <button class="B_editar" onclick="updateProducto(1)"><span class="material-symbols-outlined">edit</span></button>
                     <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
                 </td>
-            </tr>
+            </tr> -->
         </table>
     </main>
 

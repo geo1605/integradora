@@ -12,14 +12,26 @@
 </head>
 <body>
     <aside>
-        <!--<img src="#" alt="logotipo"> -->
+        <!--<a href="" id="logotipo"><span class="tooltip">Inicio</span> logo </a> -->
         <nav>
         <ul>
+            <li><a href="main.html" class="lateral">
+            <span class="material-symbols-outlined">
+                checklist
+                </span>
+            <span class="tooltip">tabla ordenes</span>
+            </a></li>
+            <li><a href="crearOrden.html" class="lateral">
+                <span class="material-symbols-outlined">
+                    edit_square
+                </span>
+                <span class="tooltip">crear Orden</span>
+                </a></li>
             <li><a href="admin_gph.html" class="lateral">
                 <span class="material-symbols-outlined">query_stats</span>
                 <span class="tooltip">estadísticas</span>
                 </a></li>
-            <li><a href="productos.html" class="lateral ">
+            <li><a href="productos.html" class="lateral">
                 <span class="material-symbols-outlined">inventory</span>
                 <span class="tooltip">Productos</span>
             </a></li>
@@ -27,7 +39,7 @@
                 <span class="material-symbols-outlined">person</span>
                 <span class="tooltip">Empleados</span>
             </a></li>
-            <li><a href="#" class="lateral selected">
+            <li><a href="clientes.html" class="lateral selected">
                 <span class="material-symbols-outlined">groups</span>
                 <span class="tooltip">Clientes</span>
             </a></li>
@@ -37,6 +49,12 @@
             </a></li>
         </ul>
         </nav>
+        <button id="user">
+        <span class="material-symbols-outlined">
+            account_circle
+        </span>
+        <span class="tooltip">usuario</span>
+        </button>
     </aside>
     <main>
         <form action="" id="busquedas">
@@ -62,23 +80,54 @@
                 <th>Estatus</th>
                 <th>acciones</th>
             </thead>
-            <tbody>
+            <tbody id="clientes-body">
+                <!-- Aquí se insertarán las filas dinámicamente -->
+            </tbody>
+<script>
+                fetch('http://localhost:5000/clientes')
+                    .then(response => response.json())
+                    .then(clientes => {
+                        let clientesHTML = '';  // Inicializa una variable para almacenar las filas
+            
+                        clientes.forEach(emp => {
+                            clientesHTML += `
+                            <tr>
+                                <td id="ID${emp.ID_cliente}">${emp.ID_cliente}</td>
+                                <td id="nombre${emp.ID_cliente}">${emp.Nombres}</td>
+                                <td id="ApellidoP${emp.ID_cliente}">${emp.Apellido_P}</td>
+                                <td id="ApellidoM${emp.ID_cliente}">${emp.Apellido_M}</td>
+                                <td id="telefono${emp.ID_cliente}">${emp.Telefono}</td>
+                                <td><a href="direcciones.html"> <button id="ver_direccion" class="ver">ver</button> </a></td>
+                                <td id="correo${emp.ID_cliente}">${emp.correo}</td>
+                                <td id="estatus${emp.ID_cliente}" class="${emp.estatus === 1 ? 'positive' : 'negative'}">${emp.estatus === 1 ? 'activo' : 'inactivo'}</td>
+                                <td class="acciones">
+                                    <button class="B_editar" onclick="updateCliente(${emp.ID_cliente})"><span class="material-symbols-outlined">edit</span></button>
+                                    <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
+                                </td>
+                            </tr>
+                            `;
+                    });
+        
+                    // Insertar las filas dinámicamente en el tbody
+                    document.getElementById("clientes-body").innerHTML = clientesHTML;
+                })
+                .catch(error => console.error('Error al cargar los clientes:', error));
+</script>
+            <!-- 
                 <tr>
                     <td id="ID1">1</td>
                     <td id="nombre1">Juan</td>
                     <td id="ApellidoP1">perez</td>
                     <td id="ApellidoM1">dominguez</td>
                     <td id="telefono1">51325326</td>
-                    <td><a href="direcciones.html"> <button id="ver_direccion">ver</button> </a></td>
+                    <td><a href="direcciones.html"> <button id="ver_direccion" class="ver">ver</button> </a></td>
                     <td id="correo1">gawgawg@gags.com</td>
                     <td id="estatus1">Activo</td>
                     <td class="acciones">
                         <button class="B_editar" onclick="updateCliente(1)"><span class="material-symbols-outlined">edit</span></button>
                         <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
                     </td>
-                </tr>
-                <!-- Aquí puedes agregar más filas según sea necesario -->
-            </tbody>
+                </tr> -->
         </table>
     </main>
     

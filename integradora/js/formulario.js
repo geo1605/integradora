@@ -14,42 +14,39 @@ function colapsePopup(popupId) {
 
 //updates
 function updateEmp(id) {
-    let Id = document.getElementById(`ID${id}`).innerText;
     let name = document.getElementById(`nombre${id}`).innerText;
-    let ApeP = document.getElementById(`ApellidoP${id}`).innerText;
-    let ApeM = document.getElementById(`ApellidoM${id}`).innerText;
+    let ApeP = document.getElementById(`apellidoP${id}`).innerText;  // Corregido a "apellidoP"
+    let ApeM = document.getElementById(`apellidoM${id}`).innerText;
 
     let cargo = document.getElementById(`cargo${id}`).innerText;
     let correo = document.getElementById(`correo${id}`).innerText;
-    let numero  = document.getElementById(`numero${id}`).innerText;
+    let numero  = document.getElementById(`telefono${id}`).innerText;  // Corregido a "telefono"
     let estatus  = document.getElementById(`estatus${id}`).innerText;
     let cont = document.getElementById('upPopup');
 
-
-
-    cont.innerHTML = `<form action=""   class="modificacion"  id="empleados">
-                <h2>Editar empleado</h2>
-                <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
-                <input type="text" class="tercio" name="NombreC" placeholder="Nombre(s)" value="${name}">
-                <input type="text" class="tercio" name="PaternoC" placeholder="Apellido Paterno" value="${ApeP}">
-                <input type="text" class="tercio" name="MaternoC" placeholder="Apellido Materno" value="${ApeM}">
-                    <select class="tercio" name="cargo" id="cargo" value="${cargo}">
-                        <option value="empleado">empleado</option>
-                        <option value="admin">admin</option>
-                    </select>
-                    <input type="text" class="tercio" name="telefono" placeholder="telefono" value="${numero}">
-                    <select class="tercio" name="estatus" id="estatus" value="${estatus}">
-                        <option value="Activo">Activo</option>
-                        <option value="Inactivo">Inactivo</option>
-                    </select>
-                    <input type="email" class="full" name="correo" placeholder="correo" value="${correo}">
-    
-                <input type="submit" class="full" value="Enviar">
-            </form>`;
+    cont.innerHTML = `
+        <form action="" class="modificacion" id="empleados">
+            <h2>Editar empleado</h2>
+            <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
+            <input type="text" class="tercio" name="NombreC" placeholder="Nombre(s)" value="${name}">
+            <input type="text" class="tercio" name="PaternoC" placeholder="Apellido Paterno" value="${ApeP}">
+            <input type="text" class="tercio" name="MaternoC" placeholder="Apellido Materno" value="${ApeM}">
+            <select class="tercio" name="cargo" id="cargo" value="${cargo}">
+                <option value="empleado">empleado</option>
+                <option value="admin">admin</option>
+            </select>
+            <input type="text" class="tercio" name="telefono" placeholder="telefono" value="${numero}">
+            <select class="tercio" name="estatus" id="estatus" value="${estatus}">
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+            </select>
+            <input type="email" class="full" name="correo" placeholder="correo" value="${correo}">
+            <input type="submit" class="full" value="Enviar">
+        </form>`;
 
     cont.style.display = "flex";
-
 }
+
 
 function updateOrden(id) {
     let Id = document.getElementById(`ID${id}`).innerText;
