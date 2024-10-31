@@ -69,52 +69,84 @@
                 </div>
         </form>
 
-        <table>
+        <table id="zonas">
             <thead>
-                
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>costo</th>
-                <th>acciones</th>
+                <th>Costo</th>
+                <th>Acciones</th>
             </thead>
             <tbody id="zonas-body">
                 <!-- Aquí se insertarán las filas dinámicamente -->
             </tbody>
-            <script>
+        </table>
+        
+        <div id="pagination-controls-zonas"></div>
+        
+        <script>
+            const NpaginaZonas = 20; // Número de elementos por página
+            let NumpagZona = 1; // Página inicial
+            let zonasData = []; // Arreglo para almacenar los datos de zonas
+        
+            function fetchZonas() {
                 fetch('http://localhost:5000/zonas')
                     .then(response => response.json())
                     .then(zonas => {
-                        let zonasHTML = '';  // Inicializa una variable para almacenar las filas
-            
-                        zonas.forEach(emp => {
-                            zonasHTML += `
-                            <tr>
-            <td id="ID${emp.ID_zona}">1</td>
-                <td id="nombre_colonia${emp.ID_zona}">${emp.nombre_colonia}</td>
-                <td id="costo_zona${emp.ID_zona}" >${emp.costo_zona}</td>
-                <td class="acciones">
-                    <button class="B_editar" onclick="updateZona(${emp.ID_zona})"><span class="material-symbols-outlined">edit</span></button>
-                    <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
-                </td>
-            </tr>
-                            `;
-                    });
+                        zonasData = zonas; // Guardamos los datos en una variable global
+                        renderZonasTable(); // Renderizamos la tabla de zonas
+                        renderZonasPaginationControls(); // Renderizamos los controles de paginación
+                    })
+                    .catch(error => console.error('Error al cargar las zonas:', error));
+            }
         
-                    // Insertar las filas dinámicamente en el tbody
-                    document.getElementById("zonas-body").innerHTML = zonasHTML;
-                })
-                .catch(error => console.error('Error al cargar las zonas:', error));
+            function renderZonasTable() {
+                const start = (NumpagZona - 1) * NpaginaZonas;
+                const end = start + NpaginaZonas;
+                const zonasToShow = zonasData.slice(start, end); // Paginación de registros
+                
+                let zonasHTML = '';
+                zonasToShow.forEach(emp => {
+                    zonasHTML += `
+                        <tr>
+                            <td id="ID${emp.ID_zona}">${emp.ID_zona}</td>
+                            <td id="nombre_colonia${emp.ID_zona}">${emp.nombre_colonia}</td>
+                            <td id="costo_zona${emp.ID_zona}">${emp.costo_zona}</td>
+                            <td class="acciones">
+                                <button class="B_editar" onclick="updateZona(${emp.ID_zona})">
+                                    <span class="material-symbols-outlined">edit</span>
+                                </button>
+                                <button class="B_eliminar">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+        
+                document.getElementById("zonas-body").innerHTML = zonasHTML;
+            }
+        
+            function renderZonasPaginationControls() {
+                const totalPages = Math.ceil(zonasData.length / NpaginaZonas);
+                let paginationHTML = '';
+        
+                for (let i = 1; i <= totalPages; i++) {
+                    paginationHTML += `<button onclick="goToZonasPage(${i})" class="${i === NumpagZona ? 'active' : ''}">${i}</button>`;
+                }
+        
+                document.getElementById("pagination-controls-zonas").innerHTML = paginationHTML;
+            }
+        
+            function goToZonasPage(page) {
+                NumpagZona = page;
+                renderZonasTable();
+                renderZonasPaginationControls();
+            }
+        
+            // Llamar a la función para cargar las zonas y configurar la paginación
+            fetchZonas();
         </script>
-            <!-- // <tr>
-            //     <td id="ID1">1</td>
-            //     <td id="nombre_colonia1">zona alamedas-no se</td>
-            //     <td id="costo_zona1" >50</td>
-            //     <td class="acciones">
-            //         <button class="B_editar" onclick="updateZona(1)"><span class="material-symbols-outlined">edit</span></button>
-            //         <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
-            //     </td>
-            // </tr> -->
-        </table>
+        
     </main>
 
     <div id="addPopup" class="Popup">

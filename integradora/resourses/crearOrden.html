@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../styles/main.css">
     <link rel="stylesheet" href="../styles/formularios.css">
 </head>
-<body>
+<body style="border-top: 10px solid #8B2437;">
     <aside>
         <!--<a href="" id="logotipo"><span class="tooltip">Inicio</span> logo </a> -->
         <nav>
@@ -66,9 +66,29 @@
                 <div class="productos">
                     <select id="producto" class="js-example-basic-single" name="state">
                         <option value="" selected disabled>Producto</option>
-                        <option value="AL">Alabama</option>
-                        <option value="WY">Wyoming</option>
                     </select>
+                    <script>
+                        // Función para cargar productos y agregar opciones al select
+                        function cargarProductos() {
+                            fetch('http://localhost:5000/productos')
+                                .then(response => response.json())
+                                .then(productos => {
+                                    const selectProducto = document.getElementById("producto");
+                                    productos.forEach(producto => {
+                                        // Crear una opción para cada producto en el formato "ID - Nombre"
+                                        const option = document.createElement("option");
+                                        option.value = producto.ID_product; // ID como valor de la opción
+                                        option.textContent = `${producto.ID_product} - ${producto.Nombre}`; // Texto que muestra "ID - Nombre"
+                                        selectProducto.appendChild(option); // Agregar la opción al select
+                                    });
+                                })
+                                .catch(error => console.error('Error al cargar los productos:', error));
+                        }
+                    
+                        // Llamar a la función para cargar los productos cuando se cargue la página
+                        document.addEventListener("DOMContentLoaded", cargarProductos);
+                    </script>
+                    
                     <input id="cantidad" type="number" placeholder="cantidad/Kg">
                     <button class="bot" type="button" onclick=""><span class="material-symbols-outlined">
                         add_circle
@@ -78,10 +98,29 @@
         <section id="infoC">
             <h3>Clientes</h3>
             <select id="cliente" class="js-example-basic-single" name="state">
-                <option value="" selected disabled>cliente</option>
-                <option value="AL">Alabama</option>
-                <option value="WY">Wyoming</option>
-            </select>
+                <option value="" selected disabled>Cliente</option>
+            </select> 
+            <script>
+                // Función para cargar los clientes y agregar opciones al select
+                function cargarClientes() {
+                    fetch('http://localhost:5000/clientes')
+                        .then(response => response.json())
+                        .then(clientes => {
+                            const selectCliente = document.getElementById("cliente");
+                            clientes.forEach(cliente => {
+                                // Crear una opción para cada cliente con el formato "ID - Nombre ApellidoPaterno ApellidoMaterno"
+                                const option = document.createElement("option");
+                                option.value = cliente.ID_cliente; // ID como valor de la opción
+                                option.textContent = `${cliente.ID_cliente} - ${cliente.Nombres} ${cliente.Apellido_P} ${cliente.Apellido_M}`;
+                                selectCliente.appendChild(option); // Agregar la opción al select
+                            });
+                        })
+                        .catch(error => console.error('Error al cargar los clientes:', error));
+                }
+            
+                // Llamar a la función para cargar los clientes al cargar la página
+                document.addEventListener("DOMContentLoaded", cargarClientes);
+            </script>
             <div id="direccion">
                 <button class="bot" type="button" onclick="addpopup()"><span class="material-symbols-outlined">
                     add
@@ -94,8 +133,9 @@
                 </select>
             </div>
         </section>
-        <section id="costos"><h1>Total:$ 241</h1> <button type="submit">Hacer orden</button></section>
-
+        <section id="costos">
+            <h3>Total:$ 241</h3>
+            <button type="submit" class="bot">Hacer orden</button></section>
 
     </form>
     <div id="addPopup" class="Popup">
@@ -117,7 +157,7 @@
                 <input type="text" name="numeroEC" class="cuarto" placeholder="Numero Exterior">
                 <input type="text" name="numeroIC" class="cuarto" placeholder="Numero Interior">
                 <input type="text" name="CP" class="cuarto" placeholder="Codigo Postal">
-                <input type="submit" value="enviar" class="full">
+                <input type="submit" value="guardar" class="full">
         </form>
     </div>
     </main>

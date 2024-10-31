@@ -86,43 +86,80 @@
                 <!-- Aquí se insertarán las filas dinámicamente -->
             </tbody>
         </table>
-
+        
+        <div id="pagination-controls"></div>
+        
         <script>
-            fetch('http://localhost:5000/empleados')
-                .then(response => response.json())
-                .then(empleados => {
-                    let empleadosHTML = '';  // Inicializa una variable para almacenar las filas
+            const Npagina = 20;
+            let Numpag = 1;
+            let empleadosData = [];
         
-                    empleados.forEach(emp => {
-                        empleadosHTML += `
-                            <tr>
-                                <td id='ID${emp.ID_Empleados}'>${emp.ID_Empleados}</td>
-                                <td id='nombre${emp.ID_Empleados}'>${emp.Nombres}</td>
-                                <td id='apellidoP${emp.ID_Empleados}'>${emp.Apellido_P}</td>
-                                <td id='apellidoM${emp.ID_Empleados}'>${emp.Apellido_M}</td>
-                                <td id='cargo${emp.ID_Empleados}'>${emp.Cargo}</td>
-                                <td id='correo${emp.ID_Empleados}'>${emp.correo || 'N/A'}</td>
-                                <td id='telefono${emp.ID_Empleados}'>${emp.Telefono}</td>
-                                <td class="${emp.estatus === 1 ? 'positive' : 'negative'}" id='estatus${emp.ID_Empleados}'>
-                                    ${emp.estatus === 1 ? 'activo' : 'inactivo'}
-                                </td>
-                                <td class="acciones">
-                                    <button class="B_editar" onclick="updateEmp(${emp.ID_Empleados})">
-                                        <span class="material-symbols-outlined">edit</span>
-                                    </button>
-                                    <button class="B_eliminar" onclick="eliminarEmp(${emp.ID_Empleados})">
-                                        <span class="material-symbols-outlined">delete</span>
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
-                    });
+            function fetchEmpleados() {
+                fetch('http://localhost:5000/empleados')
+                    .then(response => response.json())
+                    .then(empleados => {
+                        empleadosData = empleados; // Guardamos los datos en una variable global
+                        renderTable();
+                        renderPaginationControls();
+                    })
+                    .catch(error => console.error('Error al cargar los empleados:', error));
+            }
         
-                    // Insertar las filas dinámicamente en el tbody
-                    document.getElementById("empleados-body").innerHTML = empleadosHTML;
-                })
-                .catch(error => console.error('Error al cargar los empleados:', error));
+            function renderTable() {
+                const start = (Numpag - 1) * Npagina;
+                const end = start + Npagina;
+                const empleadosToShow = empleadosData.slice(start, end); // Paginación de registros
+                
+                let empleadosHTML = '';
+                empleadosToShow.forEach(emp => {
+                    empleadosHTML += `
+                        <tr>
+                            <td id='ID${emp.ID_Empleados}'>${emp.ID_Empleados}</td>
+                            <td id='nombre${emp.ID_Empleados}'>${emp.Nombres}</td>
+                            <td id='apellidoP${emp.ID_Empleados}'>${emp.Apellido_P}</td>
+                            <td id='apellidoM${emp.ID_Empleados}'>${emp.Apellido_M}</td>
+                            <td id='cargo${emp.ID_Empleados}' class="${emp.Cargo === "admin" ? 'positive' : ''}">${emp.Cargo}</td>
+                            <td id='correo${emp.ID_Empleados}'>${emp.correo || 'N/A'}</td>
+                            <td id='telefono${emp.ID_Empleados}'>${emp.Telefono}</td>
+                            <td class="${emp.estatus === 1 ? 'positive' : 'negative'}" id='estatus${emp.ID_Empleados}'>
+                                ${emp.estatus === 1 ? 'activo' : 'inactivo'}
+                            </td>
+                            <td class="acciones">
+                                <button class="B_editar" onclick="updateEmp(${emp.ID_Empleados})">
+                                    <span class="material-symbols-outlined">edit</span>
+                                </button>
+                                <button class="B_eliminar" onclick="eliminarEmp(${emp.ID_Empleados})">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+        
+                document.getElementById("empleados-body").innerHTML = empleadosHTML;
+            }
+        
+            function renderPaginationControls() {
+                const totalPages = Math.ceil(empleadosData.length / Npagina);
+                let paginationHTML = '';
+        
+                for (let i = 1; i <= totalPages; i++) {
+                    paginationHTML += `<button onclick="goToPage(${i})" class="${i === Numpag ? 'active' : ''}">${i}</button>`;
+                }
+        
+                document.getElementById("pagination-controls").innerHTML = paginationHTML;
+            }
+        
+            function goToPage(page) {
+                Numpag = page;
+                renderTable();
+                renderPaginationControls();
+            }
+        
+            // Llamar a la función para cargar los empleados y configurar la paginación
+            fetchEmpleados();
         </script>
+        
     </main>
 
     <!-- Formulario de Popup -->

@@ -63,8 +63,8 @@ body {
 /*Productos */
 #contenedor {
   width: 90%;
-  height: 60vh;
   margin-top: 5%;
+  margin-left: 4%;
   padding: 1%;
   background-color: var(--color-white);
   border-radius: 20px;
@@ -75,6 +75,8 @@ body {
   grid-column-start: 1;
   grid-column-end: 3;
   color: var(--color-primary);
+  font-size: 3rem;
+  margin-bottom: 2%;
 }
 #contenedor section {
   width: 95%;
@@ -158,12 +160,34 @@ body {
 }
 
 
-
+/* costos */
 
 #costos {
   grid-column-start: 1;
   grid-column-end: 3;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
+#costos h3 {
+  width: 30%;
+  margin-right: 50%;
+  font-size: 2rem;
+}
+#costos .bot {
+  align-items: center;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+#costos .bot:hover {
+  background-color: transparent;
+  color: var(--color-primary);
+}
+
+
 /* adaptabilidad de todo */
 @media (max-width:760px) {
   #acciones {

@@ -72,63 +72,86 @@
             <thead>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Apellido paterno</th>
+                <th>Apellido Paterno</th>
                 <th>Apellido Materno</th>
                 <th>Teléfono</th>
-                <th>direcciones</th>
-                <th>correo</th>
+                <th>Direcciones</th>
+                <th>Correo</th>
                 <th>Estatus</th>
-                <th>acciones</th>
+                <th>Acciones</th>
             </thead>
             <tbody id="clientes-body">
                 <!-- Aquí se insertarán las filas dinámicamente -->
             </tbody>
-<script>
+        </table>
+        
+        <div id="pagination-controls-clientes"></div>
+        
+        <script>
+            const NpaginaClientes = 20; // Número de elementos por página
+            let NumpagClientes = 1; // Página inicial
+            let clientesData = []; // Arreglo para almacenar los datos de clientes
+        
+            function fetchClientes() {
                 fetch('http://localhost:5000/clientes')
                     .then(response => response.json())
                     .then(clientes => {
-                        let clientesHTML = '';  // Inicializa una variable para almacenar las filas
-            
-                        clientes.forEach(emp => {
-                            clientesHTML += `
-                            <tr>
-                                <td id="ID${emp.ID_cliente}">${emp.ID_cliente}</td>
-                                <td id="nombre${emp.ID_cliente}">${emp.Nombres}</td>
-                                <td id="ApellidoP${emp.ID_cliente}">${emp.Apellido_P}</td>
-                                <td id="ApellidoM${emp.ID_cliente}">${emp.Apellido_M}</td>
-                                <td id="telefono${emp.ID_cliente}">${emp.Telefono}</td>
-                                <td><a href="direcciones.html"> <button id="ver_direccion" class="ver">ver</button> </a></td>
-                                <td id="correo${emp.ID_cliente}">${emp.correo}</td>
-                                <td id="estatus${emp.ID_cliente}" class="${emp.estatus === 1 ? 'positive' : 'negative'}">${emp.estatus === 1 ? 'activo' : 'inactivo'}</td>
-                                <td class="acciones">
-                                    <button class="B_editar" onclick="updateCliente(${emp.ID_cliente})"><span class="material-symbols-outlined">edit</span></button>
-                                    <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
-                                </td>
-                            </tr>
-                            `;
-                    });
+                        clientesData = clientes; // Guardamos los datos en una variable global
+                        renderClientesTable(); // Renderizamos la tabla de clientes
+                        renderClientesPaginationControls(); // Renderizamos los controles de paginación
+                    })
+                    .catch(error => console.error('Error al cargar los clientes:', error));
+            }
         
-                    // Insertar las filas dinámicamente en el tbody
-                    document.getElementById("clientes-body").innerHTML = clientesHTML;
-                })
-                .catch(error => console.error('Error al cargar los clientes:', error));
-</script>
-            <!-- 
-                <tr>
-                    <td id="ID1">1</td>
-                    <td id="nombre1">Juan</td>
-                    <td id="ApellidoP1">perez</td>
-                    <td id="ApellidoM1">dominguez</td>
-                    <td id="telefono1">51325326</td>
-                    <td><a href="direcciones.html"> <button id="ver_direccion" class="ver">ver</button> </a></td>
-                    <td id="correo1">gawgawg@gags.com</td>
-                    <td id="estatus1">Activo</td>
-                    <td class="acciones">
-                        <button class="B_editar" onclick="updateCliente(1)"><span class="material-symbols-outlined">edit</span></button>
-                        <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
-                    </td>
-                </tr> -->
-        </table>
+            function renderClientesTable() {
+                const start = (NumpagClientes - 1) * NpaginaClientes;
+                const end = start + NpaginaClientes;
+                const clientesToShow = clientesData.slice(start, end); // Paginación de registros
+                
+                let clientesHTML = '';
+                clientesToShow.forEach(emp => {
+                    clientesHTML += `
+                        <tr>
+                            <td id="ID${emp.ID_cliente}">${emp.ID_cliente}</td>
+                            <td id="nombre${emp.ID_cliente}">${emp.Nombres}</td>
+                            <td id="ApellidoP${emp.ID_cliente}">${emp.Apellido_P}</td>
+                            <td id="ApellidoM${emp.ID_cliente}">${emp.Apellido_M}</td>
+                            <td id="telefono${emp.ID_cliente}">${emp.Telefono}</td>
+                            <td><a href="direcciones.html"><button id="ver_direccion" class="ver">ver</button></a></td>
+                            <td id="correo${emp.ID_cliente}">${emp.correo}</td>
+                            <td id="estatus${emp.ID_cliente}" class="${emp.estatus === 1 ? 'positive' : 'negative'}">${emp.estatus === 1 ? 'activo' : 'inactivo'}</td>
+                            <td class="acciones">
+                                <button class="B_editar" onclick="updateCliente(${emp.ID_cliente})"><span class="material-symbols-outlined">edit</span></button>
+                                <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+        
+                document.getElementById("clientes-body").innerHTML = clientesHTML;
+            }
+        
+            function renderClientesPaginationControls() {
+                const totalPages = Math.ceil(clientesData.length / NpaginaClientes);
+                let paginationHTML = '';
+        
+                for (let i = 1; i <= totalPages; i++) {
+                    paginationHTML += `<button onclick="goToClientesPage(${i})" class="${i === NumpagClientes ? 'active' : ''}">${i}</button>`;
+                }
+        
+                document.getElementById("pagination-controls-clientes").innerHTML = paginationHTML;
+            }
+        
+            function goToClientesPage(page) {
+                NumpagClientes = page;
+                renderClientesTable();
+                renderClientesPaginationControls();
+            }
+        
+            // Llamar a la función para cargar los clientes y configurar la paginación
+            fetchClientes();
+        </script>
+        
     </main>
     
     <div id="addPopup" class="Popup">

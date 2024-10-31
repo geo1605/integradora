@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../styles/main.css">
     <title>Lista de ordenes</title>
 </head>
-<body>
+<body style="border-top: 10px solid #8B2437;">
   <aside>
     <!--<a href="" id="logotipo"><span class="tooltip">Inicio</span> logo </a> -->
     <nav>
@@ -91,18 +91,42 @@
           </tr>
         </thead>
           <tr>
-            <td id="encargado">Juan Pérez</td>
-            <td id="cliente">Juan Pérez</td>
-            <td id="direccion">Calle Falsa 123</td>
-            <td id="fecha">20/10/20024</td>
-            <td id="hora">10:30</td>
-            <td id="estado" class=""> completado</td>
-            <td id="total">$100.00</td>
-            <td id="Tpago">pago</td>
+            <td id="encargado1">Juan Pérez</td>
+            <td id="cliente1">Juan Pérez</td>
+            <td id="direccion1">Calle Falsa 123</td>
+            <td id="fecha1">20/10/20024</td>
+            <td id="hora1">10:30</td>
+            <td id="estado1" class="positive"> completado</td>
+            <td id="total1">$100.00</td>
+            <td id="Tpago1">pago</td>
             <td>
               <button id="detalle" class="ver" >detalle</button>
             </td>
-            <td id="acciones">
+            <td id="acciones" >
+              <button class="completar"><span class="material-symbols-outlined">
+                task_alt
+                </span></button>
+              <button class="proceso"><span class="material-symbols-outlined">
+                acute
+                </span></button>
+              <button class="cancelado"><span class="material-symbols-outlined">
+                block
+                </span></button>
+            </td>
+          </tr>
+          <tr>
+            <td id="encargado1">Juan Pérez</td>
+            <td id="cliente1">Juan Pérez</td>
+            <td id="direccion1">Calle Falsa 123</td>
+            <td id="fecha1">20/10/20024</td>
+            <td id="hora1">10:30</td>
+            <td id="estado1" class="negative"> cancelado</td>
+            <td id="total1">$100.00</td>
+            <td id="Tpago1">pago</td>
+            <td>
+              <button id="detalle" class="ver" >detalle</button>
+            </td>
+            <td id="acciones" >
               <button class="completar"><span class="material-symbols-outlined">
                 task_alt
                 </span></button>

@@ -16,6 +16,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
+    border-top: 10px solid #8B2437;
 }
 main {
     padding: 2%;
@@ -219,14 +220,29 @@ table button .material-symbols-outlined {
 #Ndirecciones {
     font-size: 1.5rem;
 }
+
+
+#pagination-controls button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+#pagination-controls button.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
 /* Adaptación para dispositivos más pequeños */
 @media (max-width: 768px) {
     table {
         width: 100%;
         font-size: 0.5rem;
-        
+        display: block;
         overflow-x: auto;
     }
+    #zonas {
+        display: table;
+    }
+
 
 
 
@@ -267,7 +283,7 @@ table button .material-symbols-outlined {
 
     table {
         font-size: 0.6rem;
-        display: block;
+        
     }
 
     .bot {
