@@ -3,15 +3,21 @@ const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors')
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
+const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_USER = process.env.DB_USER || 'root';
+const DB_PASSWORD = process.env.DB_PASSWORD || '';
+const DB_NAME = process.env.DB_NAME || 'la_tosca';
+const DB_PORT = process.env.DB_PORT || 3306;
 app.use(bodyParser.json());
 app.use(cors());
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'la_tosca',
+    host: DB_HOST,
+    user: DB_USER,
+    password: DB_PASSWORD,
+    port: DB_PORT,
+    database: DB_NAME,
 });
 
 // ====================== RUTAS PARA CLIENTES ====================== //
@@ -403,5 +409,5 @@ app.all("*", (req, res) => {
 
 // Iniciar Servidor
 app.listen(port, () => {
-    console.log("Escuchando en el puerto 5000");
+    console.log("Escuchando en el puerto", port);
 });
