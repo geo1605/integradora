@@ -20,6 +20,17 @@ const db = mysql.createConnection({
     database: DB_NAME,
 });
 
+app.get('/', (req,res) => {
+    db.query(sql, (err, result) => {
+        document.write('te has conectado a la tosca')
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.status(200).send(result);
+        }
+    });
+});
+
 // ====================== RUTAS PARA CLIENTES ====================== //
 
 // Obtener Clientes
