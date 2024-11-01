@@ -20,16 +20,17 @@ const db = mysql.createConnection({
     database: DB_NAME,
 });
 
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
     db.query(sql, (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
-            res.status(200).send(result);
+            res.status(200).json(result);
+            res.redirect('/index.html'); // Cambia '../index.html' por la ruta correcta.
         }
-        window.location.href = "../index.html";
     });
 });
+
 // ====================== RUTAS PARA CLIENTES ====================== //
 
 // Obtener Clientes
