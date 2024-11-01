@@ -27,7 +27,7 @@ app.get('/', (req,res) => {
         } else {
             res.status(200).send(result);
         }
-        window.location.href = "../index.html";
+        res.sendFile(path.join(__dirname, 'index.html'));
     });
 });
 // ====================== RUTAS PARA CLIENTES ====================== //
