@@ -22,15 +22,14 @@ const db = mysql.createConnection({
 
 app.get('/', (req,res) => {
     db.query(sql, (err, result) => {
-        document.write('te has conectado a la tosca')
         if (err) {
             res.status(500).send(err);
         } else {
             res.status(200).send(result);
         }
+        window.location.href = "../index.html";
     });
 });
-
 // ====================== RUTAS PARA CLIENTES ====================== //
 
 // Obtener Clientes
