@@ -93,7 +93,7 @@
             let clientesData = []; // Arreglo para almacenar los datos de clientes
         
             function fetchClientes() {
-                fetch('http://localhost:5000/clientes')
+                fetch('https://integradora-production.up.railway.app/clientes')
                     .then(response => response.json())
                     .then(clientes => {
                         clientesData = clientes; // Guardamos los datos en una variable global

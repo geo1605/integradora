@@ -95,7 +95,7 @@
             let empleadosData = [];
         
             function fetchEmpleados() {
-                fetch('http://localhost:5000/empleados')
+                fetch('https://integradora-production.up.railway.app/empleados')
                     .then(response => response.json())
                     .then(empleados => {
                         empleadosData = empleados; // Guardamos los datos en una variable global

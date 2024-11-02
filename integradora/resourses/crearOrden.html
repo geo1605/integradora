@@ -70,7 +70,7 @@
                     <script>
                         // Función para cargar productos y agregar opciones al select
                         function cargarProductos() {
-                            fetch('http://localhost:5000/productos')
+                            fetch('https://integradora-production.up.railway.app/productos')
                                 .then(response => response.json())
                                 .then(productos => {
                                     const selectProducto = document.getElementById("producto");

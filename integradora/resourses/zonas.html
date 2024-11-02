@@ -89,7 +89,7 @@
             let zonasData = []; // Arreglo para almacenar los datos de zonas
         
             function fetchZonas() {
-                fetch('http://localhost:5000/zonas')
+                fetch('https://integradora-production.up.railway.app/zonas')
                     .then(response => response.json())
                     .then(zonas => {
                         zonasData = zonas; // Guardamos los datos en una variable global

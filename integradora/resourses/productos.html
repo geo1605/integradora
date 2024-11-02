@@ -96,7 +96,7 @@
             let productosData = []; // Arreglo para almacenar los datos de productos
         
             function fetchProductos() {
-                fetch('http://localhost:5000/productos')
+                fetch('https://integradora-production.up.railway.app/productos')
                     .then(response => response.json())
                     .then(productos => {
                         productosData = productos; // Guardamos los datos en una variable global
