@@ -15,6 +15,11 @@ const DB_PORT = process.env.DB_PORT || 3306;
 app.use(bodyParser.json());
 app.use(cors());
 
+// Configura Express para servir archivos estáticos desde las carpetas principales
+app.use(express.static(path.join(__dirname, 'js')));
+app.use(express.static(path.join(__dirname, 'resources')));
+app.use(express.static(path.join(__dirname, 'styles')));
+
 const db = mysql.createConnection({
     host: DB_HOST,
     user: DB_USER,
