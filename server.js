@@ -1,18 +1,23 @@
 const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
-const cors = require('cors')
+const cors = require('cors');
+const path = require('path'); // Importa el módulo path
 const app = express();
+
 const port = process.env.PORT || 5000;
 const DB_HOST = process.env.DB_HOST || 'localhost';
 const DB_USER = process.env.DB_USER || 'root';
 const DB_PASSWORD = process.env.DB_PASSWORD || '';
 const DB_NAME = process.env.DB_NAME || 'la_tosca';
 const DB_PORT = process.env.DB_PORT || 3306;
+
 app.use(bodyParser.json());
 app.use(cors());
 
+// Configura Express para servir archivos estáticos desde la carpeta 'integradora'
 app.use(express.static(path.join(__dirname, 'integradora')));
+
 const db = mysql.createConnection({
     host: DB_HOST,
     user: DB_USER,
@@ -21,9 +26,21 @@ const db = mysql.createConnection({
     database: DB_NAME,
 });
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html')); // Envía el archivo index.html en la ruta raíz
+// Conexión a la base de datos y manejo de errores
+db.connect((err) => {
+    if (err) {
+        console.error("Error al conectar a la base de datos:", err);
+        process.exit(1); // Detiene la aplicación si no puede conectarse
+    } else {
+        console.log("Conexión exitosa a la base de datos.");
+    }
 });
+
+// Ruta raíz para redirigir a index.html en la carpeta 'integradora'
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'integradora', 'index.html')); // Envía el archivo index.html en la ruta raíz
+});
+
 // ====================== RUTAS PARA CLIENTES ====================== //
 
 // Obtener Clientes
