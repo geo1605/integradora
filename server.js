@@ -16,9 +16,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Configura Express para servir archivos estáticos desde las carpetas principales
-app.use(express.static(path.join(__dirname, 'js')));
-app.use(express.static(path.join(__dirname, 'resources')));
-app.use(express.static(path.join(__dirname, 'styles')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 const db = mysql.createConnection({
     host: DB_HOST,
@@ -30,7 +28,7 @@ const db = mysql.createConnection({
 
 // Ruta raíz para redirigir a index.html
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html')); // Envía el archivo index.html en la ruta raíz
+    res.sendFile(path.join(__dirname, 'public', 'index.html')); // Envía el archivo index.html en la ruta raíz
 });
 
 // ====================== RUTAS PARA CLIENTES ====================== //
