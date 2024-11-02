@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Configura Express para servir archivos estáticos desde las carpetas principales
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'integradora')));
 
 const db = mysql.createConnection({
     host: DB_HOST,
