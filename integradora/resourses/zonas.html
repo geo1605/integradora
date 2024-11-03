@@ -65,7 +65,9 @@
                 </span> Añadir</button>
                 <div id="barra_busqueda">
                     <input id="Search_principal" type="search" placeholder="Buscar">
-                    <input id="Bot_busqueda"  class="botS" type="submit" value="buscar">
+                    <button id="Bot_busqueda" class="botS"><span class="material-symbols-outlined">
+                        search
+                        </span></button>
                 </div>
         </form>
 
@@ -81,15 +83,15 @@
             </tbody>
         </table>
         
-        <div id="pagination-controls-zonas"></div>
+        <div id="pagination-controls-zonas" class="pagination-container"></div>
         
         <script>
             const NpaginaZonas = 20; // Número de elementos por página
             let NumpagZona = 1; // Página inicial
             let zonasData = []; // Arreglo para almacenar los datos de zonas
-        
+
             function fetchZonas() {
-                fetch('https://integradora-production.up.railway.app/zonas')
+                fetch('https://latosca.up.railway.app/zonas')
                     .then(response => response.json())
                     .then(zonas => {
                         zonasData = zonas; // Guardamos los datos en una variable global
@@ -98,7 +100,7 @@
                     })
                     .catch(error => console.error('Error al cargar las zonas:', error));
             }
-        
+
             function renderZonasTable() {
                 const start = (NumpagZona - 1) * NpaginaZonas;
                 const end = start + NpaginaZonas;
@@ -122,29 +124,30 @@
                         </tr>
                     `;
                 });
-        
+
                 document.getElementById("zonas-body").innerHTML = zonasHTML;
             }
-        
+
             function renderZonasPaginationControls() {
                 const totalPages = Math.ceil(zonasData.length / NpaginaZonas);
                 let paginationHTML = '';
-        
+
                 for (let i = 1; i <= totalPages; i++) {
-                    paginationHTML += `<button onclick="goToZonasPage(${i})" class="${i === NumpagZona ? 'active' : ''}">${i}</button>`;
+                    paginationHTML += `<button onclick="goToZonasPage(${i})" class="pagination-button ${i === NumpagZona ? 'active' : ''}">${i}</button>`;
                 }
-        
+
                 document.getElementById("pagination-controls-zonas").innerHTML = paginationHTML;
             }
-        
+
             function goToZonasPage(page) {
                 NumpagZona = page;
                 renderZonasTable();
                 renderZonasPaginationControls();
             }
-        
+
             // Llamar a la función para cargar las zonas y configurar la paginación
             fetchZonas();
+
         </script>
         
     </main>

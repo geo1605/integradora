@@ -70,10 +70,12 @@
                     <option value="WY">Wyoming</option>
                 </select>
                 <input id="Search_principal" type="search" placeholder="Buscar">
-                <input id="Bot_busqueda"  class="botS" type="submit" value="buscar">
+                <button id="Bot_busqueda" class="botS"><span class="material-symbols-outlined">
+                    search
+                    </span></button>
             </div>
         </form>
-        <table>
+        <table id="productos">
             <thead>
                 <th>ID</th>
                 <th>Nombre</th>
@@ -88,15 +90,16 @@
             </tbody>
         </table>
         
-        <div id="pagination-controls-productos"></div>
+        <div id="pagination-controls-productos" class="pagination-container"></div>
+
         
         <script>
             const NpaginaProductos = 20; // Número de elementos por página
             let NumpagProducto = 1; // Página inicial
             let productosData = []; // Arreglo para almacenar los datos de productos
-        
+
             function fetchProductos() {
-                fetch('https://integradora-production.up.railway.app/productos')
+                fetch('https://latosca.up.railway.app/productos')
                     .then(response => response.json())
                     .then(productos => {
                         productosData = productos; // Guardamos los datos en una variable global
@@ -105,7 +108,7 @@
                     })
                     .catch(error => console.error('Error al cargar los productos:', error));
             }
-        
+
             function renderProductosTable() {
                 const start = (NumpagProducto - 1) * NpaginaProductos;
                 const end = start + NpaginaProductos;
@@ -120,7 +123,7 @@
                             <td id="tipo${emp.ID_product}">${emp.tipo}</td>
                             <td id="categoria${emp.ID_product}">${emp.Categoria}</td>
                             <td id="precio${emp.ID_product}">${emp.precio}</td>
-                            <td id="estatus${emp.ID_product}" class="${emp.estatus === 1 ? 'positive' : 'negative'}"><li>${emp.estatus === 1 ? 'Existente' : 'Agotado'}</li></td>
+                            <td id="estatus${emp.ID_product}" class="${emp.estatus === 1 ? 'positive' : 'negative'}">${emp.estatus === 1 ? 'Existente' : 'Agotado'}</td>
                             <td class="acciones">
                                 <button class="B_editar" onclick="updateProducto(${emp.ID_product})"><span class="material-symbols-outlined">edit</span></button>
                                 <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
@@ -128,29 +131,30 @@
                         </tr>
                     `;
                 });
-        
+
                 document.getElementById("productos-body").innerHTML = productosHTML;
             }
-        
+
             function renderProductosPaginationControls() {
                 const totalPages = Math.ceil(productosData.length / NpaginaProductos);
                 let paginationHTML = '';
-        
+
                 for (let i = 1; i <= totalPages; i++) {
-                    paginationHTML += `<button onclick="goToProductosPage(${i})" class="${i === NumpagProducto ? 'active' : ''}">${i}</button>`;
+                    paginationHTML += `<button onclick="goToProductosPage(${i})" class="pagination-button ${i === NumpagProducto ? 'active' : ''}">${i}</button>`;
                 }
-        
+
                 document.getElementById("pagination-controls-productos").innerHTML = paginationHTML;
             }
-        
+
             function goToProductosPage(page) {
                 NumpagProducto = page;
                 renderProductosTable();
                 renderProductosPaginationControls();
             }
-        
+
             // Llamar a la función para cargar los productos y configurar la paginación
             fetchProductos();
+
         </script>
         
     </main>

@@ -63,7 +63,9 @@
             </button>
             <div id="barra_busqueda">
                 <input id="Search_principal" type="search" placeholder="Buscar">
-                <input id="Bot_busqueda" class="botS" type="submit" value="buscar">
+                <button id="Bot_busqueda" class="botS"><span class="material-symbols-outlined">
+                    search
+                    </span></button>
             </div>
         </form>
 
@@ -87,15 +89,16 @@
             </tbody>
         </table>
         
-        <div id="pagination-controls"></div>
+        <div id="pagination-controls" class="pagination-container"></div>
+
         
         <script>
-            const Npagina = 20;
-            let Numpag = 1;
-            let empleadosData = [];
-        
+            const Npagina = 20; // Número de elementos por página
+            let Numpag = 1; // Página inicial
+            let empleadosData = []; // Arreglo para almacenar los datos de empleados
+
             function fetchEmpleados() {
-                fetch('https://integradora-production.up.railway.app/empleados')
+                fetch('https://latosca.up.railway.app/empleados')
                     .then(response => response.json())
                     .then(empleados => {
                         empleadosData = empleados; // Guardamos los datos en una variable global
@@ -104,7 +107,7 @@
                     })
                     .catch(error => console.error('Error al cargar los empleados:', error));
             }
-        
+
             function renderTable() {
                 const start = (Numpag - 1) * Npagina;
                 const end = start + Npagina;
@@ -135,29 +138,30 @@
                         </tr>
                     `;
                 });
-        
+
                 document.getElementById("empleados-body").innerHTML = empleadosHTML;
             }
-        
+
             function renderPaginationControls() {
                 const totalPages = Math.ceil(empleadosData.length / Npagina);
                 let paginationHTML = '';
-        
+
                 for (let i = 1; i <= totalPages; i++) {
-                    paginationHTML += `<button onclick="goToPage(${i})" class="${i === Numpag ? 'active' : ''}">${i}</button>`;
+                    paginationHTML += `<button onclick="goToPage(${i})" class="pagination-button ${i === Numpag ? 'active' : ''}">${i}</button>`;
                 }
-        
+
                 document.getElementById("pagination-controls").innerHTML = paginationHTML;
             }
-        
+
             function goToPage(page) {
                 Numpag = page;
                 renderTable();
                 renderPaginationControls();
             }
-        
+
             // Llamar a la función para cargar los empleados y configurar la paginación
             fetchEmpleados();
+
         </script>
         
     </main>

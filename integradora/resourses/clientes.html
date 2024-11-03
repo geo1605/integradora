@@ -85,15 +85,15 @@
             </tbody>
         </table>
         
-        <div id="pagination-controls-clientes"></div>
+        <div id="pagination-controls-clientes" class="pagination-container"></div>
         
         <script>
             const NpaginaClientes = 20; // Número de elementos por página
             let NumpagClientes = 1; // Página inicial
             let clientesData = []; // Arreglo para almacenar los datos de clientes
-        
+
             function fetchClientes() {
-                fetch('https://integradora-production.up.railway.app/clientes')
+                fetch('https://latosca.up.railway.app/clientes')
                     .then(response => response.json())
                     .then(clientes => {
                         clientesData = clientes; // Guardamos los datos en una variable global
@@ -102,7 +102,7 @@
                     })
                     .catch(error => console.error('Error al cargar los clientes:', error));
             }
-        
+
             function renderClientesTable() {
                 const start = (NumpagClientes - 1) * NpaginaClientes;
                 const end = start + NpaginaClientes;
@@ -127,29 +127,30 @@
                         </tr>
                     `;
                 });
-        
+
                 document.getElementById("clientes-body").innerHTML = clientesHTML;
             }
-        
+
             function renderClientesPaginationControls() {
                 const totalPages = Math.ceil(clientesData.length / NpaginaClientes);
                 let paginationHTML = '';
-        
+
                 for (let i = 1; i <= totalPages; i++) {
-                    paginationHTML += `<button onclick="goToClientesPage(${i})" class="${i === NumpagClientes ? 'active' : ''}">${i}</button>`;
+                    paginationHTML += `<button onclick="goToClientesPage(${i})" class="pagination-button ${i === NumpagClientes ? 'active' : ''}">${i}</button>`;
                 }
-        
+
                 document.getElementById("pagination-controls-clientes").innerHTML = paginationHTML;
             }
-        
+
             function goToClientesPage(page) {
                 NumpagClientes = page;
                 renderClientesTable();
                 renderClientesPaginationControls();
             }
-        
+
             // Llamar a la función para cargar los clientes y configurar la paginación
             fetchClientes();
+
         </script>
         
     </main>

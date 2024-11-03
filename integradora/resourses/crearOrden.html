@@ -58,86 +58,61 @@
     </aside>
 
     <main >
-    <form action="" id="contenedor">
-        <h2>Creacion de orden</h2>
-        <section id="infoP">
-            
+        <form action="" id="contenedor">
+            <h2>Creación de orden</h2>
+        
+            <section id="infoP">
                 <h3>Productos</h3>
-                <div class="productos">
-                    <select id="producto" class="js-example-basic-single" name="state">
-                        <option value="" selected disabled>Producto</option>
-                    </select>
-                    <script>
-                        // Función para cargar productos y agregar opciones al select
-                        function cargarProductos() {
-                            fetch('https://integradora-production.up.railway.app/productos')
-                                .then(response => response.json())
-                                .then(productos => {
-                                    const selectProducto = document.getElementById("producto");
-                                    productos.forEach(producto => {
-                                        // Crear una opción para cada producto en el formato "ID - Nombre"
-                                        const option = document.createElement("option");
-                                        option.value = producto.ID_product; // ID como valor de la opción
-                                        option.textContent = `${producto.ID_product} - ${producto.Nombre}`; // Texto que muestra "ID - Nombre"
-                                        selectProducto.appendChild(option); // Agregar la opción al select
-                                    });
-                                })
-                                .catch(error => console.error('Error al cargar los productos:', error));
-                        }
-                    
-                        // Llamar a la función para cargar los productos cuando se cargue la página
-                        document.addEventListener("DOMContentLoaded", cargarProductos);
-                    </script>
-                    
-                    <input id="cantidad" type="number" placeholder="cantidad/Kg">
-                    <button class="bot" type="button" onclick=""><span class="material-symbols-outlined">
-                        add_circle
-                        </span> Añadir</button>
+                <div class="productos" id="productosContainer">
+                    <div class="producto-item">
+                        <select id="producto" class="js-example-basic-single" name="state">
+                            <option value="" selected disabled>Producto</option>
+                        </select>
+                        <input id="cantidad" type="number" placeholder="cantidad/Kg">
+                    </div>
                 </div>
-        </section>
-        <section id="infoC">
-            <h3>Clientes</h3>
-            <select id="cliente" class="js-example-basic-single" name="state">
-                <option value="" selected disabled>Cliente</option>
-            </select> 
-            <script>
-                // Función para cargar los clientes y agregar opciones al select
-                function cargarClientes() {
-                    fetch('http://localhost:5000/clientes')
-                        .then(response => response.json())
-                        .then(clientes => {
-                            const selectCliente = document.getElementById("cliente");
-                            clientes.forEach(cliente => {
-                                // Crear una opción para cada cliente con el formato "ID - Nombre ApellidoPaterno ApellidoMaterno"
-                                const option = document.createElement("option");
-                                option.value = cliente.ID_cliente; // ID como valor de la opción
-                                option.textContent = `${cliente.ID_cliente} - ${cliente.Nombres} ${cliente.Apellido_P} ${cliente.Apellido_M}`;
-                                selectCliente.appendChild(option); // Agregar la opción al select
-                            });
-                        })
-                        .catch(error => console.error('Error al cargar los clientes:', error));
-                }
-            
-                // Llamar a la función para cargar los clientes al cargar la página
-                document.addEventListener("DOMContentLoaded", cargarClientes);
-            </script>
-            <div id="direccion">
-                <button class="bot" type="button" onclick="addpopup()"><span class="material-symbols-outlined">
-                    add
-                    </span>
-                    <span class="tooltip">añadir</span></button>
-                <select id="direccion" class="js-example-basic-single" name="state">
-                    <option value="" selected disabled>direccion</option>
+                <button class="bot" type="button" onclick="anadirProducto()">
+                    <span class="material-symbols-outlined">add_circle</span> Añadir
+                </button>
+            </section>
+            <section id="empleadoSection">
+                <h3>Empleado</h3>
+                <select id="empleado" class="js-example-basic-single" name="state">
+                    <option value="" selected disabled>Empleado</option>
                     <option value="AL">Alabama</option>
                     <option value="WY">Wyoming</option>
                 </select>
-            </div>
-        </section>
-        <section id="costos">
-            <h3>Total:$ 241</h3>
-            <button type="submit" class="bot">Hacer orden</button></section>
-
-    </form>
+            </section>
+        
+            <section id="infoC">
+                <h3>Clientes</h3>
+                <select id="cliente" class="js-example-basic-single" name="state">
+                    <option value="" selected disabled>Cliente</option>
+                </select>
+                <button class="bot" type="button" onclick="addCliente()">
+                    Añadir nuevo cliente
+                </button>
+                
+            </section>
+            <section id="direccion">
+                <h3>Dirección</h3>
+                <select id="direccion" class="js-example-basic-single" name="state">
+                    <option value="" selected disabled>Dirección</option>
+                    <option value="AL">Alabama</option>
+                    <option value="WY">Wyoming</option>
+                </select>
+                <button class="bot" type="button" onclick="addpopup()">
+                    Añadir nueva dirección
+                </button>
+            </section>
+        
+            
+        
+            <section id="costos">
+                <h3>Total: $241</h3>
+                <button type="submit" class="bot">Hacer orden</button>
+            </section>
+        </form>
     <div id="addPopup" class="Popup">
         
         <form action="" class="modificacion" id="productos">
@@ -172,5 +147,29 @@
         });
     </script>
     <script src="../js/formulario.js"></script>
+    <script>
+        let j = 1; // Variable para identificar cada producto añadido
+
+        function anadirProducto() {
+            let productosContainer = document.getElementById("productosContainer");
+
+            // Agrega un nuevo producto con `select` y campo de `cantidad`
+            productosContainer.innerHTML += `
+                <div class="producto-item" id="producto${j}">
+                    <select id="productoSelect${j}" class="js-example-basic-single" name="state">
+                        <option value="" selected disabled>Producto</option>
+                        <!-- Agrega aquí tus opciones de productos si es necesario -->
+                    </select>
+                    <input id="cantidad${j}" type="number" placeholder="cantidad/Kg">
+                </div>`;
+            
+            // Inicializa select2 en el select específico de este producto
+            $(`#productoSelect${j}`).select2(); 
+            j++; // Incrementa el contador para el próximo producto
+        }
+
+
+
+    </script>
 </body>
 </html>

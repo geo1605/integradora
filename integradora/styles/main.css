@@ -58,145 +58,206 @@ body {
 }
 
 
-/* Creacion orden */
-
-/*Productos */
+/* Estilos generales del contenedor */
 #contenedor {
   width: 90%;
-  margin-top: 5%;
-  margin-left: 4%;
-  padding: 1%;
+  max-width: 800px;
+  margin: 5% auto;
+  padding: 2%;
   background-color: var(--color-white);
   border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(1,1fr);
 }
 #contenedor h2 {
+  color: var(--color-primary);
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 2%;
   grid-column-start: 1;
   grid-column-end: 3;
-  color: var(--color-primary);
-  font-size: 3rem;
-  margin-bottom: 2%;
 }
-#contenedor section {
-  width: 95%;
+
+/* Distinción de cada sección */
+#infoP, #infoC, #direccion, #empleadoSection {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 2rem 1.5rem;
+  margin: 1rem;
+  text-align: center;
 }
-#contenedor .bot {
-  width: 50%; 
-  box-sizing: border-box; 
-  height: 5vh;
+
+/* Encabezados de cada sección */
+#infoP h3, #infoC h3, #direccion h3, #empleadoSection h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: var(--color-secondary);
+}
+
+/* Estilos del contenedor de productos */
+#productosContainer .producto-item {
   display: flex;
-  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+/* Estilos de los selects y inputs */
+#productosContainer select,
+#productosContainer input,
+#infoC select,
+#direccion select,
+#empleadoSection select {
+  width: 60%;
+  max-width: 250px;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Aumentar ancho del select de empleado */
+#empleadoSection select {
+  width: 80%;
+  max-width: 350px;
+}
+
+/* Botón de añadir debajo de los productos */
+#infoP .bot {
+  margin-top: 1rem;
+  width: 60%;
+  max-width: 300px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--color-secondary);
   color: var(--color-white);
   border: 2px solid var(--color-secondary);
   border-radius: 30px;
-  padding: 2%;
   font-size: 0.9rem;
+  font-weight: bold;
   transition: 0.3s;
   cursor: pointer;
-  margin: 2% auto 0 auto ; /* Centra el botón horizontalmente */
-  align-items: center;
-  justify-content: center;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-#contenedor .bot span {
-  margin-right: 5%;
+#infoP .bot span {
+  margin-right: 8px;
+  font-size: 1.2rem;
 }
-#contenedor .bot:hover {
+
+#infoP .bot:hover {
   background-color: var(--color-white);
   color: var(--color-secondary);
+}
+
+/* Botones de añadir en Clientes y Dirección */
+#infoC .bot,
+#direccion .bot {
+  height: 45px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  border: 2px solid var(--color-secondary);
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: bold;
   transition: 0.3s;
+  cursor: pointer;
+  padding: 0 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-left: 0.5rem;
+  text-align: center;
 }
 
-#infoP .js-example-basic-single {
-  width: 65%;
-}
-.productos {
-  margin-bottom: 3%;
-  overflow-y: auto;
-  height: 40vh;
-}
-.productos input{
-  width: 20%;
-  font-size: 1rem;
-  padding: 1% 5px;
-  border-radius: 5px;
-  border: 1px solid #aaa;
-  margin-left: 2%;
-  
+#infoC .bot:hover,
+#direccion .bot:hover {
+  background-color: var(--color-white);
+  color: var(--color-secondary);
 }
 
-
-/*Clientes */ 
-#infoC {
-  text-align: right;
-}
-#infoC .js-example-basic-single {
-  width: 95%;
-
-}
-#direccion {
-  margin-left: auto;
-  width: 80%;
-  margin-top: 10%;
-  display: flex;
-  grid-template-columns: repeat(2,1fr);
-  gap: 1rem;
-  justify-content: right;
-}
-#direccion .js-example-basic-single {
-  width: 100%;
-}
-#direccion .bot{
-  width: 10%;
-  font-size: 0.5rem;
-  margin: 0;
-  border-radius: 100%;
-  position: relative;
-}
-#direccion .bot:hover .tooltip {
-  display: block; /* Mostrar el tooltip al pasar el cursor */
-}
-
-
-/* costos */
-
+/* Costos */
 #costos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 2%;
+  border-top: 1px solid #ddd;
+  margin-top: 2%;
   grid-column-start: 1;
   grid-column-end: 3;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
 #costos h3 {
-  width: 30%;
-  margin-right: 50%;
-  font-size: 2rem;
+  font-size: 1.8rem;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
 }
+/* Botón "Hacer orden" en la sección de costos */
 #costos .bot {
-  align-items: center;
-  margin: 0;
+  width: 80%;
   font-size: 1.5rem;
   font-weight: bold;
   background-color: var(--color-primary);
+  color: var(--color-white);
   border: 2px solid var(--color-primary);
+  border-radius: 30px;
+  padding: 10px 20px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, color 0.3s;
 }
+
 #costos .bot:hover {
   background-color: transparent;
   color: var(--color-primary);
 }
 
 
-/* adaptabilidad de todo */
-@media (max-width:760px) {
-  #acciones {
-    grid-template-columns: repeat(1,1fr);
+
+/* Adaptabilidad en mobile */
+@media (max-width: 760px) {
+  #contenedor {
+      grid-template-columns: repeat(1,1fr);
   }
-  main button .material-symbols-outlined {
-    font-size: 1rem;
+  #contenedor h2 {
+      font-size: 2rem;
+      grid-column-start: 1;
+      grid-column-end: 2;
   }
-  #acciones button {
-    padding: 1% 1%;
+  #infoP h3, #infoC h3, #direccion h3, #empleadoSection h3 {
+      font-size: 1.5rem;
+  }
+  #productosContainer .producto-item,
+  #infoC,
+  #direccion {
+      flex-direction: column;
+      align-items: center;
+  }
+  #productosContainer select,
+  #productosContainer input,
+  #infoC select,
+  #direccion select,
+  #empleadoSection select,
+  #infoP .bot,
+  #infoC .bot,
+  #direccion .bot {
+      width: 100%;
+      margin: 0.5rem auto;
+  }
+  #costos {
+    grid-column-start: 1;
+    grid-column-end: 2;
+  }
+  #costos h3 {
+      font-size: 1.5rem;
   }
 }
