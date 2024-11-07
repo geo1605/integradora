@@ -29,10 +29,11 @@
                 add_circle
                 </span> Añadir</button>
                 <div id="barra_busqueda">
-                    <select class="js-example-basic-single" name="state">
+                    <select class="js-example-basic-single" name="zonas">
                         <option value="" selected disabled>Zonas</option>
-                        <option value="AL">Alabama</option>
-                        <option value="WY">Wyoming</option>
+                        <script>
+                            cargarZonas()
+                        </script>
                     </select>
                     <input id="Search_principal" type="search" placeholder="Buscar">
                     <button id="Bot_busqueda" class="botS"><span class="material-symbols-outlined">
@@ -76,10 +77,8 @@
                 <input type="text" class="medio" name="calle" placeholder="Calle">
                 <input type="text" class="medio" name="colonia" placeholder="Colonia">
                 <div class="contSel cuarto">
-                    <select class=" js-example-basic-single " name="state">
+                    <select class=" js-example-basic-single " name="zonas">
                         <option value="" selected disabled>Zona</option>
-                            <option value="AL">Alabama</option>
-                            <option value="WY">Wyoming</option>
                         </select>
                 </div>
                     
@@ -100,6 +99,7 @@
             $('.js-example-basic-single').select2();
         });
     </script>
+    <script src="../js/script.js"></script>
     
 </body>
 </html>

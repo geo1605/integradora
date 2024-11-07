@@ -154,18 +154,31 @@
 
     <div id="addPopup" class="Popup">
         
-        <form action="" class="modificacion" id="productos">
-                <h2>Formulario Producto</h2>
-                <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
-            
-                <input type="text" class="medio" name="NombreZ" placeholder="Nombre zona">
-                <input type="text" class="medio" name="costo" placeholder="Costo adicional">
-
-            <input type="submit" class="full" value="Enviar">
-        </form>
+        <form action="" class="modificacion" id="zonaForm">
+            <h2>Formulario Zona</h2>
+            <button id="salirP" type="button" onclick="colapsePopup('addPopup')">
+              X
+            </button>
+            <input
+              type="text"
+              class="medio"
+              name="NombreZ"
+              placeholder="Nombre zona"
+              required
+            />
+            <input
+              type="number"
+              class="medio"
+              name="costo"
+              placeholder="Costo adicional"
+              required
+            />
+            <input type="submit" class="full" value="Enviar" />
+          </form>
     </div>
     <div id="upPopup" class="Popup"></div>
 
     <script src="../js/formulario.js"></script>
+    <script src="../js/script.js"></script>
 </body>
 </html>
