@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empleados</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="../styles/lateral.css">
+    <link rel="stylesheet" href="../styles/tablas.css">
+    <link rel="stylesheet" href="../styles/formularios.css">
+</head>
+<body>
+    <aside>
+        <!--<a href="" id="logotipo"><span class="tooltip">Inicio</span> logo </a> -->
+        <nav>
+        <ul>
+            <li><a href="main.html" class="lateral">
+            <span class="material-symbols-outlined">
+                checklist
+                </span>
+            <span class="tooltip">tabla ordenes</span>
+            </a></li>
+            <li><a href="crearOrden.html" class="lateral">
+                <span class="material-symbols-outlined">
+                    edit_square
+                </span>
+                <span class="tooltip">crear Orden</span>
+                </a></li>
+            <li><a href="admin_gph.html" class="lateral">
+                <span class="material-symbols-outlined">query_stats</span>
+                <span class="tooltip">estadísticas</span>
+                </a></li>
+            <li><a href="productos.html" class="lateral">
+                <span class="material-symbols-outlined">inventory</span>
+                <span class="tooltip">Productos</span>
+            </a></li>
+            <li><a href="empleados.html" class="lateral selected">
+                <span class="material-symbols-outlined">person</span>
+                <span class="tooltip">Empleados</span>
+            </a></li>
+            <li><a href="clientes.html" class="lateral">
+                <span class="material-symbols-outlined">groups</span>
+                <span class="tooltip">Clientes</span>
+            </a></li>
+            <li><a href="zonas.html" class="lateral">
+                <span class="material-symbols-outlined">map</span>
+                <span class="tooltip">Zonas</span>
+            </a></li>
+        </ul>
+        </nav>
+        <button id="user">
+        <span class="material-symbols-outlined">
+            account_circle
+        </span>
+        <span class="tooltip">usuario</span>
+        </button>
+    </aside>
+    <main>
+        <form action="" class="busquedas" id="busquedas">
+            <h2>Empleados</h2>
+            <button class="bot" type="button" onclick="addpopup()">
+                <span class="material-symbols-outlined">add_circle</span> Añadir
+            </button>
+            <div id="barra_busqueda">
+                <input id="Search_principal" type="search" placeholder="Buscar">
+                <button id="Bot_busqueda" class="botS"><span class="material-symbols-outlined">
+                    search
+                    </span></button>
+            </div>
+        </form>
+
+        <!-- Tabla -->
+        <table id="empleados-tabla">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre(s)</th>
+                    <th>Apellido Paterno</th>
+                    <th>Apellido Materno</th>
+                    <th>Cargo</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Estatus</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="empleados-body">
+                <!-- Aquí se insertarán las filas dinámicamente -->
+            </tbody>
+        </table>
+        
+        <div id="pagination-controls" class="pagination-container"></div>
+
+        
+        <script>
+            const Npagina = 20; // Número de elementos por página
+            let Numpag = 1; // Página inicial
+            let empleadosData = []; // Arreglo para almacenar los datos de empleados
+
+            function fetchEmpleados() {
+                fetch('https://latosca.up.railway.app/empleados')
+                    .then(response => response.json())
+                    .then(empleados => {
+                        empleadosData = empleados; // Guardamos los datos en una variable global
+                        renderTable();
+                        renderPaginationControls();
+                    })
+                    .catch(error => console.error('Error al cargar los empleados:', error));
+            }
+
+            function renderTable() {
+                const start = (Numpag - 1) * Npagina;
+                const end = start + Npagina;
+                const empleadosToShow = empleadosData.slice(start, end); // Paginación de registros
+                
+                let empleadosHTML = '';
+                empleadosToShow.forEach(emp => {
+                    empleadosHTML += `
+                        <tr>
+                            <td id='ID${emp.ID_Empleados}'>${emp.ID_Empleados}</td>
+                            <td id='nombre${emp.ID_Empleados}'>${emp.Nombres}</td>
+                            <td id='apellidoP${emp.ID_Empleados}'>${emp.Apellido_P}</td>
+                            <td id='apellidoM${emp.ID_Empleados}'>${emp.Apellido_M}</td>
+                            <td id='cargo${emp.ID_Empleados}' class="${emp.Cargo === "admin" ? 'positive' : ''}">${emp.Cargo}</td>
+                            <td id='correo${emp.ID_Empleados}'>${emp.correo || 'N/A'}</td>
+                            <td id='telefono${emp.ID_Empleados}'>${emp.Telefono}</td>
+                            <td class="${emp.estatus === 1 ? 'positive' : 'negative'}" id='estatus${emp.ID_Empleados}'>
+                                ${emp.estatus === 1 ? 'activo' : 'inactivo'}
+                            </td>
+                            <td class="acciones">
+                                <button class="B_editar" onclick="updateEmp(${emp.ID_Empleados})">
+                                    <span class="material-symbols-outlined">edit</span>
+                                </button>
+                                <button class="B_eliminar" onclick="eliminarEmp(${emp.ID_Empleados})">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                document.getElementById("empleados-body").innerHTML = empleadosHTML;
+            }
+
+            function renderPaginationControls() {
+                const totalPages = Math.ceil(empleadosData.length / Npagina);
+                let paginationHTML = '';
+
+                for (let i = 1; i <= totalPages; i++) {
+                    paginationHTML += `<button onclick="goToPage(${i})" class="pagination-button ${i === Numpag ? 'active' : ''}">${i}</button>`;
+                }
+
+                document.getElementById("pagination-controls").innerHTML = paginationHTML;
+            }
+
+            function goToPage(page) {
+                Numpag = page;
+                renderTable();
+                renderPaginationControls();
+            }
+
+            // Llamar a la función para cargar los empleados y configurar la paginación
+            fetchEmpleados();
+
+        </script>
+        
+    </main>
+
+    <!-- Formulario de Popup -->
+    <div id="addPopup" class="Popup">
+        <form action="" class="modificacion" id="empleados">
+            <h2>Formulario Empleado</h2>
+            <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
+        
+            <input type="text" class="tercio" name="NombreC" placeholder="Nombre(s)">
+            <input type="text" class="tercio" name="PaternoC" placeholder="Apellido Paterno">
+            <input type="text" class="tercio" name="MaternoC" placeholder="Apellido Materno">
+            <select class="medio" name="cargo" id="cargo">
+                <option value="cargo" selected disabled>Cargo</option>
+                <option value="empleado">Empleado</option>
+                <option value="admin">Admin</option>
+            </select>
+            <input type="text" class="medio" name="telefono" placeholder="Teléfono">
+            <input type="email" class="full" name="correo" placeholder="Correo">
+            <input type="submit" class="full" value="Enviar">
+        </form>
+    </div>
+    <div id="upPopup" class="Popup"></div>
+
+    <script src="../js/formulario.js"></script>
+    <script src="../js/script.js"></script>
+
+</body>
+</html>
