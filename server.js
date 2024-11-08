@@ -57,9 +57,9 @@ app.get("/clientes", (req, res) => {
 
 // Registrar Clientes
 app.post('/cliente/registrar', (req, res) => {
-    const { Nombres, Apellido_P, Apellido_M, Telefono, correo } = req.body;
-    const sql = "INSERT INTO cliente (Nombres, Apellido_P, Apellido_M, Telefono, correo) VALUES (?, ?, ?, ?, ?)";
-    db.query(sql, [Nombres, Apellido_P, Apellido_M, Telefono, correo], (err, result) => {
+    const { Nombres, Apellido_P, Apellido_M, Telefono, correo, estatus } = req.body;
+    const sql = "INSERT INTO cliente (Nombres, Apellido_P, Apellido_M, Telefono, correo, estatus) VALUES (?, ?, ?, ?, ?, ?)";
+    db.query(sql, [Nombres, Apellido_P, Apellido_M, Telefono, correo, estatus], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -89,7 +89,7 @@ app.delete("/cliente/eliminar/:id", (req, res) => {
     db.query(sql, [id], (err, result) => {
         if (err) {
             res.status(500).send(err);
-        } else {
+        } else { 
             res.status(200).send(result);
         }
     });
