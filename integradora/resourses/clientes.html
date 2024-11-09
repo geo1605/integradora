@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../styles/lateral.css">
     <link rel="stylesheet" href="../styles/tablas.css">
     <link rel="stylesheet" href="../styles/formularios.css">
+    
 </head>
 <body>
     <aside>
@@ -120,7 +121,7 @@
                     <td id="ApellidoP${emp.ID_cliente}">${emp.Apellido_P}</td>
                     <td id="ApellidoM${emp.ID_cliente}">${emp.Apellido_M}</td>
                     <td id="telefono${emp.ID_cliente}">${emp.Telefono}</td>
-                    <td><a href="direcciones.html"><button id="ver_direccion" class="ver">ver</button></a></td>
+                    <td><a href="direcciones.html?id=${emp.ID_cliente}&nombres=${emp.Nombres} ${emp.Apellido_P}"><button id="ver_direccion" class="ver">ver</button></a></td>
                     <td id="correo${emp.ID_cliente}">${emp.correo}</td>
                     <td id="estatus${emp.ID_cliente}" class="${emp.estatus === 1 ? 'positive' : 'negative'}">${emp.estatus === 1 ? 'activo' : 'inactivo'}</td>
                     <td class="acciones">
@@ -182,7 +183,7 @@
     </main>
     
     <div id="addPopup" class="Popup">
-        <form action="" id="cliente" class="modificacion">
+        <form action="" id="clienteForm" class="modificacion">
             <h2>Formulario Clientes</h2>
             <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
             <input type="text" class="tercio" name="NombreC" placeholder="Nombre(s)">
@@ -192,6 +193,7 @@
             <input type="text" class="medio" name="correoC" placeholder="correo">
             <div id="contDicc"></div>
             <button type="button" class="full" id="B_direcciones" onclick="agregarDireccion()">Añadir dirección</button>
+            
             <input type="submit" class="cuarto" value="Enviar">
         </form>
     </div>
@@ -204,6 +206,10 @@
             $('.js-example-basic-single').select2();
         });
     </script>
-    <script src="../js/formulario.js"></script>
+    <script src="../js/formulario.js">
+    cargarZonas();
+    </script>
+    <script src="../js/script.js"></script>
+    
 </body>
 </html>

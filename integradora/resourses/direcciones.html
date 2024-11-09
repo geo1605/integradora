@@ -9,6 +9,67 @@
     <link rel="stylesheet" href="../styles/lateral.css">
     <link rel="stylesheet" href="../styles/tablas.css">
     <link rel="stylesheet" href="../styles/formularios.css">
+    <script>
+    // Obtener la URL completa
+       document.addEventListener("DOMContentLoaded", function() {
+    // Obtener el parámetro `id` de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const clienteId = parseInt(urlParams.get("id"));
+    const nombreC = urlParams.get("nombres");
+    const cont = document.getElementById('Ndirecciones');
+    const form = document.getElementById('direcciones');
+    cont.innerText += " " + nombreC;
+    form.innerHTML += `<input name="cliente" type="hidden" value="${clienteId}" />`;
+    cargarZonas();
+    if (clienteId) {
+        // Llamar a la API para obtener todas las direcciones
+        fetch('https://latosca.up.railway.app/direcciones')
+            .then(response => response.json())
+            .then(direcciones => {
+                // Filtrar las direcciones por ID del cliente
+                const direccionesCliente = direcciones.filter(direccion => direccion.ID_cliente == clienteId);
+                
+                // Renderizar solo las direcciones del cliente en la tabla
+                cargarDirecciones(direccionesCliente);
+            })
+            .catch(error => console.error("Error al cargar las direcciones:", error));
+    } else {
+        console.error("No se encontró el ID de cliente en la URL");
+    }
+});
+
+// Función para mostrar las direcciones en la tabla
+function cargarDirecciones(direcciones) {
+    // Selecciona el tbody utilizando el id específico
+    const tabla = document.getElementById("direcciones-body");
+    tabla.innerHTML = ""; // Limpiar la tabla antes de agregar nuevas filas
+
+    direcciones.forEach(direccion => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+                            <td id='calle${direccion.ID}'>${direccion.calle}</td>
+                            <td id='num_ext${direccion.ID}'>${direccion.numero}</td>
+                            <td id='num_int${direccion.ID}'>${direccion.Numero_int || ""}</td>
+                            <td id='colonia${direccion.ID}'>${direccion.colonia}</td>
+                            <td id='zona${direccion.ID}'>${direccion.id_zona}</td>
+                            <td id='CP${direccion.ID}'>${direccion.CP}</td>
+                            <td id="estatus${direccion.ID}" class="${direccion.estatus === 1 ? 'positive' : 'negative'}">${direccion.estatus === 1 ? 'activo' : 'inactivo'}</td>
+
+                            <td class="acciones">
+                                <button class="B_editar" onclick="updateDireccion(${direccion.ID})">
+                                    <span class="material-symbols-outlined">edit</span>
+                                </button>
+                                <button class="B_eliminar" onclick="eliminarDireccion(${direccion.ID})">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </td>
+        `;
+        tabla.appendChild(fila); // Añade cada fila al tbody
+    });
+}
+
+
+        </script>
 </head>
 <body>
     <aside>
@@ -24,16 +85,13 @@
     </aside>
     <main>
         <form action="" id="busquedas">
-            <h2 id="Ndirecciones">Direcciones Juan Perez</h2>
+            <h2 id="Ndirecciones">Direcciones de </h2>
             <button class="bot" type="button" onclick="addpopup()"><span class="material-symbols-outlined">
                 add_circle
                 </span> Añadir</button>
                 <div id="barra_busqueda">
-                    <select class="js-example-basic-single" name="zonas">
+                    <select class="js-example-basic-single zonas"  name="zonas">
                         <option value="" selected disabled>Zonas</option>
-                        <script>
-                            cargarZonas()
-                        </script>
                     </select>
                     <input id="Search_principal" type="search" placeholder="Buscar">
                     <button id="Bot_busqueda" class="botS"><span class="material-symbols-outlined">
@@ -44,49 +102,41 @@
 
         <table>
             <thead>
-                <th>ID</th>
                 <th>calle</th>
                 <th>Numero Exterior</th>
                 <th>Numero Interior</th>
                 <th>Colonia</th>
                 <th>zona</th>
+                <th>codigo postal</th>
+                <th>estatus</th>
                 <th>acciones</th>
             </thead>
-            <tr>
-                <td id="ID1">1</td>
-                <td id="calle1">san mateo</td>
-                <td id="num_ext1">340</td>
-                <td id="num_int1"></td>
-
-                <td id="colonia1">hipódromo</td>
-                <td id="zona1">zona alamedas-no se</td>
-                <td class="acciones">
-                    <button class="B_editar" onclick="updateDireccion(1)"><span class="material-symbols-outlined">edit</span></button>
-                    <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
-                </td>
-            </tr>
+            <tbody id="direcciones-body">
+                <!-- Aquí se insertarán las filas dinámicamente -->
+            </tbody>
         </table>
     </main>
 
     <div id="addPopup" class="Popup">
         
-        <form action="" class="modificacion" id="productos">
-                <h2>Formulario Direcciones</h2>
-                <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
+        <form action="" class="modificacion" id="direcciones">
+            <h2>Formulario Direcciones</h2>
+            <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
             
-                <input type="text" class="medio" name="calle" placeholder="Calle">
-                <input type="text" class="medio" name="colonia" placeholder="Colonia">
-                <div class="contSel cuarto">
-                    <select class=" js-example-basic-single " name="zonas">
-                        <option value="" selected disabled>Zona</option>
-                        </select>
-                </div>
-                    
-                <input type="text" name="numeroEC" class="cuarto" placeholder="Numero Exterior">
-                <input type="text" name="numeroIC" class="cuarto" placeholder="Numero Interior">
-                <input type="text" name="CP" class="cuarto" placeholder="Codigo Postal">
-                <input type="submit" value="enviar" class="full">
+            <input type="text" class="medio" name="calle" placeholder="Calle">
+            <input type="text" class="medio" name="colonia" placeholder="Colonia">
+            <div class="contSel cuarto">
+                <select class="js-example-basic-single zonas" name="Szonas">
+                    <option value="" selected disabled>Zona</option>
+                </select>
+            </div>
+            
+            <input type="text" name="numeroEX" class="cuarto" placeholder="Numero Exterior">
+            <input type="text" name="numeroIC" class="cuarto" placeholder="Numero Interior">
+            <input type="text" name="CP" class="cuarto" placeholder="Codigo Postal">
+            <input type="submit" value="Enviar" class="full">
         </form>
+        
     </div>
     <div id="upPopup" class="Popup"></div>
 
@@ -100,6 +150,10 @@
         });
     </script>
     <script src="../js/script.js"></script>
-    
+    <script>
+        function datos(params) {
+            
+        }
+    </script>
 </body>
 </html>

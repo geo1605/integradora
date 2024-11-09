@@ -108,8 +108,7 @@ function addEmpleado(event) {
   const apellidoM = document.querySelector('input[name="Apellido_M"]').value;
   const cargo = document.querySelector('select[name="Cargo"]').value;
   const correo = document.querySelector('input[name="correo"]').value;
-  const telefono = document.querySelector('input[name="Telefono"]').value;
-  const password = document.querySelector('input[name="password"]').value;
+  const telefono = document.querySelector('input[name="telefono"]').value;
 
   const empleadoData = {
     Nombres: nombres,
@@ -118,7 +117,7 @@ function addEmpleado(event) {
     Cargo: cargo,
     correo: correo,
     Telefono: telefono,
-    password: password,
+    password: '1234',
     estatus: 1, // Por defecto activo
   };
 
@@ -150,17 +149,16 @@ function addEmpleado(event) {
 // ==========================================
 //           Funciones de Cliente
 // ==========================================
-
 // Función para añadir un nuevo cliente
 function addCliente(event) {
   event.preventDefault();
 
-  // Obtener los valores del formulario individualmente
-  const nombres = document.querySelector('input[name="Nombres"]').value;
-  const apellidoP = document.querySelector('input[name="Apellido_P"]').value;
-  const apellidoM = document.querySelector('input[name="Apellido_M"]').value;
-  const telefono = document.querySelector('input[name="Telefono"]').value;
-  const correo = document.querySelector('input[name="correo"]').value;
+  // Obtener los valores del formulario
+  const nombres = document.querySelector('input[name="NombreC"]').value;
+  const apellidoP = document.querySelector('input[name="PaternoC"]').value;
+  const apellidoM = document.querySelector('input[name="MaternoC"]').value;
+  const telefono = document.querySelector('input[name="telefonoC"]').value;
+  const correo = document.querySelector('input[name="correoC"]').value;
 
   const clienteData = {
     Nombres: nombres,
@@ -168,10 +166,143 @@ function addCliente(event) {
     Apellido_M: apellidoM,
     Telefono: telefono,
     correo: correo,
-    estatus: 1,
+    estatus: 1, // Por defecto activo
   };
 
+  // Registrar cliente en la API
   fetch("https://latosca.up.railway.app/cliente/registrar", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(clienteData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Error al registrar el cliente. Estado: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(() => {
+      // Intentar obtener el último ID de cliente después de registrar el cliente
+      return obtenerUltimoClienteId();
+    })
+    .then((clienteId) => {
+      if (clienteId) {
+        // Llama a addDireccionesC con el ID del cliente recién creado
+        addDireccionesC(clienteId);
+      } else {
+        alert("Error al obtener el ID del cliente registrado" + clienteId);
+      }
+
+      colapsePopup("addPopup");
+      document.querySelector("#clienteForm").reset(); // Reiniciar formulario cliente
+    })
+    .catch((error) => {
+      alert("Error al registrar el cliente: " + error.message);
+    });
+}
+
+
+// Función para obtener el último ID de cliente registrado
+function obtenerUltimoClienteId() {
+  return fetch("https://latosca.up.railway.app/clientes") // Asegúrate de que devuelve una lista de clientes
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("No se pudo obtener el último ID de cliente");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Datos recibidos del endpoint /cliente:", data); // Verificar la estructura de la respuesta
+      if (!Array.isArray(data) || data.length === 0) {
+        throw new Error("No se encontraron clientes registrados o los datos no son un arreglo");
+      }
+      const ultimoCliente = data[data.length - 1]; // Tomar el último cliente en la lista
+      console.log("Último cliente encontrado:", ultimoCliente); // Verificar el último cliente
+      return ultimoCliente.id || ultimoCliente.ID_cliente; // Ajusta el nombre del campo del ID según la respuesta
+    })
+    .catch((error) => {
+      console.error("Error al obtener el último ID de cliente:", error);
+      return null;
+    });
+}
+
+
+
+function addDireccionesC(clienteId) {
+  const direcciones = document.querySelectorAll("#contDicc .continuos");
+
+  direcciones.forEach((direccionDiv, index) => {
+    const calle = direccionDiv.querySelector('input[name="calle"]').value;
+    const colonia = direccionDiv.querySelector('input[name="colonia"]').value;
+    const zonas = direccionDiv.querySelector(`select[name="zonas${index}"]`).value; // Selecciona el nombre dinámico
+    const numeroEX = direccionDiv.querySelector('input[name="numeroEX"]').value;
+    const numeroIC = direccionDiv.querySelector('input[name="numeroIC"]').value;
+    const CP = direccionDiv.querySelector('input[name="CP"]').value;
+
+    const direccionData = {
+      calle: calle,
+      numero: numeroEX,
+      Numero_int: numeroIC,
+      colonia: colonia,
+      CP: CP,
+      estatus: 1,
+      id_zona: zonas,
+      ID_cliente: clienteId,
+    };
+
+    // Enviar cada dirección al servidor
+    fetch("https://latosca.up.railway.app/direccion/registrar", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(direccionData),
+    })
+      .then(async (response) => {
+        const text = await response.text();
+        if (!response.ok) {
+          throw new Error(`Error del servidor: ${text}`);
+        }
+        return text ? JSON.parse(text) : {};
+      })
+      .catch((error) => {
+        console.error("Error al registrar la dirección:", error);
+        alert("Error al registrar la dirección: " + error.message);
+      });
+  });
+
+  // Mensaje final una vez que todas las direcciones han sido procesadas
+  alert("Cliente y todas las direcciones registradas exitosamente");
+  location.reload(); // Recargar la página al finalizar
+}
+
+
+
+function addDireccion(event) {
+  event.preventDefault();
+
+  const calle = document.querySelector('input[name="calle"]').value;
+  const colonia = document.querySelector('input[name="colonia"]').value;
+  const zonas = document.querySelector('select[name="Szonas"]').value;
+  const numeroEX = document.querySelector('input[name="numeroEX"]').value;
+  const numeroIC = document.querySelector('input[name="numeroIC"]').value;
+  const CP = document.querySelector('input[name="CP"]').value;
+  const cliente = document.querySelector('input[name="cliente"]').value;
+
+  const clienteData = {
+    calle: calle,
+    numero: numeroEX,
+    Numero_int: numeroIC,
+    colonia: colonia,
+    CP:CP,
+    estatus: 1,
+    id_zona: zonas,
+    ID_cliente: cliente
+  };
+
+  fetch("https://latosca.up.railway.app/direccion/registrar", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -192,9 +323,9 @@ function addCliente(event) {
     })
     .then((data) => {
       colapsePopup("addPopup");
-      document.getElementById("clienteForm").reset();
+      document.getElementById("direcciones").reset();
       alert("Cliente registrado exitosamente");
-      location.reload(); // Recargar la página
+      /* location.reload(); // Recargar la página */
     })
     .catch((error) => {
       alert("Error al registrar el cliente: " + error.message);
@@ -217,6 +348,6 @@ zonaForm && zonaForm.addEventListener("submit", addZona);
 const empleadoForm = document.querySelector("#empleadoForm");
 empleadoForm && empleadoForm.addEventListener("submit", addEmpleado);
 
-// Formulario de cliente
+// Asociar el evento submit al formulario de cliente
 const clienteForm = document.querySelector("#clienteForm");
 clienteForm && clienteForm.addEventListener("submit", addCliente);

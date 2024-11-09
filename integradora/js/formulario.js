@@ -170,7 +170,6 @@ function updateZona(id) {
 }
 
 function updateDireccion(id) {
-  let Id = document.getElementById(`ID${id}`).innerText;
   let calle = document.getElementById(`calle${id}`).innerText;
   let num_ext = document.getElementById(`num_ext${id}`).innerText;
   let num_int = document.getElementById(`num_int${id}`).innerText;
@@ -199,49 +198,83 @@ function updateDireccion(id) {
   $(".js-example-basic-single").select2();
 }
 
-let i = 1;
-//formulario para agregar direcciones
+document.addEventListener("DOMContentLoaded", function () {
+  cargarZonas();
+});
+
+let i = 0;
+
 function agregarDireccion() {
   let info = document.getElementById("contDicc");
 
-  info.innerHTML += `<div class="continuos" id="direccion${i}">
-                <h2>dirección</h2>
-                <input type="text" class="medio" name="calle" placeholder="Calle">
-                <input type="text" class="medio" name="colonia" placeholder="Colonia">
-                <div class="contSel cuarto">
-                    <select class="js-example-basic-single" name="zonas" id="select${i}">
-                        <option value="" selected disabled>Zona</option>
-                        ${cargarZonas()}
-                    </select>
-                </div>
-                    
-                <input type="text" name="numeroEC" class="cuarto" placeholder="Numero Exterior">
-                <input type="text" name="numeroIC" class="cuarto" placeholder="Numero Interior">
-                <input type="text" name="CP" class="cuarto" placeholder="Codigo Postal">
-                <button type="button" id="B_direcciones" onclick="eliminarDireccion(this)">Eliminar dirección</button>
-            </div>`;
+  // Crear un nuevo contenedor para la dirección
+  let nuevaDireccion = document.createElement("div");
+  nuevaDireccion.classList.add("continuos");
+  nuevaDireccion.id = `direccion${i}`;
 
-  $(`#select${i}`).select2(); // Inicializar solo el nuevo select
-  i++;
+  // Configurar el contenido HTML del nuevo contenedor
+  nuevaDireccion.innerHTML = `
+    <h2>Dirección</h2>
+    <input type="text" class="medio" name="calle" placeholder="Calle">
+    <input type="text" class="medio" name="colonia" placeholder="Colonia">
+    <div class="contSel cuarto">
+      <select class="js-example-basic-single zonas" id="zona${i}" name="zonas${i}">
+          <option value="" selected disabled>Zona</option>
+      </select>
+    </div>
+    <input type="text" name="numeroEX" class="cuarto" placeholder="Número Exterior">
+    <input type="text" name="numeroIC" class="cuarto" placeholder="Número Interior">
+    <input type="text" name="CP" class="cuarto" placeholder="Código Postal">
+    <button type="button" id="B_direcciones" onclick="eliminarDireccion(this)">Eliminar dirección</button><br>
+  `;
+
+  // Agregar el nuevo contenedor de dirección al contenedor principal
+  info.appendChild(nuevaDireccion);
+
+  // Inicializar select2 en el nuevo elemento select
+  cargarZonasParaSelect(`#zona${i}`);
+  $(`#zona${i}`).select2();
+
+  i++; // Incrementar el contador para la próxima dirección
+}
+
+
+function cargarZonasParaSelect(selector) {
+  fetch("https://latosca.up.railway.app/zonas")
+    .then((response) => response.json())
+    .then((zonas) => {
+      const select = document.querySelector(selector);
+      select.innerHTML = '<option value="" selected disabled>Zona</option>'; // Clear previous options if any
+      zonas.forEach((zona) => {
+        const option = document.createElement("option");
+        option.value = zona.ID_zona;
+        option.textContent = zona.nombre_colonia;
+        select.appendChild(option);
+      });
+      $(select).trigger("change"); // Refresh select2 with new options
+    })
+    .catch((error) => console.error("Error al cargar zonas:", error));
+}
+
+
+function cargarZonas() {
+  fetch("https://latosca.up.railway.app/zonas")
+    .then((response) => response.json())
+    .then((zonas) => {
+      const selects = document.querySelectorAll('.zonas');
+      selects.forEach((select) => {
+        select.innerHTML = '<option value="" selected disabled>Zona</option>';
+        zonas.forEach((zona) => {
+          select.innerHTML += `<option value="${zona.ID_zona}">${zona.nombre_colonia}</option>`;
+        });
+        $(select).select2(); // Initialize select2 for new elements
+      });
+    })
+    .catch((error) => console.error("Error al cargar zonas:", error));
 }
 
 
 function eliminarDireccion(button) {
   let direccion = button.parentNode; // Obtiene el div contenedor de la dirección
   direccion.remove(); // Elimina el div contenedor
-}
-function cargarZonas() {
-  fetch("https://latosca.up.railway.app/zonas")
-    .then((response) => response.json())
-    .then((zonas) => {
-      const select = document.querySelector('select[name="zonas"]');
-      if (select) {
-        select.innerHTML = '<option value="" selected disabled>Zona</option>';
-        zonas.forEach((zona) => {
-          select.innerHTML += `<option value="${zona.ID_zona}">${zona.nombre_colonia}</option>`;
-        });
-      }
-    })
-    .catch((error) => console.error("Error al cargar zonas:", error));
-    $(".js-example-basic-single").select2();
 }
