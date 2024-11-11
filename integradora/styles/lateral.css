@@ -104,6 +104,59 @@ a.lateral {
 .lateral:hover .tooltip {
   display: block; /* Mostrar el tooltip al pasar el cursor */
 }
+/*botones user*/
+/* Contenedor del ícono de perfil */
+.profile-container {
+  position: relative;
+  display: inline-block;
+  color: var(--color-white);
+}
+
+/* Estilos del ícono de perfil */
+.profile-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Contenedor del menú desplegable */
+.dropdown-menu {
+  display: none; /* Oculto por defecto */
+  position: absolute;
+  top: 50%;
+  left: 120%; /* Aparece a la derecha del icono */
+  transform: translateY(-50%);
+  background-color: var(--color-primary);
+  border-radius: 4px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  min-width: 150px;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out; /* Transición suave */
+}
+
+/* Mostrar el menú cuando el cursor está sobre el contenedor o el menú */
+.profile-container:hover .dropdown-menu,
+.dropdown-menu:hover {
+  display: block;
+  opacity: 1;
+}
+
+/* Estilos de los botones */
+.dropdown-menu .buser {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.3s;
+  color: var(--color-white);
+}
+
+/* Estilos de los botones al pasar el mouse */
+.dropdown-menu .buser:hover {
+  background-color: var(--color-secondary);
+}
 
 
 /* Media query para pantallas menores de 837px */

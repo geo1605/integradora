@@ -15,6 +15,12 @@
         <nav>
         <ul>
             <li><a href="main.html" class="lateral">
+                <span class="material-symbols-outlined">
+                    home
+                    </span>
+                <span class="tooltip">Inicio</span>
+                </a></li>
+            <li><a href="orden.html" class="lateral">
             <span class="material-symbols-outlined">
                 checklist
                 </span>
@@ -26,34 +32,31 @@
                 </span>
                 <span class="tooltip">crear Orden</span>
                 </a></li>
-            <li><a href="admin_gph.html" class="lateral">
-                <span class="material-symbols-outlined">query_stats</span>
-                <span class="tooltip">estadísticas</span>
-                </a></li>
-            <li><a href="productos.html" class="lateral">
+            <li><a href="productos.html" class="lateral admin">
                 <span class="material-symbols-outlined">inventory</span>
                 <span class="tooltip">Productos</span>
             </a></li>
-            <li><a href="empleados.html" class="lateral selected">
+            <li><a href="empleados.html" class="lateral admin selected">
                 <span class="material-symbols-outlined">person</span>
                 <span class="tooltip">Empleados</span>
             </a></li>
-            <li><a href="clientes.html" class="lateral">
+            <li><a href="clientes.html" class="lateral admin">
                 <span class="material-symbols-outlined">groups</span>
                 <span class="tooltip">Clientes</span>
             </a></li>
-            <li><a href="zonas.html" class="lateral">
+            <li><a href="zonas.html" class="lateral admin">
                 <span class="material-symbols-outlined">map</span>
                 <span class="tooltip">Zonas</span>
             </a></li>
         </ul>
         </nav>
-        <button id="user">
-        <span class="material-symbols-outlined">
-            account_circle
-        </span>
-        <span class="tooltip">usuario</span>
-        </button>
+        <div class="profile-container">
+            <span class="material-symbols-outlined profile-icon">account_circle</span>
+            <div class="dropdown-menu">
+                <button class="buser" onclick="cerrarSesion()">Cerrar sesión</button>
+                <a href="recuperacion.html"><button class="buser">Cambiar contraseña</button></a>
+            </div>
+        </div>
     </aside>
     <main>
         <form action="" class="busquedas" id="busquedas">

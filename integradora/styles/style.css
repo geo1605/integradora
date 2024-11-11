@@ -10,94 +10,207 @@
     --color-black: #000000;
 }
 
-*{
+* {
     padding: 0;
     margin: 0;
 }
+
 body {
-    background: rgb(139,36,55);
     background: linear-gradient(339deg, rgba(139,36,55,1) 0%, rgba(200,80,42,1) 53%, rgba(249,210,121,1) 100%);
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
     width: 100%;
     height: 95vh;
-    display: flex;
-    align-items: center;
     font-family: Arial, Helvetica, sans-serif;
+    color: var(--color-black);
 }
-#login {
-    width: 30%;
-    height: auto;
+
+#main {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+}
+.material-icons {
+    color: #8B2437;
+}
+
+section {
     background-color: var(--color-white);
-    border-radius: 2%;
-    margin: auto;
     padding: 2%;
-    display: flex;
-    flex-direction: column;
+    padding-bottom: 4%;
+    border-radius: 30px;
 }
-/*          DE AQUI PA ARRIBA NO SE QUE HIZO EL GEOVANY                 */
 
-/* modificacion del estilo */
-.fuente{
-    color: var(--color-primary);
-    align-items: center;
+#main #nombre {
+    grid-column: 1 / -1;
     text-align: center;
+    height: 10vh;
+    text-align: left;
+    padding: 2%;
+}
 
+#Orden.user {
+    background-color: var(--color-white);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
-/* estilo del el usuario y contraseña */
-.sesion{
-  border: none;
-  border-bottom: 0.5vh solid black;
-  border-color: var(--color-primary);
-  margin-top: 10%;
-  color: var(--color-primary);
-  font-size: 1rem;
-  outline: none;
-  width: 80%;
-  transition: 0.2s ease;
-}
-.sesion:active, .sesion:focus{
+
+#tablaUs {
     width: 100%;
-    font-size: 1.2rem;
+    border-collapse: collapse;
+    font-family: 'Roboto', sans-serif;
+    color: var(--color-gray-dark);
 }
 
-/* estilo del texto de ayuda para el usuario */
-input::placeholder{
-    color: var(--color-primary);
+#tablaUs thead {
+    background-color: var(--color-white);
+    color: var(--color-gray-dark);
+    font-weight: bold;
+    text-align: center;
 }
-/* estilo de lo botones */
-.boton {
+
+#tablaUs th, #tablaUs td {
+    padding: 1% 2%;
+    border-bottom: 1px solid var(--color-gray-dark);
+}
+
+#tablaUs .progreso {
+    background-color: var(--color-accent);
+}
+
+#tablaUs .nada {
+    background-color: var(--color-white);
+}
+
+#tablaUs button {
+    background-color: #4CAF50;
+    color: var(--color-white);
+    border: none;
+    padding: 1% 2%;
+    margin-right: 1%;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #4CAF50;
+    font-family: 'Roboto', sans-serif;
+    font-size: 90%;
+    transition: background-color 0.3s;
+}
+
+#tablaUs button:hover {
+    background-color: var(--color-white);
+    color: #4CAF50;
+}
+
+#ver-mas {
+    display: inline-block;
+    margin-top: 1%;
     background-color: var(--color-primary);
     color: var(--color-white);
-    border: 1vh solid var(--color-primary);
-    border-radius: 10px;
-    margin-top: 10%;
-    padding: 2%;
-    height: auto;
-    font-size: 1rem;
-    width: 40%;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 0.5% 2%;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 90%;
+    font-family: 'Roboto', sans-serif;
+    transition: background-color 0.3s;
     cursor: pointer;
-    transition: 1s;
-    
-}
-.boton:hover {
-    scale: 1.1;
-    color: var(--color-primary);
-    background-color: var(--color-background);
-    transition: 1s;
 }
 
-#login a {
-    margin-top: 1%;
-    font-size: 0.7rem;
-    text-align: center;
+#ver-mas:hover {
+    background-color: var(--color-danger);
 }
 
-@media (max-width: 768px) {
-    #login {
-        width: 50%;
+#stadAd {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-column: 1 / -1;
+    gap: 1rem;
+    padding: 5%;
+    background-color: transparent;
+    justify-content: center;
+    font-family: 'Roboto', sans-serif;
+}
+
+#stadAd .card {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-white);
+    padding: 5%;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    gap: 1rem;
+}
+
+#stadAd .icon-container {
+    background-color: #f0f4f8;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#stadAd .icon {
+    font-size: 2rem;
+}
+
+#nuevaO {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #FFC107;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+#nuevaO:hover {
+    background-color: #ffab00;
+}
+
+.grafica {
+    height: 40vh;
+}
+.grafica.ext {
+    height: 70vh;
+}
+
+canvas {
+    width: 100% !important;
+}
+
+
+/* Ajustes para pantallas muy pequeñas (móviles compactos) */
+@media (max-width: 480px) {
+    #main {
+        grid-template-columns: repeat(1,1fr);
     }
+    #stadAd {
+        padding: 0.5rem;
+        grid-template-columns: repeat(2,1fr);
+    }
+    .grafica {
+        height: 22vh;
+        padding: 0.8rem;
+    }
+    .grafica.ext {
+        height: 35vh;
+    }
+    #nuevaO {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    #ver-mas, #nuevaO {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+}
+
+
+.admin {
+    display: none !important;
 }
