@@ -45,21 +45,25 @@ function cargarDirecciones(direcciones) {
     tabla.innerHTML = ""; // Limpiar la tabla antes de agregar nuevas filas
 
     direcciones.forEach(direccion => {
+        console.log(`${direccion.ID_cliente} ${direccion.estatus}`)
         const fila = document.createElement("tr");
         fila.innerHTML = `
-                            <td id='calle${direccion.ID}'>${direccion.calle}</td>
-                            <td id='num_ext${direccion.ID}'>${direccion.numero}</td>
-                            <td id='num_int${direccion.ID}'>${direccion.Numero_int || ""}</td>
-                            <td id='colonia${direccion.ID}'>${direccion.colonia}</td>
-                            <td id='zona${direccion.ID}'>${direccion.id_zona}</td>
-                            <td id='CP${direccion.ID}'>${direccion.CP}</td>
-                            <td id="estatus${direccion.ID}" class="${direccion.estatus === 1 ? 'positive' : 'negative'}">${direccion.estatus === 1 ? 'activo' : 'inactivo'}</td>
+                            <td id='calle${direccion.id_direccion}'>${direccion.calle}</td>
+                            <td id='num_ext${direccion.id_direccion}'>${direccion.numero}</td>
+                            <td id='num_int${direccion.id_direccion}'>${direccion.Numero_int || ""}</td>
+                            <td id='colonia${direccion.id_direccion}'>${direccion.colonia}</td>
+                            <td id='zona${direccion.id_direccion}'>${direccion.id_zona}</td>
+                            <td id='CP${direccion.id_direccion}'>${direccion.CP}</td>
+                            <td id="estatus${direccion.id_direccion}" class="${direccion.estatus === 1 ? 'positive' : 'negative'}">
+                                ${direccion.estatus === 1 ? 'activo' : 'inactivo'}
+                            </td>
+
 
                             <td class="acciones">
-                                <button class="B_editar" onclick="updateDireccion(${direccion.ID})">
+                                <button class="B_editar" onclick="updateDireccion(${direccion.id_direccion},${direccion.ID_cliente})">
                                     <span class="material-symbols-outlined">edit</span>
                                 </button>
-                                <button class="B_eliminar" onclick="eliminarDireccion(${direccion.ID})">
+                                <button class="B_eliminar" onclick="eliminarDireccion(${direccion.id_direccion})">
                                     <span class="material-symbols-outlined">delete</span>
                                 </button>
                             </td>

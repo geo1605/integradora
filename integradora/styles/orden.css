@@ -184,13 +184,14 @@ body {
 
 /* Costos */
 #costos {
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
   text-align: center;
   padding-top: 2%;
   border-top: 1px solid #ddd;
   margin-top: 2%;
+  margin-bottom: 2%;
   grid-column-start: 1;
   grid-column-end: 3;
 }
@@ -198,10 +199,15 @@ body {
   font-size: 1.8rem;
   color: var(--color-primary);
   margin-bottom: 1rem;
+  width: 20%;
+}
+#costos select {
+  width: 40%;
+  font-size: 1rem;
 }
 /* Botón "Hacer orden" en la sección de costos */
-#costos .bot {
-  width: 80%;
+#contenedor .botB {
+  width: 100%;
   font-size: 1.5rem;
   font-weight: bold;
   background-color: var(--color-primary);
@@ -214,7 +220,7 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-#costos .bot:hover {
+#contenedor .botB:hover {
   background-color: transparent;
   color: var(--color-primary);
 }

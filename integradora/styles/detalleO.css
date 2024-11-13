@@ -1,0 +1,126 @@
+:root {
+    --color-primary: #8B2437;
+    --color-secondary: #F37022;
+    --color-white: #FFFFFF;
+    --color-accent: #F9D279;
+    --color-danger: #C8502A;
+    --color-gray-dark: #4A4A4A;
+    --color-background: #F2E4D6;
+    --color-brown: #A65C3D;
+    --color-black: #000000;
+    --color-green: #36b932;
+}
+
+body {
+    background-color: var(--color-background);
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+}
+
+#DetalleO {
+    background-color: var(--color-white);
+    border-radius: 30px;
+    margin: 1% auto;
+    padding: 2%;
+    width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#detalles {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1rem;
+    padding: 1%;
+}
+
+h2 {
+    grid-column: span 12;
+    text-align: center;
+    color: var(--color-primary) !important;
+}
+
+.inputs, .selects {
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid var(--color-white);
+    color: #000000;
+    box-sizing: border-box;
+    font-size: 1.2rem; /* Aumenta el tamaño de la fuente */
+}
+
+.select2-container {
+    font-size: 1.2rem; /* Aumenta el tamaño de la fuente dentro del select2 */
+}
+.select2-container--default.select2-container--disabled .select2-selection--single {
+    background-color: white;
+}
+select:disabled {
+    appearance: none;
+    color: var(--color-black);
+    border-color: white;
+    font-size: 1rem;
+    background-color: white;
+}
+
+.full {
+    grid-column: span 12;
+}
+
+.medio {
+    grid-column: span 6;
+}
+
+.tercio {
+    grid-column: span 4;
+}
+
+.cuarto {
+    grid-column: span 3;
+}
+
+h3 {
+    color: var(--color-primary);
+    font-size: 1.2rem;
+}
+
+#detalles .products {
+    margin-top: 5%;
+    display: grid;
+    grid-template-columns: 1fr 6fr 3fr;
+    gap: 1rem;
+}
+#detalles div{
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 1%;
+}
+#detalles .Otdatas {
+    margin-top: 5%;
+    margin-right: 5%;
+    display: grid;
+    grid-template-columns: 2fr 6fr; /* Dos columnas, la primera un poco más amplia */
+    gap: 1rem;
+}
+h3 {
+    font-size: 2rem;
+}
+
+#enviarOr {
+    display: none;
+}
+
+.mod .select2-container {
+    width: 100% !important; /* Aseguramos que el select ocupe todo el ancho disponible */
+}
+.mod .select2-container .select2-selection--single {
+    height: auto; /* Ajuste de altura */
+    padding: 0.75rem; 
+    border-radius: 0.5rem; /* Bordes redondeados */
+    border: 1px solid var(--color-white); /* Borde acorde a tu esquema de colores */
+    font-size: 1rem;
+}
+
+

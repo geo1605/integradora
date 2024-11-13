@@ -67,21 +67,13 @@
             
             <section id="empleadoSection">
                 <h3>Empleado</h3>
-                <select id="empleado" class="js-example-basic-single" name="state">
-                    <option value="" selected disabled>Empleado</option>
-                    <option value="AL">Alabama</option>
-                    <option value="WY">Wyoming</option>
+                <select id="EmpleadoO" class="js-example-basic-single" name="state">
+
                 </select>
             </section>
             <section id="infoP">
                 <h3>Productos</h3>
                 <div class="productos" id="productosContainer">
-                    <div class="producto-item">
-                        <select id="producto" class="js-example-basic-single" name="state">
-                            <option value="" selected disabled>Producto</option>
-                        </select>
-                        <input id="cantidad" type="number" placeholder="cantidad/Kg">
-                    </div>
                 </div>
                 <button class="bot" type="button" onclick="anadirProducto()">
                     <span class="material-symbols-outlined">add_circle</span> Añadir
@@ -89,52 +81,31 @@
             </section>  
             <section id="infoC">
                 <h3>Clientes</h3>
-                <select id="cliente" class="js-example-basic-single" name="state">
-                    <option value="" selected disabled>Cliente</option>
+                <select id="cliente" class="js-example-basic-single" name="clientes">
                 </select>
                 
             </section>
             <section id="direccion">
                 <h3>Dirección</h3>
-                <select id="direccion" class="js-example-basic-single" name="state">
-                    <option value="" selected disabled>Dirección</option>
-                    <option value="AL">Alabama</option>
-                    <option value="WY">Wyoming</option>
+                <select id="direccionS" class="js-example-basic-single" name="direccion">
                 </select>
-                <button class="bot" type="button" onclick="addpopup()">
-                    Añadir nueva dirección
-                </button>
+                <input type="text" name="extra" readonly>
             </section>
         
             
         
             <section id="costos">
-                <h3>Total: $241</h3>
-                <button type="submit" class="bot">Hacer orden</button>
+                <select name="tipoP" id="tipoP">
+                    <option selected disabled>metodo de pago</option>
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="tarjeta">Tarjeta</option>
+                    <option value="deposito">Deposito</option>
+                </select>
+                <h3 id="totalO">Total: </h3>
+                
             </section>
+            <button type="submit" class="botB">Hacer orden</button>
         </form>
-    <div id="addPopup" class="Popup">
-        
-        <form action="" class="modificacion" id="productos">
-                <h2>Formulario Direcciones</h2>
-                <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
-            
-                <input type="text" class="medio" name="calle" placeholder="Calle">
-                <input type="text" class="medio" name="colonia" placeholder="Colonia">
-                <div class="contSel cuarto">
-                    <select class=" js-example-basic-single " name="state">
-                        <option value="" selected disabled>Zona</option>
-                            <option value="AL">Alabama</option>
-                            <option value="WY">Wyoming</option>
-                        </select>
-                </div>
-                    
-                <input type="text" name="numeroEC" class="cuarto" placeholder="Numero Exterior">
-                <input type="text" name="numeroIC" class="cuarto" placeholder="Numero Interior">
-                <input type="text" name="CP" class="cuarto" placeholder="Codigo Postal">
-                <input type="submit" value="guardar" class="full">
-        </form>
-    </div>
     </main>
 
     
@@ -144,32 +115,17 @@
     <script>
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
+            cargarproductos(); // Cargar productos y llamar a anadirProducto después de cargar los datos
+            cargarEmpleados();
+            cargarCliente();
+            cargarDirecciones();
         });
+
+
+
     </script>
     <script src="../js/formulario.js"></script>
-    <script>
-        let j = 1; // Variable para identificar cada producto añadido
-
-        function anadirProducto() {
-            let productosContainer = document.getElementById("productosContainer");
-
-            // Agrega un nuevo producto con `select` y campo de `cantidad`
-            productosContainer.innerHTML += `
-                <div class="producto-item" id="producto${j}">
-                    <select id="productoSelect${j}" class="js-example-basic-single" name="state">
-                        <option value="" selected disabled>Producto</option>
-                        <!-- Agrega aquí tus opciones de productos si es necesario -->
-                    </select>
-                    <input id="cantidad${j}" type="number" placeholder="cantidad/Kg">
-                </div>`;
-            
-            // Inicializa select2 en el select específico de este producto
-            $(`#productoSelect${j}`).select2(); 
-            j++; // Incrementa el contador para el próximo producto
-        }
-
-
-
+    <script src="../js/orden.js">
     </script>
 </body>
 </html>

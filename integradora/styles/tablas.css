@@ -27,6 +27,9 @@ main h2 {
     text-align: center;
     color: var(--color-white
     );
+    flex-basis: 100%; /* Ocupa el 100% del ancho */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */ 
+    
 }
 
 table {
@@ -132,6 +135,7 @@ table button .material-symbols-outlined {
     justify-content: space-between; /* Asegura que todo esté en una línea en pantallas grandes */
     align-items: center;
     padding: 1%;
+    flex-wrap: wrap;
 }
 
 #Search_principal {
@@ -155,6 +159,7 @@ table button .material-symbols-outlined {
     cursor: pointer;
     margin: 5px 5px;
     align-items: center;
+    width: 30%;
 }
 .bot span {
     margin-right: 10%;

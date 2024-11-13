@@ -142,7 +142,7 @@
                             <td id="estatus${emp.ID_product}" class="${emp.estatus === 1 ? 'positive' : 'negative'}">${emp.estatus === 1 ? 'Existente' : 'Agotado'}</td>
                             <td class="acciones">
                                 <button class="B_editar" onclick="updateProducto(${emp.ID_product})"><span class="material-symbols-outlined">edit</span></button>
-                                <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
+                                <button class="B_eliminar" onclick="eliminarProducto(${emp.ID_product})"><span class="material-symbols-outlined">delete</span></button>
                             </td>
                         </tr>
                     `;
