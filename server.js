@@ -111,9 +111,9 @@ app.get("/detalles", (req, res) => {
 
 // Registrar Detalles de Orden
 app.post('/detalle/registrar', (req, res) => {
-    const { ID_product, cantidad_p, Importe } = req.body;
-    const sql = "INSERT INTO detalle_o (ID_product, cantidad_p, Importe) VALUES (?, ?, ?)";
-    db.query(sql, [ID_product, cantidad_p, Importe], (err, result) => {
+    const { ID_product, ID_orden, cantidad_p, Importe } = req.body;
+    const sql = "INSERT INTO detalle_o (ID_product, ID_orden, cantidad_p, Importe) VALUES (?, ?, ?, ?)";
+    db.query(sql, [ID_product, ID_orden, cantidad_p, Importe], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -125,9 +125,9 @@ app.post('/detalle/registrar', (req, res) => {
 // Modificar Detalles de Orden
 app.put('/detalle/modificar/:id', (req, res) => {
     const { id } = req.params;
-    const { ID_product, cantidad_p, Importe } = req.body;
-    const sql = "UPDATE detalle_o SET ID_product = ?, cantidad_p = ?, Importe = ? WHERE ID_detalle = ?";
-    db.query(sql, [ID_product, cantidad_p, Importe, id], (err, result) => {
+    const { ID_product, ID_orden, cantidad_p, Importe } = req.body;
+    const sql = "UPDATE detalle_o SET ID_product = ?, ID_orden = ? cantidad_p = ?, Importe = ? WHERE ID_detalle = ?";
+    db.query(sql, [ID_product, ID_orden, cantidad_p, Importe, id], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -273,9 +273,9 @@ app.get("/ordenes", (req, res) => {
 
 // Registrar Ordenes
 app.post('/orden/registrar', (req, res) => {
-    const { Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_detalle, ID_Empleados, tipo_pago } = req.body;
-    const sql = "INSERT INTO orden (Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_detalle, ID_Empleados, tipo_pago) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    db.query(sql, [Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_detalle, ID_Empleados, tipo_pago], (err, result) => {
+    const { Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_Empleados, tipo_pago } = req.body;
+    const sql = "INSERT INTO orden (Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_Empleados, tipo_pago) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    db.query(sql, [Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_Empleados, tipo_pago], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -287,9 +287,9 @@ app.post('/orden/registrar', (req, res) => {
 // Modificar Ordenes
 app.put('/orden/modificar/:id', (req, res) => {
     const { id } = req.params;
-    const { Fecha, Hora, Estatus, Precio_total, ID_cliente, ID_detalle, ID_Empleados, tipo_pago } = req.body;
-    const sql = "UPDATE orden SET Fecha = ?, Hora = ?, Estatus = ?, Precio_total = ?, ID_cliente = ?, ID_detalle = ?, ID_Empleados = ?, tipo_pago = ? WHERE ID_orden = ?";
-    db.query(sql, [Fecha, Hora, Estatus, Precio_total, ID_cliente, ID_detalle, ID_Empleados, tipo_pago, id], (err, result) => {
+    const { Fecha, Hora, Estatus, Precio_total, ID_cliente, ID_Empleados, tipo_pago } = req.body;
+    const sql = "UPDATE orden SET Fecha = ?, Hora = ?, Estatus = ?, Precio_total = ?, ID_cliente = ?, ID_Empleados = ?, tipo_pago = ? WHERE ID_orden = ?";
+    db.query(sql, [Fecha, Hora, Estatus, Precio_total, ID_cliente, ID_Empleados, tipo_pago, id], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {

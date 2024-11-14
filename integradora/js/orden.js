@@ -183,7 +183,125 @@ function actualizarDirecciones() {
             actualizarTotal(); // Recalcula el total con el nuevo costo extra
         });
     }
+    
 }
+
+
+
+
+//iniciar orden
+
+
+async function registrarDetalleProducto(ID_product, cantidad_p) {
+    try {
+        const response = await fetch('https://latosca.up.railway.app/detalle/registrar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ID_product: ID_product,
+                cantidad_p: cantidad_p,
+                Importe: 0  // Valor por defecto
+            })
+        });
+        const data = await response.json();
+        return data.insertId;  // Devuelve el ID del detalle insertado
+    } catch (error) {
+        console.error('Error al registrar detalle del producto:', error);
+    }
+}
+
+async function registrarOrden(datosOrden) {
+    try {
+        const { productos, Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_Empleados, tipo_pago } = datosOrden;
+
+        // Llama a registrarDetalleProducto para cada producto y guarda sus IDs
+        const detallesIDs = await Promise.all(productos.map(async (producto) => {
+            return await registrarDetalleProducto(producto.ID_product, producto.cantidad_p);
+        }));
+
+        // Si hay múltiples detalles, asume que ID_detalle es un array
+        const ID_detalle = detallesIDs.join(',');
+
+        const response = await fetch('https://latosca.up.railway.app/orden/registrar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Fecha: Fecha, // Fecha proporcionada en datosOrden
+                Hora: Hora,   // Hora proporcionada en datosOrden
+                Estatus: Estatus,
+                Direccion: Direccion, // Agregar Dirección aquí
+                Precio_total: Precio_total,
+                ID_cliente: ID_cliente,
+                ID_detalle: ID_detalle, // Asigna los IDs de detalle
+                ID_Empleados: ID_Empleados,
+                tipo_pago: tipo_pago
+            })
+        });
+        const data = await response.json();
+        console.log('Orden registrada:', data);
+    } catch (error) {
+        console.error('Error al registrar la orden:', error);
+    }
+}
+
+document.querySelector('.botB').addEventListener('click', async (event) => {
+    event.preventDefault();  // Evita el envío del formulario por defecto
+
+    // Obtén los productos seleccionados y otros datos del formulario
+    const productos = [...document.querySelectorAll('.producto-item')].map((prod) => ({
+        ID_product: prod.querySelector('.productosO').value,
+        cantidad_p: prod.querySelector('input[name^="cantidad"]').value
+    }));
+
+    // Validar que todos los productos tengan ID y cantidad
+    for (let producto of productos) {
+        if (!producto.ID_product || !producto.cantidad_p) {
+            console.error("Faltan datos en los productos seleccionados:", producto);
+            return;
+        }
+    }
+
+    // Obtén el total directamente desde el elemento h3 con id totalO
+    const totalElement = document.getElementById("totalO");
+    const Precio_total = parseFloat(totalElement.textContent.replace("Total: ", "")) || 0;
+
+    // Obtener la dirección seleccionada desde el select con id 'direccionS'
+    const Direccion = document.getElementById('direccionS').options[document.getElementById('direccionS').selectedIndex].text;
+    if (!Direccion) {
+        console.error("No se ha seleccionado una dirección.");
+        return;
+    }
+
+    // Obtener la fecha y hora actual en los formatos correctos
+    const Fecha = new Date().toISOString().split('T')[0]; // yyyy-mm-dd
+    const Hora = new Date().toTimeString().split(' ')[0]; // HH:MM:SS en formato 24 horas
+
+    const datosOrden = {
+        productos: productos,
+        Fecha: Fecha,
+        Hora: Hora,
+        Estatus: 'activo',
+        Direccion: Direccion,  // Dirección seleccionada
+        Precio_total: Precio_total,
+        ID_cliente: document.getElementById('cliente').value,
+        ID_Empleados: document.getElementById('EmpleadoO').value,
+        tipo_pago: document.getElementById('tipoP').value
+    };
+
+    console.log("Datos de la orden a registrar:", datosOrden);
+
+    await registrarOrden(datosOrden);
+});
+
+
+
+
+
+
 
 // Cargar las zonas al iniciar
 cargarOrZona();

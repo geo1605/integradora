@@ -2,8 +2,6 @@
 //           Funciones de Producto
 // ==========================================
 
-const { password } = require("pg/lib/defaults");
-
 // Función para colapsar un popup
 function colapsePopup(popupId) {
   const popup = document.getElementById(popupId);
@@ -334,25 +332,7 @@ function addDireccion(event) {
     });
 }
 
-// ==========================================
-//           Event Listeners
-// ==========================================
 
-// Formulario de producto
-const productoForm = document.querySelector("#productoForm");
-productoForm && productoForm.addEventListener("submit", addProducto);
-
-// Formulario de zona
-const zonaForm = document.querySelector("#zonaForm");
-zonaForm && zonaForm.addEventListener("submit", addZona);
-
-// Formulario de empleado
-const empleadoForm = document.querySelector("#empleadoForm");
-empleadoForm && empleadoForm.addEventListener("submit", addEmpleado);
-
-// Asociar el evento submit al formulario de cliente
-const clienteForm = document.querySelector("#clienteForm");
-clienteForm && clienteForm.addEventListener("submit", addCliente);
 
 
 
@@ -604,3 +584,24 @@ function eliminarDireccion(id) {
   })
   .catch((error) => alert("Ocurrió un error al intentar eliminar la dirección: " + error.message));
 }
+
+
+// ==========================================
+//           Event Listeners
+// ==========================================
+
+// Formulario de producto
+const productoForm = document.querySelector("#productoForm");
+productoForm && productoForm.addEventListener("submit", addProducto);
+
+// Formulario de zona
+const zonaForm = document.querySelector("#zonaForm");
+zonaForm && zonaForm.addEventListener("submit", addZona);
+
+// Formulario de empleado
+const empleadoForm = document.querySelector("#empleadoForm");
+empleadoForm && empleadoForm.addEventListener("submit", addEmpleado);
+
+// Asociar el evento submit al formulario de cliente
+const clienteForm = document.querySelector("#clienteForm");
+clienteForm && clienteForm.addEventListener("submit", addCliente);

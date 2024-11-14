@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>crear orden</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="../styles/lateral.css">
@@ -79,18 +80,18 @@
                     <span class="material-symbols-outlined">add_circle</span> Añadir
                 </button>
             </section>  
-            <section id="infoC">
-                <h3>Clientes</h3>
-                <select id="cliente" class="js-example-basic-single" name="clientes">
+            <section id="infoClientDireccion">
+                <label for="cliente">Cliente</label>
+                <select id="cliente" class="js-example-basic-single" name="clientes"></select>
+                
+                <select id="direccionS" class="js-example-basic-single" name="direccion">
+                    <option disabled selected>Direcciones</option>
                 </select>
                 
+                <input type="text" name="extra" placeholder="extra" readonly>
             </section>
-            <section id="direccion">
-                <h3>Dirección</h3>
-                <select id="direccionS" class="js-example-basic-single" name="direccion">
-                </select>
-                <input type="text" name="extra" readonly>
-            </section>
+            
+            
         
             
         
