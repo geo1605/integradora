@@ -273,9 +273,9 @@ app.get("/ordenes", (req, res) => {
 
 // Registrar Ordenes
 app.post('/orden/registrar', (req, res) => {
-    const { Fecha, Hora, Estatus, Precio_total, ID_cliente, ID_detalle, ID_Empleados, tipo_pago } = req.body;
-    const sql = "INSERT INTO orden (Fecha, Hora, Estatus, Precio_total, ID_cliente, ID_detalle, ID_Empleados, tipo_pago) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    db.query(sql, [Fecha, Hora, Estatus, Precio_total, ID_cliente, ID_detalle, ID_Empleados, tipo_pago], (err, result) => {
+    const { Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_detalle, ID_Empleados, tipo_pago } = req.body;
+    const sql = "INSERT INTO orden (Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_detalle, ID_Empleados, tipo_pago) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    db.query(sql, [Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_detalle, ID_Empleados, tipo_pago], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
