@@ -27,14 +27,14 @@ app.use(session({
     cookie: {
         secure: false, // Cambiar a true si usas HTTPS en producción
         httpOnly: true,
-        maxAge: 10 * 60 * 1000
+        maxAge: 100 * 60 * 1000
     }
 }));
 
 // Middleware para verificar inactividad
 app.use((req, res, next) => {
     const now = Date.now();
-    const maxInactivity = 10 * 60 * 1000;
+    const maxInactivity = 100 * 60 * 1000;
 
     if (req.session && req.session.lastActivity) {
         const timeElapsed = now - req.session.lastActivity;
