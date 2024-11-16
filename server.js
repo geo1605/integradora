@@ -81,13 +81,14 @@ app.post('/login', (req, res) => {
     });
 });
 
-// Ruta de cierre de sesión
 app.post('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
+            console.error("Error al destruir la sesión:", err);
             res.status(500).send({ mensaje: "Error al cerrar sesión" });
         } else {
-            res.redirect('/');
+            // Podrías simplemente enviar un mensaje de cierre exitoso, y que el cliente maneje la redirección
+            res.status(200).send({ mensaje: "Sesión cerrada exitosamente" });
         }
     });
 });
