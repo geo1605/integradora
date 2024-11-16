@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Empleados</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="../styles/lateral.css">
     <link rel="stylesheet" href="../styles/tablas.css">
@@ -11,20 +12,27 @@
 </head>
 <body>
     <aside>
+        <!--<a href="" id="logotipo"><span class="tooltip">Inicio</span> logo </a> -->
         <nav>
         <ul>
             <li><a href="main.html" class="lateral">
-                <span class="material-symbols-outlined">home</span>
+                <span class="material-symbols-outlined">
+                    home
+                    </span>
                 <span class="tooltip">Inicio</span>
                 </a></li>
             <li><a href="orden.html" class="lateral">
-                <span class="material-symbols-outlined">checklist</span>
-                <span class="tooltip">tabla ordenes</span>
+            <span class="material-symbols-outlined">
+                checklist
+                </span>
+            <span class="tooltip">tabla ordenes</span>
             </a></li>
             <li><a href="crearOrden.html" class="lateral">
-                <span class="material-symbols-outlined">edit_square</span>
+                <span class="material-symbols-outlined">
+                    edit_square
+                </span>
                 <span class="tooltip">crear Orden</span>
-            </a></li>
+                </a></li>
             <li><a href="productos.html" class="lateral admin">
                 <span class="material-symbols-outlined">inventory</span>
                 <span class="tooltip">Productos</span>
@@ -59,6 +67,9 @@
             </button>
             <div id="barra_busqueda">
                 <input id="Search_principal" type="search" placeholder="Buscar">
+                <button id="Bot_busqueda" class="botS"><span class="material-symbols-outlined">
+                    search
+                    </span></button>
             </div>
         </form>
 
@@ -84,31 +95,28 @@
         
         <div id="pagination-controls" class="pagination-container"></div>
 
+        
         <script>
             const Npagina = 20; // Número de elementos por página
             let Numpag = 1; // Página inicial
             let empleadosData = []; // Arreglo para almacenar los datos de empleados
-            let filteredEmpleados = []; // Arreglo para los empleados filtrados
 
-            // Función para obtener los empleados
             function fetchEmpleados() {
                 fetch('https://latosca.up.railway.app/empleados')
                     .then(response => response.json())
                     .then(empleados => {
                         empleadosData = empleados; // Guardamos los datos en una variable global
-                        filteredEmpleados = empleadosData; // Guardamos los datos en una variable global
                         renderTable();
                         renderPaginationControls();
                     })
                     .catch(error => console.error('Error al cargar los empleados:', error));
             }
 
-            // Función para renderizar la tabla de empleados
             function renderTable() {
                 const start = (Numpag - 1) * Npagina;
                 const end = start + Npagina;
-                const empleadosToShow = filteredEmpleados.slice(start, end); // Paginación de registros
-
+                const empleadosToShow = empleadosData.slice(start, end); // Paginación de registros
+                
                 let empleadosHTML = '';
                 empleadosToShow.forEach(emp => {
                     empleadosHTML += `
@@ -120,10 +128,16 @@
                             <td id='cargo${emp.ID_Empleados}' class="${emp.Cargo === "admin" ? 'positive' : ''}">${emp.Cargo}</td>
                             <td id='correo${emp.ID_Empleados}'>${emp.correo || 'N/A'}</td>
                             <td id='telefono${emp.ID_Empleados}'>${emp.Telefono}</td>
-                            <td class="${emp.estatus === 1 ? 'positive' : 'negative'}" id='estatus${emp.ID_Empleados}'> ${emp.estatus === 1 ? 'activo' : 'inactivo'}</td>
+                            <td class="${emp.estatus === 1 ? 'positive' : 'negative'}" id='estatus${emp.ID_Empleados}'>
+                                ${emp.estatus === 1 ? 'activo' : 'inactivo'}
+                            </td>
                             <td class="acciones">
-                                <button class="B_editar" onclick="updateEmp(${emp.ID_Empleados})"><span class="material-symbols-outlined">edit</span></button>
-                                <button class="B_eliminar" onclick="eliminarEmp(${emp.ID_Empleados})"><span class="material-symbols-outlined">delete</span></button>
+                                <button class="B_editar" onclick="updateEmp(${emp.ID_Empleados})">
+                                    <span class="material-symbols-outlined">edit</span>
+                                </button>
+                                <button class="B_eliminar" onclick="eliminarEmp(${emp.ID_Empleados})">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
                             </td>
                         </tr>
                     `;
@@ -132,9 +146,8 @@
                 document.getElementById("empleados-body").innerHTML = empleadosHTML;
             }
 
-            // Función para renderizar los controles de paginación
             function renderPaginationControls() {
-                const totalPages = Math.ceil(filteredEmpleados.length / Npagina);
+                const totalPages = Math.ceil(empleadosData.length / Npagina);
                 let paginationHTML = '';
 
                 for (let i = 1; i <= totalPages; i++) {
@@ -144,32 +157,11 @@
                 document.getElementById("pagination-controls").innerHTML = paginationHTML;
             }
 
-            // Función para ir a una página específica de empleados
             function goToPage(page) {
                 Numpag = page;
                 renderTable();
                 renderPaginationControls();
             }
-
-            // Función para realizar la búsqueda
-            function buscadorEmpleados() {
-                const searchTerm = document.getElementById("Search_principal").value.toLowerCase();
-                filteredEmpleados = empleadosData.filter(empleado => {
-                    return (
-                        empleado.Nombres.toLowerCase().includes(searchTerm) ||
-                        empleado.Apellido_P.toLowerCase().includes(searchTerm) ||
-                        empleado.Apellido_M.toLowerCase().includes(searchTerm) ||
-                        empleado.Telefono.toLowerCase().includes(searchTerm) ||
-                        empleado.correo.toLowerCase().includes(searchTerm)
-                    );
-                });
-                Numpag = 1; // Reiniciar a la primera página
-                renderTable();
-                renderPaginationControls();
-            }
-
-            // Añadir un evento de búsqueda al campo de búsqueda
-            document.getElementById("Search_principal").addEventListener("input", buscadorEmpleados);
 
             // Llamar a la función para cargar los empleados y configurar la paginación
             fetchEmpleados();
