@@ -128,7 +128,7 @@ db.connect((err) => {
 
 // Ruta raíz para redirigir a index.html en la carpeta 'integradora'
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'integradora')); 
+    res.sendFile(path.join(__dirname, 'integradora', 'index.html')); 
 });
 
 // ====================== RUTAS PARA CLIENTES ====================== //
