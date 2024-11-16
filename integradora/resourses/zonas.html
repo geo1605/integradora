@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productos</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <title>Zonas</title>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="../styles/lateral.css">
@@ -69,9 +68,6 @@
                 </span> Añadir</button>
                 <div id="barra_busqueda">
                     <input id="Search_principal" type="search" placeholder="Buscar">
-                    <button id="Bot_busqueda" class="botS"><span class="material-symbols-outlined">
-                        search
-                        </span></button>
                 </div>
         </form>
 
@@ -93,12 +89,14 @@
             const NpaginaZonas = 20; // Número de elementos por página
             let NumpagZona = 1; // Página inicial
             let zonasData = []; // Arreglo para almacenar los datos de zonas
+            let filteredZonas = [];
 
             function fetchZonas() {
                 fetch('https://latosca.up.railway.app/zonas')
                     .then(response => response.json())
                     .then(zonas => {
                         zonasData = zonas; // Guardamos los datos en una variable global
+                        filteredZonas = zonasData; // Guardamos los datos en una variable global
                         renderZonasTable(); // Renderizamos la tabla de zonas
                         renderZonasPaginationControls(); // Renderizamos los controles de paginación
                     })
@@ -108,7 +106,7 @@
             function renderZonasTable() {
                 const start = (NumpagZona - 1) * NpaginaZonas;
                 const end = start + NpaginaZonas;
-                const zonasToShow = zonasData.slice(start, end); // Paginación de registros
+                const zonasToShow = filteredZonas.slice(start, end); // Paginación de registros
                 
                 let zonasHTML = '';
                 zonasToShow.forEach(emp => {
@@ -133,7 +131,7 @@
             }
 
             function renderZonasPaginationControls() {
-                const totalPages = Math.ceil(zonasData.length / NpaginaZonas);
+                const totalPages = Math.ceil(filteredZonas.length / NpaginaZonas);
                 let paginationHTML = '';
 
                 for (let i = 1; i <= totalPages; i++) {
@@ -148,6 +146,24 @@
                 renderZonasTable();
                 renderZonasPaginationControls();
             }
+
+            // Función para realizar la búsqueda
+            function buscadorZonas() {
+                const searchTerm = document.getElementById("Search_principal").value.toLowerCase();
+                filteredZonas = zonasData.filter(zona => {
+                    return (
+                        zona.nombre_colonia.toLowerCase().includes(searchTerm) ||
+                        zona.costo_zona.toLowerCase().includes(searchTerm) 
+                    );
+                });
+                NumpagZona = 1; // Reiniciar a la primera página
+                renderZonasTable();
+                renderZonasPaginationControls();
+            }
+
+            // Añadir un evento de búsqueda al campo de búsqueda
+            document.getElementById("Search_principal").addEventListener("input", buscadorZonas);
+
 
             // Llamar a la función para cargar las zonas y configurar la paginación
             fetchZonas();
