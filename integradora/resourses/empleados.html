@@ -9,16 +9,8 @@
     <link rel="stylesheet" href="../styles/lateral.css">
     <link rel="stylesheet" href="../styles/tablas.css">
     <link rel="stylesheet" href="../styles/formularios.css">
-    <link rel="stylesheet" href="../styles/loader.css">
-    <script src="../js/loader.js"></script>
 </head>
-<body style="border-top: 10px solid #8B2437;">
-    <div class="loader-container" id="loaderContainer">
-        <div class="loader">
-            <div class="moving-line"></div>
-            <img src="../img/logo-tosca-grad.png" alt="Logo">
-        </div>
-    </div>
+<body>
     <aside>
         <!--<a href="" id="logotipo"><span class="tooltip">Inicio</span> logo </a> -->
         <nav>
@@ -63,7 +55,7 @@
             <span class="material-symbols-outlined profile-icon">account_circle</span>
             <div class="dropdown-menu">
                 <button class="buser" onclick="cerrarSesion()">Cerrar sesión</button>
-                <a href="cambio.html"><button class="buser">Cambiar contraseña</button></a>
+                <a href="recuperacion.html"><button class="buser">Cambiar contraseña</button></a>
             </div>
         </div>
     </aside>
@@ -85,12 +77,14 @@
         <table id="empleados-tabla">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Nombre(s)</th>
                     <th>Apellido Paterno</th>
                     <th>Apellido Materno</th>
                     <th>Cargo</th>
                     <th>Correo</th>
                     <th>Teléfono</th>
+                    <th>Estatus</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -111,15 +105,9 @@
                 fetch('https://latosca.up.railway.app/empleados')
                     .then(response => response.json())
                     .then(empleados => {
-<<<<<<< HEAD
-                            empleadosData = empleados; // Guardamos los datos en una variable global
-                        filteredEmpleados = empleadosData; // Guardamos los datos en una variable global
-=======
                         empleadosData = empleados; // Guardamos los datos en una variable global
->>>>>>> d5a36e75ccffcbc8ccdf22fa776a6de681ee2619
                         renderTable();
                         renderPaginationControls();
-                        
                     })
                     .catch(error => console.error('Error al cargar los empleados:', error));
             }
@@ -131,21 +119,18 @@
                 
                 let empleadosHTML = '';
                 empleadosToShow.forEach(emp => {
-                    if (emp.estatus == 1) {
-                        empleadosHTML += `
+                    empleadosHTML += `
                         <tr>
+                            <td id='ID${emp.ID_Empleados}'>${emp.ID_Empleados}</td>
                             <td id='nombre${emp.ID_Empleados}'>${emp.Nombres}</td>
                             <td id='apellidoP${emp.ID_Empleados}'>${emp.Apellido_P}</td>
                             <td id='apellidoM${emp.ID_Empleados}'>${emp.Apellido_M}</td>
                             <td id='cargo${emp.ID_Empleados}' class="${emp.Cargo === "admin" ? 'positive' : ''}">${emp.Cargo}</td>
                             <td id='correo${emp.ID_Empleados}'>${emp.correo || 'N/A'}</td>
                             <td id='telefono${emp.ID_Empleados}'>${emp.Telefono}</td>
-<<<<<<< HEAD
-=======
                             <td class="${emp.estatus === 1 ? 'positive' : 'negative'}" id='estatus${emp.ID_Empleados}'>
                                 ${emp.estatus === 1 ? 'activo' : 'inactivo'}
                             </td>
->>>>>>> d5a36e75ccffcbc8ccdf22fa776a6de681ee2619
                             <td class="acciones">
                                 <button class="B_editar" onclick="updateEmp(${emp.ID_Empleados})">
                                     <span class="material-symbols-outlined">edit</span>
@@ -156,20 +141,13 @@
                             </td>
                         </tr>
                     `;
-                    }
-                    
                 });
 
                 document.getElementById("empleados-body").innerHTML = empleadosHTML;
             }
 
             function renderPaginationControls() {
-<<<<<<< HEAD
-                const activeEmpleados = filteredEmpleados.filter(emp => emp.estatus == 1);
-                const totalPages = Math.ceil(activeEmpleados.length / Npagina);
-=======
                 const totalPages = Math.ceil(empleadosData.length / Npagina);
->>>>>>> d5a36e75ccffcbc8ccdf22fa776a6de681ee2619
                 let paginationHTML = '';
 
                 for (let i = 1; i <= totalPages; i++) {
@@ -213,8 +191,6 @@
     </div>
     <div id="upPopup" class="Popup"></div>
 
-
-    <script src="../js/session.js"></script>
     <script src="../js/formulario.js"></script>
     <script src="../js/script.js"></script>
 

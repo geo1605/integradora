@@ -12,23 +12,24 @@
 }
 
 body {
-  background: linear-gradient(339deg, rgba(139, 36, 55, 1) 0%, rgba(200, 80, 42, 1) 53%, rgba(249, 210, 121, 1) 100%);
+  background: linear-gradient(339deg, rgba(139,36,55,1) 0%, rgba(200,80,42,1) 53%, rgba(249,210,121,1) 100%);
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
 }
 
-/* Contenedor principal que estructura el formulario */
+/* Estructura en Grid para el diseño solicitado */
 #contenedor {
   display: grid;
-  grid-template-columns: 1fr 1fr;  /* Dos columnas para pantalla completa */
-  gap: 0.5rem;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
   width: 90%;
-  margin: 1rem auto;
-  padding: 1rem;
+  max-width: 60rem;
+  margin: 1% auto;
+  padding: 1%;
   background-color: var(--color-white);
-  border-radius: 1.25rem;
-  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Encabezado "Creación de orden" que ocupa toda la fila superior */
@@ -36,102 +37,88 @@ body {
   color: var(--color-primary);
   font-size: 2.5rem;
   text-align: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 2%;
   grid-column: 1 / -1;
 }
 
-/* Sección de cada bloque dentro del formulario */
-#empleadoSection,
-#infoClientDireccion,
+/* Ajuste de secciones para el diseño de la cuadrícula */
+#empleadoSection {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+#infoClientDireccion {
+  grid-column: 1;
+  grid-row: 3;
+}
+
 #infoP {
+  grid-column: 2;
+  grid-row: 2 / 4;
+}
+
+/* Estilos generales de cada sección */
+#infoP, #infoClientDireccion, #empleadoSection {
   background-color: #f9f9f9;
   border: 1px solid #ddd;
-  border-radius: 0.625rem;
-  padding: 2% 1% ;
+  border-radius: 10px;
+  padding: 0.5rem 1.5rem;
+  margin: 0.5rem;
   text-align: center;
-}
-#infoP {
-  grid-row: span 2;
 }
 
 /* Encabezados de cada sección */
-#empleadoSection h3,
-#infoP h3,
-#infoClientDireccion label {
+#infoP h3, #infoClientDireccion h3, #empleadoSection h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
   font-size: 1.5rem;
   color: var(--color-secondary);
-  margin-bottom: 1rem;
 }
 
-.select2-container {
-
-  margin: 0.2rem 0 !important;
-
-}
-/* Contenedor de productos */
+/* Contenedor de productos en una sola línea usando grid */
 .producto-item {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 0.2rem;
+  grid-template-columns: 2fr 1fr 1fr; /* Producto ocupa 2 fracciones, cantidad/Kg y Precio ocupan 1 fracción cada uno */
+  gap: 0.5rem;
   align-items: center;
-  width: 95%;
+  width: 100%;
   margin-bottom: 1rem;
-  border: 2px solid var(--color-secondary); /* Un borde más grueso con un color secundario */
-  border-radius: 1rem; /* Bordes redondeados para suavizar el aspecto */
-  padding: 1%; /* Espacio interno para que el contenido no esté pegado al borde */
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
-  background-color: var(--color-white); /* Fondo blanco para resaltar el contenido */
-  transition: border-color 0.3s, box-shadow 0.3s; /* Transición suave al cambiar el color del borde */
-}
-.producto-item:hover {
-  border-color: var(--color-danger); /* Cambia el color del borde al pasar el ratón por encima */
-  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.15); /* Aumenta la sombra para destacar */
 }
 
-/* Elementos de productos dentro del contenedor */
+/* Estilos para los elementos dentro del contenedor de productos */
 .producto-item select,
 .producto-item input {
-  padding: 0.8em 0.5rem;
-  font-size: 1em;
+  padding: 0.625rem;
+  font-size: 1rem;
   border: 1px solid #ddd;
-  border-radius: 0.3125rem;
+  border-radius: 5px;
   box-sizing: border-box;
-  width: 95%;
-  
+  width: 100%;
 }
-
-.select2-container {
-    box-sizing: border-box;
-    display: inline-block;
-    margin: 0;
-    position: relative;
-    vertical-align: middle;
-}
-
-
 
 /* Botón de añadir debajo de los productos */
 #infoP .bot {
   margin-top: 1rem;
   width: 80%;
-  max-width: 15rem;
+  max-width: 300px;
   height: 2.5rem;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   background-color: var(--color-secondary);
   color: var(--color-white);
   border: 2px solid var(--color-secondary);
-  border-radius: 1.25rem;
+  border-radius: 20px;
   font-size: 1rem;
   font-weight: bold;
   transition: 0.3s;
   cursor: pointer;
   text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 #infoP .bot span {
-  margin-right: 0.5rem;
+  margin-right: 8px;
   font-size: 1.2rem;
 }
 
@@ -140,39 +127,47 @@ body {
   color: var(--color-secondary);
 }
 
-/* Campos de Cliente y Dirección */
+/* Alineación de los campos de Cliente y Dirección en la misma línea y tamaño uniforme */
 #infoClientDireccion select,
 #infoClientDireccion input {
   width: 100%;
-  padding: 0.8em;
-  font-size: 1em;
+  padding: 0.625rem;
+  font-size: 1rem;
   border: 1px solid #ddd;
-  border-radius: 0.3125rem;
+  border-radius: 5px;
   box-sizing: border-box;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 /* Estilos para el select de método de pago */
 #tipoP {
-  width: calc(50% - 1rem);
-  padding: 0.3em;
-  font-size: 1em;
+  width: 100%;
+  max-width: 15rem;
+  padding: 0.625rem;
+  font-size: 1rem;
   border: 1px solid var(--color-primary);
-  border-radius: 0.625rem;
+  border-radius: 10px;
+  background-color: var(--color-background);
+  color: var(--color-gray-dark);
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
 }
 
+#tipoP:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
 
 /* Costos */
 #costos {
   grid-column: 1 / -1;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding-top: 2%;
   border-top: 1px solid #ddd;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin-top: 2%;
+  margin-bottom: 2%;
 }
 
 #costos h3 {
@@ -188,10 +183,10 @@ body {
   background-color: var(--color-primary);
   color: var(--color-white);
   border: 2px solid var(--color-primary);
-  border-radius: 1.875rem;
-  padding: 0.8em;
+  border-radius: 30px;
+  padding: 0.625rem 1.25rem;
   text-align: center;
-  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, color 0.3s;
   grid-column: 1 / -1;
 }
@@ -201,110 +196,48 @@ body {
   color: var(--color-primary);
 }
 
+#direccionS {
+  margin-top: 1rem;
+}
 /* Adaptabilidad en dispositivos móviles */
-@media (max-width: 1030px) {
+@media (max-width: 760px) {
   #contenedor {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding: 5%;
+    grid-template-rows: auto auto auto auto auto;
   }
 
   #empleadoSection,
   #infoClientDireccion,
-  #infoP {
-    padding: 0.2rem;
-    margin-bottom: 1rem;
+  #infoP,
+  #costos,
+  .botB {
+    grid-column: 1 / -1;
   }
 
-  #infoP h3,
-  #infoClientDireccion label,
-  #empleadoSection h3 {
-    font-size: 1.4rem;
+  #infoP h3, #infoClientDireccion h3, #empleadoSection h3 {
+    font-size: 1.5rem;
   }
 
-  #productosContainer,
   #productosContainer select,
   #productosContainer input,
   #infoClientDireccion select,
   #empleadoSection select,
+  #infoP .bot,
+  #infoClientDireccion .bot,
   #tipoP {
     width: 100%;
-    font-size: 1em;
-    margin: 1rem 0;
-    
-  }
-
-  #costos {
-    flex-direction: column;
-    align-items: flex-start;
+    max-width: none;
+    padding: 0.625rem;
+    font-size: 1rem;
+    margin: 0.5rem 0;
   }
 
   #costos h3 {
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
   }
 
   .botB {
     font-size: 1.3rem;
-    padding: 1em;
-  }
-
-  #tipoP {
-    margin-bottom: 1rem;
+    padding: 0.625rem;
   }
 }
-/* Adaptabilidad para dispositivos móviles de 425px o menos */
-/* Adaptabilidad en dispositivos con un ancho de 425px o menores */
-@media (max-width: 425px) {
-  #contenedor {
-    grid-template-columns: 1fr;  /* Cambiar a una sola columna */
-    gap: 0.2rem;
-    padding: 3%;
-  }
-  .producto-item {
-
-    grid-template-columns: 1fr;
-  }
-
-  #productosContainer,
-  #productosContainer select,
-  #productosContainer input,
-  #infoClientDireccion select,
-  #empleadoSection select,
-  #tipoP {
-    width: 100%;
-    padding: 0.2em;  /* Reducir el padding para ahorrar espacio */
-    font-size: 1em;
-    margin: 0.2rem 0;
-  }
-
-  #costos {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  #costos h3 {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .botB {
-    font-size: 1.2rem;
-    padding: 0.8em;
-  }
-
-  #tipoP {
-    margin-bottom: 1rem;
-  }
-
-  #infoP .bot {
-    width: 100%;
-    padding: 0.8em;
-    font-size: 1em;
-  }
-
-  #infoP .bot span {
-    font-size: 1.1rem;
-  }
-}
-

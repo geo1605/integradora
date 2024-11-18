@@ -21,6 +21,7 @@ function updateEmp(id) {
   let cargo = document.getElementById(`cargo${id}`).innerText;
   let correo = document.getElementById(`correo${id}`).innerText;
   let numero = document.getElementById(`telefono${id}`).innerText;
+  let estatus = document.getElementById(`estatus${id}`).innerText;
   let cont = document.getElementById("upPopup");
 
   cont.innerHTML = `
@@ -30,11 +31,15 @@ function updateEmp(id) {
             <input type="text" class="tercio" name="ActNombre" placeholder="Nombre(s)" value="${name}">
             <input type="text" class="tercio" name="ActPaterno" placeholder="Apellido Paterno" value="${ApeP}">
             <input type="text" class="tercio" name="ActMaterno" placeholder="Apellido Materno" value="${ApeM}">
-            <select class="medio" name="Actcargo" id="cargo" value="${cargo}">
+            <select class="tercio" name="Actcargo" id="cargo" value="${cargo}">
                 <option value="empleado">empleado</option>
                 <option value="admin">admin</option>
             </select>
-            <input type="text" class="medio" name="Acttelefono" placeholder="telefono" value="${numero}">
+            <input type="text" class="tercio" name="Acttelefono" placeholder="telefono" value="${numero}">
+            <select class="tercio" name="Actestatus" id="estatus" value="${estatus}">
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+            </select>
             <input type="email" class="full" name="Actcorreo" placeholder="correo" value="${correo}">
             <button type="button" class="full" onclick="actualizarEmpleado(${id}, event)">Enviar</button>
         </form>`;
@@ -43,11 +48,13 @@ function updateEmp(id) {
 }
 
 function updateCliente(id) {
+  let Id = document.getElementById(`ID${id}`).innerText;
   let nombre = document.getElementById(`nombre${id}`).innerText;
   let ApeP = document.getElementById(`ApellidoP${id}`).innerText;
   let ApeM = document.getElementById(`ApellidoM${id}`).innerText;
   let telefono = document.getElementById(`telefono${id}`).innerText;
   let correo = document.getElementById(`correo${id}`).innerText;
+  let estatus = document.getElementById(`estatus${id}`).innerText;
   let cont = document.getElementById("upPopup");
 
   cont.innerHTML = `<form action="" class="modificacion" id="Actcliente">
@@ -58,6 +65,10 @@ function updateCliente(id) {
                 <input type="text" class="tercio" name="ActMaternoC" placeholder="Apellido Materno" value="${ApeM}">
                 <input type="text" class="medio" name="Acttelefono" placeholder="telefono" value="${telefono}">
                 <input type="email" class="medio" name="Actcorreo" placeholder="correo" value="${correo}">
+                <select class="full" name="Actestatus" id="estatus" value="${estatus}">
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
                 <button type="button" class="full" onclick="actualizarCliente(${id}, event)">Enviar</button>
             </form>`;
 
@@ -70,13 +81,14 @@ function updateProducto(id) {
   let tipo = document.getElementById(`tipo${id}`).innerText;
   let categoria = document.getElementById(`categoria${id}`).innerText;
   let precio = document.getElementById(`precio${id}`).innerText;
+  let estatus = document.getElementById(`estatus${id}`).innerText;
   let cont = document.getElementById("upPopup");
 
   cont.innerHTML = `<form action="" class="modificacion" id="Actproducto">
                 <h2>Editar producto</h2>
                 <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
                 <input type="text" class="full" name="ActNombre" placeholder="Nombre" value="${nombre}">
-                <div class="full">
+                <div class="medio">
                 <select class="js-example-basic-single" name="Actcategoria" >
                     <option value="" disabled>categoría</option>
                     <option value="${categoria}" selected >${categoria}</option>
@@ -90,6 +102,10 @@ function updateProducto(id) {
                 </select>
                 
                 <input type="number" class="medio" name="Actprecio" placeholder="Precio" value="${precio}">
+                <select class="medio" name="Actestatus" id="estatus" value="${estatus}">
+                    <option value="agotado">Agotado</option>
+                    <option value="existente">Existente</option>
+                </select>
                 
                 <button type="button" class="full" onclick="actualizarProducto(${Id}, event)">Enviar</button>
             </form>`;
@@ -100,6 +116,7 @@ function updateProducto(id) {
   $(".js-example-basic-single").select2();
 }
 function updateZona(id) {
+  let Id = document.getElementById(`ID${id}`).innerText;
   let nombre_colonia = document.getElementById(`nombre_colonia${id}`).innerText;
   let costo_zona = document.getElementById(`costo_zona${id}`).innerText;
   let cont = document.getElementById("upPopup");
@@ -109,7 +126,7 @@ function updateZona(id) {
                 <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
                 <input type="text" class="medio" name="nombre_colonia" placeholder="Nombre de la colonia" value="${nombre_colonia}">
                 <input type="number" class="medio" name="costo_zona" placeholder="Costo de la zona" value="${costo_zona}">
-                <button type="button" class="full" onclick="actualizarZona(${id}, event)">Enviar</button>
+                <button type="button" class="full" onclick="actualizarZona(${Id}, event)">Enviar</button>
             </form>`;
 
   cont.style.display = "flex";

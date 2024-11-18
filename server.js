@@ -1,10 +1,8 @@
 const express = require('express');
-const session = require('express-session');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path'); // Importa el módulo path
-const { error } = require('console');
 const app = express();
 
 const port = process.env.PORT || 5000;
@@ -14,101 +12,11 @@ const DB_PASSWORD = process.env.DB_PASSWORD || '';
 const DB_NAME = process.env.DB_NAME || 'la_tosca';
 const DB_PORT = process.env.DB_PORT || 3306;
 
-const KEY = process.env.KEY || '1234';
-
 app.use(bodyParser.json());
 app.use(cors());
 
-// Configuración de la sesión
-app.use(session({
-    secret: KEY, // Cambia esto por un secreto único y seguro
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: false, // Cambiar a true si usas HTTPS en producción
-        httpOnly: true,
-        maxAge: 100 * 60 * 1000
-    }
-}));
-
-// Middleware para verificar inactividad
-app.use((req, res, next) => {
-    const now = Date.now();
-    const maxInactivity = 100 * 60 * 1000;
-
-    if (req.session && req.session.lastActivity) {
-        const timeElapsed = now - req.session.lastActivity;
-        if (timeElapsed > maxInactivity) {
-            req.session.destroy(err => {
-                if (err) console.error("Error al destruir la sesión:", err);
-                return res.status(401).send({ mensaje: "Sesión expirada por inactividad" });
-            });
-        } else {
-            req.session.lastActivity = now;
-            next();
-        }
-    } else if (req.session) {
-        req.session.lastActivity = now;
-        next();
-    }
-});
-
-// Middleware de autenticación para rutas protegidas
-function verificarSesion(req, res, next) {
-    if (req.session && req.session.user) {
-        next();
-    } else {
-        res.redirect('/');
-    }
-}
-
-// ====================== RUTAS DE AUTENTICACIÓN ====================== //
-
-// Ruta de inicio de sesión
-app.post('/login', (req, res) => {
-    const { correo, password } = req.body;
-    const sql = "SELECT * FROM empleado WHERE correo = ? AND password = ?";
-    
-    db.query(sql, [correo, password], (err, results) => {
-        if (err) {
-            res.status(500).send({ mensaje: "Error en el servidor" });
-        } else if (results.length > 0) {
-            req.session.user = results[0];
-            res.status(200).send({ mensaje: "Inicio de sesión exitoso", usuario: results[0] });
-        } else {
-            res.status(401).send({ mensaje: "Correo o contraseña incorrectos" });
-        }
-    });
-});
-
-app.post('/logout', (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            console.error("Error al destruir la sesión:", err);
-            res.status(500).send({ mensaje: "Error al cerrar sesión" });
-        } else {
-            // Podrías simplemente enviar un mensaje de cierre exitoso, y que el cliente maneje la redirección
-            res.status(200).send({ mensaje: "Sesión cerrada exitosamente" });
-        }
-    });
-});
-
 // Configura Express para servir archivos estáticos desde la carpeta 'integradora'
-app.use('/styles', express.static(path.join(__dirname, 'integradora', 'styles')));
-app.use('/js', express.static(path.join(__dirname, 'integradora', 'js')));
-app.use('/img', express.static(path.join(__dirname, 'integradora', 'img')));
-
-// Ruta protegida para acceder a archivos en la carpeta `resources`
-app.get('/resourses/:file', verificarSesion, (req, res) => {
-    const fileName = req.params.file;
-    const filePath = path.join(__dirname, 'integradora', 'resourses', fileName);
-
-    res.sendFile(filePath, (err) => {
-        if (err) {
-            res.status(404).send({ mensaje: "Archivo no encontrado" });
-        }
-    });
-});
+app.use(express.static(path.join(__dirname, 'integradora')));
 
 const db = mysql.createConnection({
     host: DB_HOST,
@@ -130,13 +38,13 @@ db.connect((err) => {
 
 // Ruta raíz para redirigir a index.html en la carpeta 'integradora'
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'integradora', 'index.html')); 
+    res.sendFile(path.join(__dirname, 'integradora', 'index.html')); // Envía el archivo index.html en la ruta raíz
 });
 
 // ====================== RUTAS PARA CLIENTES ====================== //
 
 // Obtener Clientes
-app.get("/clientes", verificarSesion, (req, res) => {
+app.get("/clientes", (req, res) => {
     const sql = 'SELECT * FROM cliente';
     db.query(sql, (err, result) => {
         if (err) {
@@ -148,7 +56,7 @@ app.get("/clientes", verificarSesion, (req, res) => {
 });
 
 // Registrar Clientes
-app.post('/cliente/registrar', verificarSesion, (req, res) => {
+app.post('/cliente/registrar', (req, res) => {
     const { Nombres, Apellido_P, Apellido_M, Telefono, correo, estatus } = req.body;
     const sql = "INSERT INTO cliente (Nombres, Apellido_P, Apellido_M, Telefono, correo, estatus) VALUES (?, ?, ?, ?, ?, ?)";
     db.query(sql, [Nombres, Apellido_P, Apellido_M, Telefono, correo, estatus], (err, result) => {
@@ -161,7 +69,7 @@ app.post('/cliente/registrar', verificarSesion, (req, res) => {
 });
 
 // Modificar Clientes
-app.put('/cliente/modificar/:id', verificarSesion, (req, res) => {
+app.put('/cliente/modificar/:id', (req, res) => {
     const { id } = req.params;
     const { Nombres, Apellido_P, Apellido_M, Telefono, correo } = req.body;
     const sql = "UPDATE cliente SET Nombres = ?, Apellido_P = ?, Apellido_M = ?, Telefono = ?, correo = ? WHERE ID_cliente = ?";
@@ -174,15 +82,15 @@ app.put('/cliente/modificar/:id', verificarSesion, (req, res) => {
     });
 });
 
-// Actualizar estado de Clientes
-app.put("/cliente/eliminar/:id", verificarSesion, (req, res) => {
+// Eliminar Clientes
+app.delete("/cliente/eliminar/:id", (req, res) => {
     const { id } = req.params;
-    const sql = "UPDATE cliente SET estatus = 0 WHERE ID_cliente = ?";
+    const sql = 'DELETE FROM cliente WHERE ID_cliente = ?';
     db.query(sql, [id], (err, result) => {
         if (err) {
             res.status(500).send(err);
-        } else {
-            res.status(200).send({ mensaje: "Cliente desactivado correctamente", result });
+        } else { 
+            res.status(200).send(result);
         }
     });
 });
@@ -190,7 +98,7 @@ app.put("/cliente/eliminar/:id", verificarSesion, (req, res) => {
 // ====================== RUTAS PARA DETALLES DE ORDENES ====================== //
 
 // Obtener Detalles de Orden
-app.get("/detalles", verificarSesion, (req, res) => {
+app.get("/detalles", (req, res) => {
     const sql = 'SELECT * FROM detalle_o';
     db.query(sql, (err, result) => {
         if (err) {
@@ -202,10 +110,10 @@ app.get("/detalles", verificarSesion, (req, res) => {
 });
 
 // Registrar Detalles de Orden
-app.post('/detalle/registrar', verificarSesion, (req, res) => {
-    const { ID_product, ID_orden, cantidad_p } = req.body;
-    const sql = "INSERT INTO detalle_o (ID_product, ID_orden, cantidad_p) VALUES (?, ?, ?)";
-    db.query(sql, [ID_product, ID_orden, cantidad_p], (err, result) => {
+app.post('/detalle/registrar', (req, res) => {
+    const { ID_product, ID_orden, cantidad_p, Importe } = req.body;
+    const sql = "INSERT INTO detalle_o (ID_product, ID_orden, cantidad_p, Importe) VALUES (?, ?, ?, ?)";
+    db.query(sql, [ID_product, ID_orden, cantidad_p, Importe], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -215,11 +123,11 @@ app.post('/detalle/registrar', verificarSesion, (req, res) => {
 });
 
 // Modificar Detalles de Orden
-app.put('/detalle/modificar/:id', verificarSesion, (req, res) => {
+app.put('/detalle/modificar/:id', (req, res) => {
     const { id } = req.params;
-    const { ID_product, cantidad_p} = req.body;
-    const sql = "UPDATE detalle_o SET ID_product = ?, cantidad_p = ? WHERE ID_orden = ?";
-    db.query(sql, [ID_product, cantidad_p, id], (err, result) => {
+    const { ID_product, ID_orden, cantidad_p, Importe } = req.body;
+    const sql = "UPDATE detalle_o SET ID_product = ?, ID_orden = ? cantidad_p = ?, Importe = ? WHERE ID_detalle = ?";
+    db.query(sql, [ID_product, ID_orden, cantidad_p, Importe, id], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -228,15 +136,15 @@ app.put('/detalle/modificar/:id', verificarSesion, (req, res) => {
     });
 });
 
-// Actualizar estado de Detalles de Orden
-app.put("/detalle/eliminar/:id", verificarSesion, (req, res) => {
+// Eliminar Detalles de Orden
+app.delete("/detalle/eliminar/:id", (req, res) => {
     const { id } = req.params;
-    const sql = "UPDATE detalle_o SET estatus = 0 WHERE ID_detalle = ?";
+    const sql = 'DELETE FROM detalle_o WHERE ID_detalle = ?';
     db.query(sql, [id], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
-            res.status(200).send({ mensaje: "Detalle de orden desactivado correctamente", result });
+            res.status(200).send(result);
         }
     });
 });
@@ -244,7 +152,7 @@ app.put("/detalle/eliminar/:id", verificarSesion, (req, res) => {
 // ====================== RUTAS PARA DIRECCIONES ====================== //
 
 // Obtener Direcciones
-app.get("/direcciones", verificarSesion, (req, res) => {
+app.get("/direcciones", (req, res) => {
     const sql = 'SELECT * FROM direccion';
     db.query(sql, (err, result) => {
         if (err) {
@@ -256,7 +164,7 @@ app.get("/direcciones", verificarSesion, (req, res) => {
 });
 
 // Registrar Direcciones
-app.post('/direccion/registrar', verificarSesion, (req, res) => {
+app.post('/direccion/registrar', (req, res) => {
     const { calle, numero, Numero_int, colonia, CP, estatus, id_zona, ID_cliente } = req.body;
     const sql = "INSERT INTO direccion (calle, numero, Numero_int, colonia, CP, estatus, id_zona, ID_cliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     db.query(sql, [calle, numero, Numero_int, colonia, CP, estatus, id_zona, ID_cliente], (err, result) => {
@@ -269,7 +177,7 @@ app.post('/direccion/registrar', verificarSesion, (req, res) => {
 });
 
 // Modificar Direcciones
-app.put('/direccion/modificar/:id', verificarSesion, (req, res) => {
+app.put('/direccion/modificar/:id', (req, res) => {
     const { id } = req.params;
     const { calle, numero, Numero_int, colonia, CP, estatus, id_zona, ID_cliente } = req.body;
     const sql = "UPDATE direccion SET calle = ?, numero = ?, Numero_int = ?, colonia = ?, CP = ?, estatus = ?, id_zona = ?, ID_cliente = ? WHERE id_direccion = ?";
@@ -282,15 +190,15 @@ app.put('/direccion/modificar/:id', verificarSesion, (req, res) => {
     });
 });
 
-// Actualizar estado de Direcciones
-app.put("/direccion/eliminar/:id", verificarSesion, (req, res) => {
+// Eliminar Direcciones
+app.delete("/direccion/eliminar/:id", (req, res) => {
     const { id } = req.params;
-    const sql = "UPDATE direccion SET estatus = 0 WHERE id_direccion = ?";
+    const sql = 'DELETE FROM direccion WHERE id_direccion = ?';
     db.query(sql, [id], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
-            res.status(200).send({ mensaje: "Dirección desactivada correctamente", result });
+            res.status(200).send(result);
         }
     });
 });
@@ -298,7 +206,7 @@ app.put("/direccion/eliminar/:id", verificarSesion, (req, res) => {
 // ====================== RUTAS PARA EMPLEADOS ====================== //
 
 // Obtener Empleados
-app.get("/empleados", verificarSesion, (req, res) => {
+app.get("/empleados", (req, res) => {
     const sql = 'SELECT * FROM empleado';
     db.query(sql, (err, result) => {
         if (err) {
@@ -310,10 +218,10 @@ app.get("/empleados", verificarSesion, (req, res) => {
 });
 
 // Registrar Empleado
-app.post('/empleado/registrar', verificarSesion, (req, res) => {
-    const { Nombres, Apellido_P, Apellido_M, Cargo, correo, Telefono, estatus } = req.body;
-    const sql = "INSERT INTO empleado (Nombres, Apellido_P, Apellido_M, Cargo, correo, Telefono, estatus) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    db.query(sql, [Nombres, Apellido_P, Apellido_M, Cargo, correo, Telefono, estatus], (err, result) => {
+app.post('/empleado/registrar', (req, res) => {
+    const { Nombres, Apellido_P, Apellido_M, Cargo, correo, Telefono, password, estatus } = req.body;
+    const sql = "INSERT INTO empleado (Nombres, Apellido_P, Apellido_M, Cargo, correo, Telefono, password, estatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    db.query(sql, [Nombres, Apellido_P, Apellido_M, Cargo, correo, Telefono, password, estatus], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -323,7 +231,7 @@ app.post('/empleado/registrar', verificarSesion, (req, res) => {
 });
 
 // Modificar Empleados
-app.put('/empleado/modificar/:id', verificarSesion, (req, res) => {
+app.put('/empleado/modificar/:id', (req, res) => {
     const { id } = req.params;
     const { Nombres, Apellido_P, Apellido_M, Cargo, correo, Telefono, password, estatus } = req.body;
     const sql = "UPDATE empleado SET Nombres = ?, Apellido_P = ?, Apellido_M = ?, Cargo = ?, correo = ?, Telefono = ?, password = ?, estatus = ? WHERE ID_Empleados = ?";
@@ -336,15 +244,15 @@ app.put('/empleado/modificar/:id', verificarSesion, (req, res) => {
     });
 });
 
-// Actualizar estado de Empleados
-app.put("/empleado/eliminar/:id", verificarSesion, (req, res) => {
+// Eliminar Empleados
+app.delete("/empleado/eliminar/:id", (req, res) => {
     const { id } = req.params;
-    const sql = "UPDATE empleado SET estatus = 0 WHERE ID_Empleados = ?";
+    const sql = 'DELETE FROM empleado WHERE ID_Empleados = ?';
     db.query(sql, [id], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
-            res.status(200).send({ mensaje: "Empleado desactivado correctamente", result });
+            res.status(200).send(result);
         }
     });
 });
@@ -352,7 +260,7 @@ app.put("/empleado/eliminar/:id", verificarSesion, (req, res) => {
 // ====================== RUTAS PARA ORDENES ====================== //
 
 // Obtener Ordenes
-app.get("/ordenes", verificarSesion, (req, res) => {
+app.get("/ordenes", (req, res) => {
     const sql = 'SELECT * FROM orden';
     db.query(sql, (err, result) => {
         if (err) {
@@ -364,7 +272,7 @@ app.get("/ordenes", verificarSesion, (req, res) => {
 });
 
 // Registrar Ordenes
-app.post('/orden/registrar', verificarSesion, (req, res) => {
+app.post('/orden/registrar', (req, res) => {
     const { Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_Empleados, tipo_pago } = req.body;
     const sql = "INSERT INTO orden (Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_Empleados, tipo_pago) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     db.query(sql, [Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_Empleados, tipo_pago], (err, result) => {
@@ -377,7 +285,7 @@ app.post('/orden/registrar', verificarSesion, (req, res) => {
 });
 
 // Modificar Ordenes
-app.put('/orden/modificar/:id', verificarSesion, (req, res) => {
+app.put('/orden/modificar/:id', (req, res) => {
     const { id } = req.params;
     const { Fecha, Hora, Estatus, Precio_total, ID_cliente, ID_Empleados, tipo_pago } = req.body;
     const sql = "UPDATE orden SET Fecha = ?, Hora = ?, Estatus = ?, Precio_total = ?, ID_cliente = ?, ID_Empleados = ?, tipo_pago = ? WHERE ID_orden = ?";
@@ -390,15 +298,15 @@ app.put('/orden/modificar/:id', verificarSesion, (req, res) => {
     });
 });
 
-// Actualizar estado de Órdenes
-app.put("/orden/eliminar/:id", verificarSesion, (req, res) => {
+// Eliminar Ordenes
+app.delete("/orden/eliminar/:id", (req, res) => {
     const { id } = req.params;
-    const sql = "UPDATE orden SET estatus = 0 WHERE ID_orden = ?";
+    const sql = 'DELETE FROM orden WHERE ID_orden = ?';
     db.query(sql, [id], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
-            res.status(200).send({ mensaje: "Orden desactivada correctamente", result });
+            res.status(200).send(result);
         }
     });
 });
@@ -406,7 +314,7 @@ app.put("/orden/eliminar/:id", verificarSesion, (req, res) => {
 // ====================== RUTAS PARA PRODUCTOS ====================== //
 
 // Obtener Productos
-app.get("/productos", verificarSesion, (req, res) => {
+app.get("/productos", (req, res) => {
     const sql = 'SELECT * FROM producto';
     db.query(sql, (err, result) => {
         if (err) {
@@ -418,7 +326,7 @@ app.get("/productos", verificarSesion, (req, res) => {
 });
 
 // Registrar Productos
-app.post('/producto/registrar', verificarSesion, (req, res) => {
+app.post('/producto/registrar', (req, res) => {
     const { Nombre, tipo, Categoria, precio, estatus } = req.body;
     const sql = "INSERT INTO producto (Nombre, tipo, Categoria, precio, estatus) VALUES (?, ?, ?, ?, ?)";
     db.query(sql, [Nombre, tipo, Categoria, precio, estatus], (err, result) => {
@@ -431,7 +339,7 @@ app.post('/producto/registrar', verificarSesion, (req, res) => {
 });
 
 // Modificar Productos
-app.put('/producto/modificar/:id', verificarSesion, (req, res) => {
+app.put('/producto/modificar/:id', (req, res) => {
     const { id } = req.params;
     const { Nombre, tipo, Categoria, precio, estatus } = req.body;
     const sql = "UPDATE producto SET Nombre = ?, tipo = ?, Categoria = ?, precio = ?, estatus = ? WHERE ID_product = ?";
@@ -444,15 +352,15 @@ app.put('/producto/modificar/:id', verificarSesion, (req, res) => {
     });
 });
 
-// Actualizar estado de Productos
-app.put("/producto/eliminar/:id", verificarSesion, (req, res) => {
+// Eliminar Productos
+app.delete("/producto/eliminar/:id", (req, res) => {
     const { id } = req.params;
-    const sql = "UPDATE producto SET estatus = 0 WHERE ID_product = ?";
+    const sql = 'DELETE FROM producto WHERE ID_product = ?';
     db.query(sql, [id], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
-            res.status(200).send({ mensaje: "Producto desactivado correctamente", result });
+            res.status(200).send(result);
         }
     });
 });
@@ -460,7 +368,7 @@ app.put("/producto/eliminar/:id", verificarSesion, (req, res) => {
 // ====================== RUTAS PARA ZONAS ====================== //
 
 // Obtener Zonas
-app.get("/zonas", verificarSesion, (req, res) => {
+app.get("/zonas", (req, res) => {
     const sql = 'SELECT * FROM zona';
     db.query(sql, (err, result) => {
         if (err) {
@@ -472,7 +380,7 @@ app.get("/zonas", verificarSesion, (req, res) => {
 });
 
 // Registrar Zonas
-app.post('/zona/registrar', verificarSesion, (req, res) => {
+app.post('/zona/registrar', (req, res) => {
     const { nombre_colonia, costo_zona } = req.body;
     const sql = "INSERT INTO zona (nombre_colonia, costo_zona) VALUES (?, ?)";
     db.query(sql, [nombre_colonia, costo_zona], (err, result) => {
@@ -485,7 +393,7 @@ app.post('/zona/registrar', verificarSesion, (req, res) => {
 });
 
 // Modificar Zonas
-app.put('/zona/modificar/:id', verificarSesion, (req, res) => {
+app.put('/zona/modificar/:id', (req, res) => {
     const { id } = req.params;
     const { nombre_colonia, costo_zona } = req.body;
     const sql = "UPDATE zona SET nombre_colonia = ?, costo_zona = ? WHERE ID_zona = ?";
@@ -498,15 +406,15 @@ app.put('/zona/modificar/:id', verificarSesion, (req, res) => {
     });
 });
 
-// Actualizar estado de Zonas
-app.put("/zona/eliminar/:id", verificarSesion, (req, res) => {
+// Eliminar Zonas
+app.delete("/zona/eliminar/:id", (req, res) => {
     const { id } = req.params;
-    const sql = "UPDATE zona SET estatus = 0 WHERE ID_zona = ?";
+    const sql = 'DELETE FROM zona WHERE ID_zona = ?';
     db.query(sql, [id], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else {
-            res.status(200).send({ mensaje: "Zona desactivada correctamente", result });
+            res.status(200).send(result);
         }
     });
 });
@@ -520,8 +428,7 @@ app.all("*", (req, res) => {
     res.send(respuesta);
 });
 
-// ====================== INICIAR SERVIDOR ====================== //
-
+// Iniciar Servidor
 app.listen(port, () => {
-    console.log(`Escuchando en el puerto ${port}`);
-});
+    console.log("Escuchando en el puerto", port);
+}); 

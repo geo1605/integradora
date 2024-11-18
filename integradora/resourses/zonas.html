@@ -10,16 +10,8 @@
     <link rel="stylesheet" href="../styles/lateral.css">
     <link rel="stylesheet" href="../styles/tablas.css">
     <link rel="stylesheet" href="../styles/formularios.css">
-    <link rel="stylesheet" href="../styles/loader.css">
-    <script src="../js/loader.js"></script>
 </head>
-<body style="border-top: 10px solid #8B2437;">
-    <div class="loader-container" id="loaderContainer">
-        <div class="loader">
-            <div class="moving-line"></div>
-            <img src="../img/logo-tosca-grad.png" alt="Logo">
-        </div>
-    </div>
+<body>
     <aside>
         <!--<a href="" id="logotipo"><span class="tooltip">Inicio</span> logo </a> -->
         <nav>
@@ -64,7 +56,7 @@
             <span class="material-symbols-outlined profile-icon">account_circle</span>
             <div class="dropdown-menu">
                 <button class="buser" onclick="cerrarSesion()">Cerrar sesión</button>
-                <a href="cambio.html"><button class="buser">Cambiar contraseña</button></a>
+                <a href="recuperacion.html"><button class="buser">Cambiar contraseña</button></a>
             </div>
         </div>
     </aside>
@@ -85,6 +77,7 @@
 
         <table id="zonas">
             <thead>
+                <th>ID</th>
                 <th>Nombre</th>
                 <th>Costo</th>
                 <th>Acciones</th>
@@ -121,6 +114,7 @@
                 zonasToShow.forEach(emp => {
                     zonasHTML += `
                         <tr>
+                            <td id="ID${emp.ID_zona}">${emp.ID_zona}</td>
                             <td id="nombre_colonia${emp.ID_zona}">${emp.nombre_colonia}</td>
                             <td id="costo_zona${emp.ID_zona}">${emp.costo_zona}</td>
                             <td class="acciones">
@@ -188,9 +182,6 @@
     </div>
     <div id="upPopup" class="Popup"></div>
 
-
-
-    <script src="../js/session.js"></script>
     <script src="../js/formulario.js"></script>
     <script src="../js/script.js"></script>
 </body>

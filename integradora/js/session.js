@@ -41,7 +41,7 @@ function cerrarSesion() {
         if (response.ok) {
             alert("Sesión cerrada correctamente.");
             // Redirige al usuario a la página de inicio de sesión (por ejemplo, index.html)
-            window.location.href = '/';
+            window.location.href = '../index.html';
         } else {
             alert("Error al cerrar sesión.");
         }

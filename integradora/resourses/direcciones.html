@@ -3,24 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Direcciones</title>
+    <title>Clientes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="../styles/lateral.css">
     <link rel="stylesheet" href="../styles/tablas.css">
     <link rel="stylesheet" href="../styles/formularios.css">
-    <link rel="stylesheet" href="../styles/loader.css">
-    <script src="../js/loader.js"></script>
+    <script>
+    // Obtener la URL completa
+       document.addEventListener("DOMContentLoaded", function() {
+    // Obtener el parámetro `id` de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const clienteId = parseInt(urlParams.get("id"));
+    const nombreC = urlParams.get("nombres");
+    const cont = document.getElementById('Ndirecciones');
+    const form = document.getElementById('direcciones');
+    cont.innerText += " " + nombreC;
+    form.innerHTML += `<input name="cliente" type="hidden" value="${clienteId}" />`;
+    cargarZonas();
+    if (clienteId) {
+        // Llamar a la API para obtener todas las direcciones
+        fetch('https://latosca.up.railway.app/direcciones')
+            .then(response => response.json())
+            .then(direcciones => {
+                // Filtrar las direcciones por ID del cliente
+                const direccionesCliente = direcciones.filter(direccion => direccion.ID_cliente == clienteId);
+                
+                // Renderizar solo las direcciones del cliente en la tabla
+                cargarDirecciones(direccionesCliente);
+            })
+            .catch(error => console.error("Error al cargar las direcciones:", error));
+    } else {
+        console.error("No se encontró el ID de cliente en la URL");
+    }
+});
+
+// Función para mostrar las direcciones en la tabla
+function cargarDirecciones(direcciones) {
+    // Selecciona el tbody utilizando el id específico
+    const tabla = document.getElementById("direcciones-body");
+    tabla.innerHTML = ""; // Limpiar la tabla antes de agregar nuevas filas
+
+    direcciones.forEach(direccion => {
+        console.log(`${direccion.ID_cliente} ${direccion.estatus}`)
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+                            <td id='calle${direccion.id_direccion}'>${direccion.calle}</td>
+                            <td id='num_ext${direccion.id_direccion}'>${direccion.numero}</td>
+                            <td id='num_int${direccion.id_direccion}'>${direccion.Numero_int || ""}</td>
+                            <td id='colonia${direccion.id_direccion}'>${direccion.colonia}</td>
+                            <td id='zona${direccion.id_direccion}'>${direccion.id_zona}</td>
+                            <td id='CP${direccion.id_direccion}'>${direccion.CP}</td>
+                            <td id="estatus${direccion.id_direccion}" class="${direccion.estatus === 1 ? 'positive' : 'negative'}">
+                                ${direccion.estatus === 1 ? 'activo' : 'inactivo'}
+                            </td>
+
+
+                            <td class="acciones">
+                                <button class="B_editar" onclick="updateDireccion(${direccion.id_direccion},${direccion.ID_cliente})">
+                                    <span class="material-symbols-outlined">edit</span>
+                                </button>
+                                <button class="B_eliminar" onclick="eliminarDireccion(${direccion.id_direccion})">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </td>
+        `;
+        tabla.appendChild(fila); // Añade cada fila al tbody
+    });
+}
+
+
+        </script>
 </head>
-<body style="border-top: 10px solid #8B2437;">
-    <div class="loader-container" id="loaderContainer">
-        <div class="loader">
-            <div class="moving-line"></div>
-            <img src="../img/logo-tosca-grad.png" alt="Logo">
-        </div>
-    </div>
+<body>
     <aside>
+        <!--<img src="#" alt="logotipo"> -->
         <nav>
         <ul>
             <li><a href="clientes.html" class="lateral">
@@ -33,44 +91,43 @@
     <main>
         <form action="" id="busquedas">
             <h2 id="Ndirecciones">Direcciones de </h2>
-            <button class="bot" type="button" onclick="addpopup()">
-                <span class="material-symbols-outlined">add_circle</span> Añadir
-            </button>
-            <div id="barra_busqueda">
-                <select class="js-example-basic-single zonas" name="zonas">
-                    <option value="" selected disabled>Zonas</option>
-                </select>
-                <input id="Search_principal" type="search" placeholder="Buscar">
-                <button id="Bot_busqueda" class="botS">
-                    <span class="material-symbols-outlined">search</span>
-                </button>
-            </div>
+            <button class="bot" type="button" onclick="addpopup()"><span class="material-symbols-outlined">
+                add_circle
+                </span> Añadir</button>
+                <div id="barra_busqueda">
+                    <select class="js-example-basic-single zonas"  name="zonas">
+                        <option value="" selected disabled>Zonas</option>
+                    </select>
+                    <input id="Search_principal" type="search" placeholder="Buscar">
+                    <button id="Bot_busqueda" class="botS"><span class="material-symbols-outlined">
+                        search
+                        </span></button>
+                </div>
         </form>
 
         <table>
             <thead>
-                <th>Calle</th>
+                <th>calle</th>
                 <th>Numero Exterior</th>
                 <th>Numero Interior</th>
                 <th>Colonia</th>
-                <th>Zona</th>
-                <th>Codigo Postal</th>
-                <th>Acciones</th>
+                <th>zona</th>
+                <th>codigo postal</th>
+                <th>estatus</th>
+                <th>acciones</th>
             </thead>
             <tbody id="direcciones-body">
                 <!-- Aquí se insertarán las filas dinámicamente -->
             </tbody>
         </table>
-
-        <!-- Contenedor de paginación -->
-        <div id="pagination-controls-direcciones" class="pagination-container"></div>
     </main>
 
     <div id="addPopup" class="Popup">
+        
         <form action="" class="modificacion" id="direcciones">
             <h2>Formulario Direcciones</h2>
             <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
-
+            
             <input type="text" class="medio" name="calle" placeholder="Calle">
             <input type="text" class="medio" name="colonia" placeholder="Colonia">
             <div class="contSel cuarto">
@@ -78,16 +135,17 @@
                     <option value="" selected disabled>Zona</option>
                 </select>
             </div>
+            
             <input type="text" name="numeroEX" class="cuarto" placeholder="Numero Exterior">
             <input type="text" name="numeroIC" class="cuarto" placeholder="Numero Interior">
             <input type="text" name="CP" class="cuarto" placeholder="Codigo Postal">
             <input type="submit" value="Enviar" class="full">
         </form>
+        
     </div>
     <div id="upPopup" class="Popup"></div>
 
 
-    <script src="../js/session.js"></script>
     <script src="../js/formulario.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -95,78 +153,12 @@
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
         });
-
-        const NpaginaDirecciones = 10; // Número de elementos por página
-        let NumpagDirecciones = 1; // Página inicial
-        let direccionesData = []; // Arreglo para almacenar los datos de direcciones
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const clienteId = parseInt(urlParams.get("id"));
-            const nombreC = urlParams.get("nombres");
-            document.getElementById('Ndirecciones').innerText += " " + nombreC;
-
-            if (clienteId) {
-                fetch('https://latosca.up.railway.app/direcciones')
-                    .then(response => response.json())
-                    .then(direcciones => {
-                        direccionesData = direcciones.filter(direccion => direccion.ID_cliente == clienteId);
-                        cargarDirecciones();
-                        paginacionDirecciones();
-                    })
-                    .catch(error => console.error("Error al cargar las direcciones:", error));
-            } else {
-                console.error("No se encontró el ID de cliente en la URL");
-            }
-        });
-
-        function cargarDirecciones() {
-            const start = (NumpagDirecciones - 1) * NpaginaDirecciones;
-            const end = start + NpaginaDirecciones;
-            const direccionesToShow = direccionesData.slice(start, end);
-
-            let direccionesHTML = '';
-            direccionesToShow.forEach(direccion => {
-                direccionesHTML += `
-                    <tr>
-                        <td id='calle${direccion.id_direccion}'>${direccion.calle}</td>
-                        <td id='num_ext${direccion.id_direccion}'>${direccion.numero}</td>
-                        <td id='num_int${direccion.id_direccion}'>${direccion.Numero_int || ""}</td>
-                        <td id='colonia${direccion.id_direccion}'>${direccion.colonia}</td>
-                        <td id='zona${direccion.id_direccion}'>${direccion.id_zona}</td>
-                        <td id='CP${direccion.id_direccion}'>${direccion.CP}</td>
-                        <td class="acciones">
-                            <button class="B_editar" onclick="updateDireccion(${direccion.id_direccion},${direccion.ID_cliente})">
-                                <span class="material-symbols-outlined">edit</span>
-                            </button>
-                            <button class="B_eliminar" onclick="eliminarDireccion(${direccion.id_direccion})">
-                                <span class="material-symbols-outlined">delete</span>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            document.getElementById("direcciones-body").innerHTML = direccionesHTML;
-        }
-
-        function paginacionDirecciones() {
-            const totalPages = Math.ceil(direccionesData.length / NpaginaDirecciones);
-            let paginationHTML = '';
-
-            for (let i = 1; i <= totalPages; i++) {
-                paginationHTML += `<button onclick="goToDireccionesPage(${i})" class="pagination-button ${i === NumpagDirecciones ? 'active' : ''}">${i}</button>`;
-            }
-
-            document.getElementById("pagination-controls-direcciones").innerHTML = paginationHTML;
-        }
-
-        function goToDireccionesPage(page) {
-            NumpagDirecciones = page;
-            cargarDirecciones();
-            paginacionDirecciones();
-        }
     </script>
     <script src="../js/script.js"></script>
+    <script>
+        function datos(params) {
+            
+        }
+    </script>
 </body>
 </html>

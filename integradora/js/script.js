@@ -402,8 +402,9 @@ function actualizarEmpleado(ID, event) {
       Apellido_M: document.querySelector('input[name="ActMaterno"]').value,
       Cargo: document.querySelector('select[name="Actcargo"]').value,
       correo: document.querySelector('input[name="Actcorreo"]').value,
+      password: 1234,
       Telefono: document.querySelector('input[name="Acttelefono"]').value,
-      estatus: 1,
+      estatus: document.querySelector('select[name="Actestatus"]').value === "Activo" ? 1 : 0,
   };
 
   fetch(`https://latosca.up.railway.app/empleado/modificar/${ID}`, {
@@ -446,7 +447,7 @@ function actualizarCliente(ID, event) {
       Apellido_M: document.querySelector('input[name="ActMaternoC"]').value,
       Telefono: document.querySelector('input[name="Acttelefono"]').value,
       correo: document.querySelector('input[name="Actcorreo"]').value,
-      estatus: 1,
+      estatus: document.querySelector('select[name="Actestatus"]').value === "Activo" ? 1 : 0,
   };
 
   fetch(`https://latosca.up.railway.app/cliente/modificar/${ID}`, {
@@ -488,7 +489,7 @@ function actualizarProducto(ID, event) {
       tipo: document.querySelector('select[name="Acttipo"]').value,
       Categoria: document.querySelector('select[name="Actcategoria"]').value,
       precio: parseFloat(document.querySelector('input[name="Actprecio"]').value),
-      estatus: 1,
+      estatus: document.querySelector('select[name="Actestatus"]').value === "existente" ? 1 : 0,
   };
 
   fetch(`https://latosca.up.railway.app/producto/modificar/${ID}`, {
