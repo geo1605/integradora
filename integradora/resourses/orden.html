@@ -174,7 +174,7 @@ function fetchOrdenes() {
                     <td>${orden.ID_Empleados}</td> <!-- Suponiendo que "ID_Empleados" es el encargado -->
                     <td>${orden.ID_cliente}</td> <!-- Suponiendo que "ID_cliente" es el cliente -->
                     <td>${orden.Direccion}</td> <!-- Suponiendo que "ID_detalle" representa la dirección -->
-                    <td>${orden.FechaE}</td>
+                    <td>${formatDate(orden.FechaE)}</td>
                     <td class="${orden.Estatus === 'activo' ? 'positive' : 'negative'}">${orden.Estatus}</td>
                     <td>${orden.Precio_total || 'N/A'}</td>
                     <td>${orden.tipo_pago || 'N/A'}</td>
