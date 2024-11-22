@@ -434,21 +434,28 @@ document.getElementById("direccion").addEventListener("change", actualizarCostoZ
 
 // Función para formatear la fecha
 function formatDate(fechaISO) {
-    const date = new Date(fechaISO);
-
-    if (isNaN(date.getTime())) {
-        console.error("Fecha no válida:", fechaISO);
+    if (!fechaISO) {
+        console.error("Fecha no proporcionada.");
         return "";
     }
 
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    try {
+        const [fecha, hora] = fechaISO.split("T");
+        if (!fecha || !hora) {
+            throw new Error("Formato ISO incorrecto.");
+        }
 
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
+        const [year, month, day] = fecha.split("-");
+        const [hours, minutes] = hora.split(":");
+
+        // Formatear en el estilo deseado: "YYYY-MM-DDTHH:mm"
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    } catch (error) {
+        console.error("Error al formatear la fecha:", error.message);
+        return "";
+    }
 }
+
 
 
 
