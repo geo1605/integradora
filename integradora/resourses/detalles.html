@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     cargarProductosOrden(ordenId);
 
                     document.getElementById("Tipo").value = orden.tipo_pago || "";
-                    document.getElementById("fecha-hora").value = formatDate(orden.fechaE);
+                    document.getElementById("fecha-hora").value = formatDate(orden.FechaE);
                     document.getElementById("estatus").value = orden.Estatus || "";
                 } else {
                     console.error("No se encontró la orden con el ID especificado");
