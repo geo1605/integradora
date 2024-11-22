@@ -9,53 +9,50 @@
     <link rel="stylesheet" href="../styles/lateral.css">
     <link rel="stylesheet" href="../styles/tablas.css">
     <link rel="stylesheet" href="../styles/formularios.css">
+    <link rel="stylesheet" href="../styles/loader.css">
+    <script src="../js/loader.js"></script>
 </head>
-<body>
+<body style="border-top: 10px solid #8B2437;">
+    <div class="loader-container" id="loaderContainer">
+        <div class="loader">
+            <div class="moving-line"></div>
+            <img src="../img/logo-tosca-grad.png" alt="Logo">
+        </div>
+    </div>
     <aside>
-        <!--<a href="" id="logotipo"><span class="tooltip">Inicio</span> logo </a> -->
         <nav>
-        <ul>
-            <li><a href="main.html" class="lateral">
-                <span class="material-symbols-outlined">
-                    home
-                    </span>
-                <span class="tooltip">Inicio</span>
+            <ul>
+                <li><a href="main.html" class="lateral">
+                    <span class="material-symbols-outlined">home</span>
+                    <span class="tooltip">Inicio</span>
                 </a></li>
-            <li><a href="orden.html" class="lateral">
-            <span class="material-symbols-outlined">
-                checklist
-                </span>
-            <span class="tooltip">tabla ordenes</span>
-            </a></li>
-            <li><a href="crearOrden.html" class="lateral">
-                <span class="material-symbols-outlined">
-                    edit_square
-                </span>
-                <span class="tooltip">crear Orden</span>
+                <li><a href="orden.html" class="lateral">
+                    <span class="material-symbols-outlined">checklist</span>
+                    <span class="tooltip">Tabla Órdenes</span>
                 </a></li>
-            <li><a href="productos.html" class="lateral admin">
-                <span class="material-symbols-outlined">inventory</span>
-                <span class="tooltip">Productos</span>
-            </a></li>
-            <li><a href="empleados.html" class="lateral admin selected">
-                <span class="material-symbols-outlined">person</span>
-                <span class="tooltip">Empleados</span>
-            </a></li>
-            <li><a href="clientes.html" class="lateral admin">
-                <span class="material-symbols-outlined">groups</span>
-                <span class="tooltip">Clientes</span>
-            </a></li>
-            <li><a href="zonas.html" class="lateral admin">
-                <span class="material-symbols-outlined">map</span>
-                <span class="tooltip">Zonas</span>
-            </a></li>
-        </ul>
+                <li><a href="productos.html" class="lateral admin">
+                    <span class="material-symbols-outlined">inventory</span>
+                    <span class="tooltip">Productos</span>
+                </a></li>
+                <li><a href="empleados.html" class="lateral admin selected">
+                    <span class="material-symbols-outlined">person</span>
+                    <span class="tooltip">Empleados</span>
+                </a></li>
+                <li><a href="clientes.html" class="lateral admin">
+                    <span class="material-symbols-outlined">groups</span>
+                    <span class="tooltip">Clientes</span>
+                </a></li>
+                <li><a href="zonas.html" class="lateral admin">
+                    <span class="material-symbols-outlined">map</span>
+                    <span class="tooltip">Zonas</span>
+                </a></li>
+            </ul>
         </nav>
         <div class="profile-container">
             <span class="material-symbols-outlined profile-icon">account_circle</span>
             <div class="dropdown-menu">
                 <button class="buser" onclick="cerrarSesion()">Cerrar sesión</button>
-                <a href="recuperacion.html"><button class="buser">Cambiar contraseña</button></a>
+                <a href="cambio.html"><button class="buser">Cambiar contraseña</button></a>
             </div>
         </div>
     </aside>
@@ -67,9 +64,9 @@
             </button>
             <div id="barra_busqueda">
                 <input id="Search_principal" type="search" placeholder="Buscar">
-                <button id="Bot_busqueda" class="botS"><span class="material-symbols-outlined">
-                    search
-                    </span></button>
+                <button id="Bot_busqueda" class="botS">
+                    <span class="material-symbols-outlined">search</span>
+                </button>
             </div>
         </form>
 
@@ -77,14 +74,12 @@
         <table id="empleados-tabla">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Nombre(s)</th>
                     <th>Apellido Paterno</th>
                     <th>Apellido Materno</th>
                     <th>Cargo</th>
                     <th>Correo</th>
                     <th>Teléfono</th>
-                    <th>Estatus</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -95,7 +90,6 @@
         
         <div id="pagination-controls" class="pagination-container"></div>
 
-        
         <script>
             const Npagina = 20; // Número de elementos por página
             let Numpag = 1; // Página inicial
@@ -105,7 +99,7 @@
                 fetch('https://latosca.up.railway.app/empleados')
                     .then(response => response.json())
                     .then(empleados => {
-                        empleadosData = empleados; // Guardamos los datos en una variable global
+                        empleadosData = empleados;
                         renderTable();
                         renderPaginationControls();
                     })
@@ -115,39 +109,37 @@
             function renderTable() {
                 const start = (Numpag - 1) * Npagina;
                 const end = start + Npagina;
-                const empleadosToShow = empleadosData.slice(start, end); // Paginación de registros
+                const empleadosToShow = empleadosData.slice(start, end);
                 
                 let empleadosHTML = '';
                 empleadosToShow.forEach(emp => {
-                    empleadosHTML += `
+                    if (emp.estatus === 1) {
+                        empleadosHTML += `
                         <tr>
-                            <td id='ID${emp.ID_Empleados}'>${emp.ID_Empleados}</td>
-                            <td id='nombre${emp.ID_Empleados}'>${emp.Nombres}</td>
-                            <td id='apellidoP${emp.ID_Empleados}'>${emp.Apellido_P}</td>
-                            <td id='apellidoM${emp.ID_Empleados}'>${emp.Apellido_M}</td>
-                            <td id='cargo${emp.ID_Empleados}' class="${emp.Cargo === "admin" ? 'positive' : ''}">${emp.Cargo}</td>
-                            <td id='correo${emp.ID_Empleados}'>${emp.correo || 'N/A'}</td>
-                            <td id='telefono${emp.ID_Empleados}'>${emp.Telefono}</td>
-                            <td class="${emp.estatus === 1 ? 'positive' : 'negative'}" id='estatus${emp.ID_Empleados}'>
-                                ${emp.estatus === 1 ? 'activo' : 'inactivo'}
-                            </td>
+                            <td id="nombre${emp.ID_Empleados}">${emp.Nombres}</td>
+                            <td id="apellidoP${emp.ID_Empleados}">${emp.Apellido_P}</td>
+                            <td id="apellidoM${emp.ID_Empleados}">${emp.Apellido_M}</td>
+                            <td id="cargo${emp.ID_Empleados}" class="${emp.Cargo === "admin" ? 'positive' : ''}">${emp.Cargo}</td>
+                            <td id="correo${emp.ID_Empleados}">${emp.correo || 'N/A'}</td>
+                            <td id="telefono${emp.ID_Empleados}">${emp.Telefono}</td>
                             <td class="acciones">
                                 <button class="B_editar" onclick="updateEmp(${emp.ID_Empleados})">
                                     <span class="material-symbols-outlined">edit</span>
                                 </button>
-                                <button class="B_eliminar" onclick="eliminarEmp(${emp.ID_Empleados})">
+                                <button class="B_eliminar" onclick="eliminarEmpleado(${emp.ID_Empleados})">
                                     <span class="material-symbols-outlined">delete</span>
                                 </button>
                             </td>
                         </tr>
                     `;
+                    }
                 });
 
                 document.getElementById("empleados-body").innerHTML = empleadosHTML;
             }
 
             function renderPaginationControls() {
-                const totalPages = Math.ceil(empleadosData.length / Npagina);
+                const totalPages = Math.ceil(empleadosData.filter(emp => emp.estatus === 1).length / Npagina);
                 let paginationHTML = '';
 
                 for (let i = 1; i <= totalPages; i++) {
@@ -163,19 +155,36 @@
                 renderPaginationControls();
             }
 
+            
+            // Función para realizar la búsqueda
+            function buscadorEmpleados() {
+                const searchTerm = document.getElementById("Search_principal").value.toLowerCase();
+                filteredEmpleados = empleadosData.filter(empleado => {
+                    return (
+                        empleado.Nombres.toLowerCase().includes(searchTerm) ||
+                        empleado.Apellido_P.toLowerCase().includes(searchTerm) ||
+                        empleado.Apellido_M.toLowerCase().includes(searchTerm) ||
+                        empleado.Telefono.toLowerCase().includes(searchTerm) ||
+                        empleado.correo.toLowerCase().includes(searchTerm)
+                    );
+                });
+                Numpag = 1; // Reiniciar a la primera página
+                renderTable();
+                renderPaginationControls();
+            }
+
+            // Añadir un evento de búsqueda al campo de búsqueda
+            document.getElementById("Search_principal").addEventListener("input", buscadorEmpleados);
+
             // Llamar a la función para cargar los empleados y configurar la paginación
             fetchEmpleados();
-
         </script>
-        
     </main>
 
-    <!-- Formulario de Popup -->
     <div id="addPopup" class="Popup">
         <form action="" class="modificacion" id="empleadoForm">
             <h2>Formulario Empleado</h2>
             <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
-        
             <input type="text" class="tercio" name="Nombres" placeholder="Nombre(s)">
             <input type="text" class="tercio" name="Apellido_P" placeholder="Apellido Paterno">
             <input type="text" class="tercio" name="Apellido_M" placeholder="Apellido Materno">
@@ -191,6 +200,7 @@
     </div>
     <div id="upPopup" class="Popup"></div>
 
+    <script src="../js/session.js"></script>
     <script src="../js/formulario.js"></script>
     <script src="../js/script.js"></script>
 

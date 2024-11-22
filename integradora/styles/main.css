@@ -187,20 +187,54 @@ body {
 /* Costos */
 #costos {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  justify-content: space-between;
+  align-items: flex-start; /* Alinea los elementos superiores */
   padding-top: 2%;
   border-top: 1px solid #ddd;
   margin-top: 2%;
-  grid-column-start: 1;
-  grid-column-end: 3;
 }
-#costos h3 {
+
+.bloque-izquierdo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem; /* Espaciado entre campos */
+  align-items: center;
+  margin-right: 10%;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.campo label {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.campo select,
+.campo input {
+  width: 16rem; /* Misma anchura para ambos elementos */
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.bloque-derecho {
+  text-align: right;
+
+}
+
+#totalO {
+  margin-left: 20%;
   font-size: 1.8rem;
   color: var(--color-primary);
-  margin-bottom: 1rem;
+  margin: 0;
 }
+
 /* Botón "Hacer orden" en la sección de costos */
 #costos .bot {
   width: 80%;

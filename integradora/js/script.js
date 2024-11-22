@@ -382,7 +382,7 @@ function actualizarZona(ID, event) {
 function eliminarZona(id) {
   if (!confirm("¿Estás seguro de que deseas eliminar esta zona?")) return;
 
-  fetch(`https://latosca.up.railway.app/zona/eliminar/${id}`, { method: "DELETE" })
+  fetch(`https://latosca.up.railway.app/zona/eliminar/${id}`, { method: "PUT" })
   .then((response) => {
       if (!response.ok) throw new Error(`Error al eliminar la zona: ${response.status}`);
       alert("Zona eliminada exitosamente");
@@ -402,9 +402,8 @@ function actualizarEmpleado(ID, event) {
       Apellido_M: document.querySelector('input[name="ActMaterno"]').value,
       Cargo: document.querySelector('select[name="Actcargo"]').value,
       correo: document.querySelector('input[name="Actcorreo"]').value,
-      password: 1234,
       Telefono: document.querySelector('input[name="Acttelefono"]').value,
-      estatus: document.querySelector('select[name="Actestatus"]').value === "Activo" ? 1 : 0,
+      estatus: 1,
   };
 
   fetch(`https://latosca.up.railway.app/empleado/modificar/${ID}`, {
@@ -427,7 +426,7 @@ function actualizarEmpleado(ID, event) {
 function eliminarEmpleado(id) {
   if (!confirm("¿Estás seguro de que deseas eliminar este empleado?")) return;
 
-  fetch(`https://latosca.up.railway.app/empleado/eliminar/${id}`, { method: "DELETE" })
+  fetch(`https://latosca.up.railway.app/empleado/eliminar/${id}`, { method: "PUT" })
   .then((response) => {
       if (!response.ok) throw new Error(`Error al eliminar el empleado: ${response.status}`);
       alert("Empleado eliminado exitosamente");
@@ -447,7 +446,7 @@ function actualizarCliente(ID, event) {
       Apellido_M: document.querySelector('input[name="ActMaternoC"]').value,
       Telefono: document.querySelector('input[name="Acttelefono"]').value,
       correo: document.querySelector('input[name="Actcorreo"]').value,
-      estatus: document.querySelector('select[name="Actestatus"]').value === "Activo" ? 1 : 0,
+      estatus: 1,
   };
 
   fetch(`https://latosca.up.railway.app/cliente/modificar/${ID}`, {
@@ -470,7 +469,7 @@ function actualizarCliente(ID, event) {
 function eliminarCliente(id) {
   if (!confirm("¿Estás seguro de que deseas eliminar este cliente?")) return;
 
-  fetch(`https://latosca.up.railway.app/cliente/eliminar/${id}`, { method: "DELETE" })
+  fetch(`https://latosca.up.railway.app/cliente/eliminar/${id}`, { method: "PUT" })
   .then((response) => {
       if (!response.ok) throw new Error(`Error al eliminar el cliente: ${response.status}`);
       alert("Cliente eliminado exitosamente");
@@ -489,7 +488,7 @@ function actualizarProducto(ID, event) {
       tipo: document.querySelector('select[name="Acttipo"]').value,
       Categoria: document.querySelector('select[name="Actcategoria"]').value,
       precio: parseFloat(document.querySelector('input[name="Actprecio"]').value),
-      estatus: document.querySelector('select[name="Actestatus"]').value === "existente" ? 1 : 0,
+      estatus: 1,
   };
 
   fetch(`https://latosca.up.railway.app/producto/modificar/${ID}`, {
@@ -512,7 +511,7 @@ function actualizarProducto(ID, event) {
 function eliminarProducto(id) {
   if (!confirm("¿Estás seguro de que deseas eliminar este producto?")) return;
 
-  fetch(`https://latosca.up.railway.app/producto/eliminar/${id}`, { method: "DELETE" })
+  fetch(`https://latosca.up.railway.app/producto/eliminar/${id}`, { method: "PUT" })
   .then((response) => {
       if (!response.ok) throw new Error(`Error al eliminar el producto: ${response.status}`);
       alert("Producto eliminado exitosamente");
@@ -576,7 +575,7 @@ function actualizarDireccion(ID, event, idC) {
 function eliminarDireccion(id) {
   if (!confirm("¿Estás seguro de que deseas eliminar esta dirección?")) return;
 
-  fetch(`https://latosca.up.railway.app/direccion/eliminar/${id}`, { method: "DELETE" })
+  fetch(`https://latosca.up.railway.app/direccion/eliminar/${id}`, { method: "PUT" })
   .then((response) => {
       if (!response.ok) throw new Error(`Error al eliminar la dirección: ${response.status}`);
       alert("Dirección eliminada exitosamente");

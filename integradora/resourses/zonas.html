@@ -3,15 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productos</title>
+    <title>Zonas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="../styles/lateral.css">
     <link rel="stylesheet" href="../styles/tablas.css">
     <link rel="stylesheet" href="../styles/formularios.css">
+    <link rel="stylesheet" href="../styles/loader.css">
+    <script src="../js/loader.js"></script>
 </head>
-<body>
+<body style="border-top: 10px solid #8B2437;">
+    <div class="loader-container" id="loaderContainer">
+        <div class="loader">
+            <div class="moving-line"></div>
+            <img src="../img/logo-tosca-grad.png" alt="Logo">
+        </div>
+    </div>
     <aside>
         <!--<a href="" id="logotipo"><span class="tooltip">Inicio</span> logo </a> -->
         <nav>
@@ -28,12 +36,7 @@
                 </span>
             <span class="tooltip">tabla ordenes</span>
             </a></li>
-            <li><a href="crearOrden.html" class="lateral">
-                <span class="material-symbols-outlined">
-                    edit_square
-                </span>
-                <span class="tooltip">crear Orden</span>
-                </a></li>
+             
             <li><a href="productos.html" class="lateral admin">
                 <span class="material-symbols-outlined">inventory</span>
                 <span class="tooltip">Productos</span>
@@ -56,7 +59,7 @@
             <span class="material-symbols-outlined profile-icon">account_circle</span>
             <div class="dropdown-menu">
                 <button class="buser" onclick="cerrarSesion()">Cerrar sesión</button>
-                <a href="recuperacion.html"><button class="buser">Cambiar contraseña</button></a>
+                <a href="cambio.html"><button class="buser">Cambiar contraseña</button></a>
             </div>
         </div>
     </aside>
@@ -77,7 +80,6 @@
 
         <table id="zonas">
             <thead>
-                <th>ID</th>
                 <th>Nombre</th>
                 <th>Costo</th>
                 <th>Acciones</th>
@@ -112,9 +114,9 @@
                 
                 let zonasHTML = '';
                 zonasToShow.forEach(emp => {
+                    if (emp.estatus === 1) {
                     zonasHTML += `
                         <tr>
-                            <td id="ID${emp.ID_zona}">${emp.ID_zona}</td>
                             <td id="nombre_colonia${emp.ID_zona}">${emp.nombre_colonia}</td>
                             <td id="costo_zona${emp.ID_zona}">${emp.costo_zona}</td>
                             <td class="acciones">
@@ -127,6 +129,7 @@
                             </td>
                         </tr>
                     `;
+                    }
                 });
 
                 document.getElementById("zonas-body").innerHTML = zonasHTML;
@@ -149,8 +152,28 @@
                 renderZonasPaginationControls();
             }
 
+            
+            // Función para realizar la búsqueda
+            function buscadorZonas() {
+                const searchTerm = document.getElementById("Search_principal").value.toLowerCase();
+                filteredZonas = zonasData.filter(zona => {
+                    return (
+                        zona.nombre_colonia.toLowerCase().includes(searchTerm) ||
+                        zona.costo_zona.toLowerCase().includes(searchTerm) 
+                    );
+                });
+                NumpagZona = 1; // Reiniciar a la primera página
+                renderZonasTable();
+                renderZonasPaginationControls();
+            }
+
+            // Añadir un evento de búsqueda al campo de búsqueda
+            document.getElementById("Search_principal").addEventListener("input", buscadorZonas);
+
+
             // Llamar a la función para cargar las zonas y configurar la paginación
             fetchZonas();
+
 
         </script>
         
@@ -182,7 +205,42 @@
     </div>
     <div id="upPopup" class="Popup"></div>
 
+
+    
+    <script src="../js/session.js"></script>
     <script src="../js/formulario.js"></script>
     <script src="../js/script.js"></script>
+    <script>
+        
+        function validarInputBlur(inputId, longitudMinima = 1) {
+    const input = document.getElementById(inputId);
+    const mensajeError = document.getElementById("mensajeError");
+
+    if (!input) {
+        console.error(`No se encontró el input con ID "${inputId}"`);
+        return;
+    }
+    
+    input.addEventListener("blur", () => {
+        const valor = input.value.trim(); // Remover espacios en blanco
+        
+        if (valor === "") {
+            mensajeError.textContent = "El campo no puede estar vacío.";
+            mensajeError.style.display = "block";
+        } else if (valor.length < longitudMinima) {
+            mensajeError.textContent = `El campo debe tener al menos ${longitudMinima} caracteres.`;
+            mensajeError.style.display = "block";
+        } else {
+            mensajeError.style.display = "none";
+        }
+    });
+}
+
+// Llamar a la función al cargar el documento
+document.addEventListener("DOMContentLoaded", () => {
+    validarInputBlur("miInput", 5);
+});
+
+    </script>
 </body>
 </html>

@@ -10,8 +10,16 @@
     <link rel="stylesheet" href="../styles/lateral.css">
     <link rel="stylesheet" href="../styles/orden.css">
     <link rel="stylesheet" href="../styles/formularios.css">
+    <link rel="stylesheet" href="../styles/loader.css">
+    <script src="../js/loader.js"></script>
 </head>
 <body style="border-top: 10px solid #8B2437;">
+    <div class="loader-container" id="loaderContainer">
+        <div class="loader">
+            <div class="moving-line"></div>
+            <img src="../img/logo-tosca-grad.png" alt="Logo">
+        </div>
+    </div>
     <aside>
         <!--<a href="" id="logotipo"><span class="tooltip">Inicio</span> logo </a> -->
         <nav>
@@ -34,29 +42,29 @@
                 </span>
                 <span class="tooltip">crear Orden</span>
                 </a></li>
-            <li><a href="productos.html" class="lateral admin">
-                <span class="material-symbols-outlined">inventory</span>
-                <span class="tooltip">Productos</span>
-            </a></li>
-            <li><a href="empleados.html" class="lateral admin">
-                <span class="material-symbols-outlined">person</span>
-                <span class="tooltip">Empleados</span>
-            </a></li>
-            <li><a href="clientes.html" class="lateral admin">
-                <span class="material-symbols-outlined">groups</span>
-                <span class="tooltip">Clientes</span>
-            </a></li>
-            <li><a href="zonas.html" class="lateral admin">
-                <span class="material-symbols-outlined">map</span>
-                <span class="tooltip">Zonas</span>
-            </a></li>
-        </ul>
+                <li><a href="productos.html" class="lateral admin">
+                    <span class="material-symbols-outlined">inventory</span>
+                    <span class="tooltip">Productos</span>
+                </a></li>
+                <li><a href="empleados.html" class="lateral admin">
+                    <span class="material-symbols-outlined">person</span>
+                    <span class="tooltip">Empleados</span>
+                </a></li>
+                <li><a href="clientes.html" class="lateral admin">
+                    <span class="material-symbols-outlined">groups</span>
+                    <span class="tooltip">Clientes</span>
+                </a></li>
+                <li><a href="zonas.html" class="lateral admin">
+                    <span class="material-symbols-outlined">map</span>
+                    <span class="tooltip">Zonas</span>
+                </a></li>
+            </ul>
         </nav>
         <div class="profile-container">
             <span class="material-symbols-outlined profile-icon">account_circle</span>
             <div class="dropdown-menu">
                 <button class="buser" onclick="cerrarSesion()">Cerrar sesión</button>
-                <a href="recuperacion.html"><button class="buser">Cambiar contraseña</button></a>
+                <a href="cambio.html"><button class="buser">Cambiar contraseña</button></a>
             </div>
         </div>
     </aside>
@@ -68,7 +76,7 @@
             
             <section id="empleadoSection">
                 <h3>Empleado</h3>
-                <select id="EmpleadoO" class="js-example-basic-single" name="state">
+                <select id="EmpleadoO" class="js-example-basic-single" name="state" required>
 
                 </select>
             </section>
@@ -82,9 +90,10 @@
             </section>  
             <section id="infoClientDireccion">
                 <label for="cliente">Cliente</label>
-                <select id="cliente" class="js-example-basic-single" name="clientes"></select>
+                <br>
+                <select id="cliente" class="js-example-basic-single" name="clientes" required></select>
                 
-                <select id="direccionS" class="js-example-basic-single" name="direccion">
+                <select id="direccionS" class="js-example-basic-single" name="direccion" required>
                     <option disabled selected>Direcciones</option>
                 </select>
                 
@@ -96,21 +105,63 @@
             
         
             <section id="costos">
-                <select name="tipoP" id="tipoP">
-                    <option selected disabled>metodo de pago</option>
-                    <option value="Efectivo">Efectivo</option>
-                    <option value="tarjeta">Tarjeta</option>
-                    <option value="deposito">Deposito</option>
-                </select>
-                <h3 id="totalO">Total: </h3>
-                
-            </section>
+                <div class="bloque-izquierdo" style="margin-right: 10%;">
+                  <div class="campo">
+                    <label for="tipoP">Método de pago:</label>
+                    <select name="tipoP" id="tipoP" required>
+                      <option selected disabled>Seleccione un método</option>
+                      <option value="Efectivo">Efectivo</option>
+                      <option value="tarjeta">Tarjeta</option>
+                      <option value="deposito">Depósito</option>
+                    </select>
+                  </div>
+              
+                  <div class="campo">
+                    <label for="fechaE">Fecha de entrega:</label>
+                    <input id="fechaE" type="datetime-local" placeholder="Fecha de entrega">
+                  </div>
+                </div>
+              
+                <div class="bloque-derecho">
+                  <h3 id="totalO">Total: </h3>
+                </div>
+              </section>
+              
+            
             <button type="submit" class="botB">Hacer orden</button>
         </form>
     </main>
 
-    
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('https://latosca.up.railway.app/api/rol', { credentials: 'include' }) // Incluye cookies
+                .then(response => response.json())
+                .then(data => {
+                    if (data.rol === 'admin') {
+                        ocultarElementosUser(); // Oculta elementos solo para usuarios normales
+                    } else if (data.rol === 'empleado') {
+                        ocultarElementosAdmin(); // Oculta elementos solo para administradores
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al obtener el rol del usuario:', error);
+                    ocultarElementosAdmin(); // Por seguridad, oculta si no se puede determinar el rol
+                    ocultarElementosUser(); // Por seguridad, oculta si no se puede determinar el rol
+                });
+        });
+        
+        function ocultarElementosAdmin() {
+            const elementos = document.querySelectorAll('.admin'); // Selecciona los elementos con la clase "admin"
+            elementos.forEach(elemento => elemento.style.display = 'none'); // Oculta los elementos
+        }
+
+        function ocultarElementosUser() {
+            const elementos = document.querySelectorAll('.user'); // Selecciona los elementos con la clase "user"
+            elementos.forEach(elemento => elemento.style.display = 'none'); // Oculta los elementos
+        }
+
+    </script>
+    <script src="../js/session.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
@@ -125,6 +176,8 @@
 
 
     </script>
+
+    <script src="../js/session.js"></script>
     <script src="../js/formulario.js"></script>
     <script src="../js/orden.js">
     </script>

@@ -20,7 +20,7 @@ function anadirProducto() {
 
     let newProductHTML = `
         <div class="producto-item" id="producto${j}">
-            <select id="productoSelect${j}" class="productosO js-example-basic-single" name="producto${j}" onchange="actualizarPrecio(${j})">
+            <select id="productoSelect${j}" class="productosO js-example-basic-single" name="producto${j}" required onchange="actualizarPrecio(${j})">
                 <option value="" selected disabled>Productos</option>
             </select>
             <input id="cantidad${j}" type="number" name="cantidad${j}" placeholder="cantidad/Kg" oninput="actualizarTotal()">
@@ -32,7 +32,10 @@ function anadirProducto() {
 
     const nuevoSelect = document.getElementById(`productoSelect${j}`);
     productosData.forEach((producto) => {
-        nuevoSelect.innerHTML += `<option value="${producto.ID_product}">${producto.Nombre}</option>`;
+        if (producto.estatus == 1) {
+            nuevoSelect.innerHTML += `<option value="${producto.ID_product}">${producto.Nombre}</option>`;
+        }
+        
     });
 
     // Aplicar select2 después de añadir el nuevo select al DOM
@@ -90,7 +93,9 @@ function cargarEmpleados() {
         if (select) {
           select.innerHTML = '<option value="" selected disabled>Empleados</option>';
           empleados.forEach((empleado) => {
-            select.innerHTML += `<option value="${empleado.ID_Empleados}">${empleado.Nombres} ${empleado.Apellido_P} ${empleado.Apellido_M}</option>`;
+            if (empleado.estatus == 1) {
+                select.innerHTML += `<option value="${empleado.ID_Empleados}">${empleado.Nombres} ${empleado.Apellido_P} ${empleado.Apellido_M}</option>`;
+            }
           });
           
           $(select).select2(); // Inicializa select2 en el select
@@ -165,7 +170,10 @@ function actualizarDirecciones() {
 
         // Agrega las direcciones filtradas al select
         direccionesFiltradas.forEach((direccion) => {
-            selectDireccion.innerHTML += `<option value="${direccion.id_direccion}" data-id-zona="${direccion.id_zona}">${direccion.calle}, ${direccion.colonia}, ${direccion.numero}</option>`;
+            if (direccion.estatus == 1) {
+                selectDireccion.innerHTML += `<option value="${direccion.id_direccion}" data-id-zona="${direccion.id_zona}">${direccion.calle}, ${direccion.colonia}, ${direccion.numero}</option>`;
+            }
+            
         });
 
         // Inicializa select2 en el select de direcciones
@@ -192,64 +200,71 @@ function actualizarDirecciones() {
 //iniciar orden
 
 
-async function registrarDetalleProducto(ID_product, cantidad_p) {
+async function registrarOrdenPrimero(datosOrden) {
     try {
-        const response = await fetch('https://latosca.up.railway.app/detalle/registrar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                ID_product: ID_product,
-                cantidad_p: cantidad_p,
-                Importe: 0  // Valor por defecto
-            })
-        });
-        const data = await response.json();
-        return data.insertId;  // Devuelve el ID del detalle insertado
-    } catch (error) {
-        console.error('Error al registrar detalle del producto:', error);
-    }
-}
+        const {fechaE, Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_Empleados, tipo_pago } = datosOrden;
 
-async function registrarOrden(datosOrden) {
-    try {
-        const { productos, Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_Empleados, tipo_pago } = datosOrden;
-
-        // Llama a registrarDetalleProducto para cada producto y guarda sus IDs
-        const detallesIDs = await Promise.all(productos.map(async (producto) => {
-            return await registrarDetalleProducto(producto.ID_product, producto.cantidad_p);
-        }));
-
-        // Si hay múltiples detalles, asume que ID_detalle es un array
-        const ID_detalle = detallesIDs.join(',');
-
+        // Crear la orden primero
         const response = await fetch('https://latosca.up.railway.app/orden/registrar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                Fecha: Fecha, // Fecha proporcionada en datosOrden
-                Hora: Hora,   // Hora proporcionada en datosOrden
+                fechaE: fechaE,
+                Fecha: Fecha,
+                Hora: Hora,
                 Estatus: Estatus,
-                Direccion: Direccion, // Agregar Dirección aquí
+                Direccion: Direccion,
                 Precio_total: Precio_total,
                 ID_cliente: ID_cliente,
-                ID_detalle: ID_detalle, // Asigna los IDs de detalle
                 ID_Empleados: ID_Empleados,
                 tipo_pago: tipo_pago
             })
         });
+
         const data = await response.json();
-        console.log('Orden registrada:', data);
+
+        // Devuelve el ID de la orden creada
+        if (data.insertId) {
+            return data.insertId;
+        } else {
+            throw new Error("No se pudo obtener el ID de la orden creada.");
+        }
     } catch (error) {
         console.error('Error al registrar la orden:', error);
+        throw error; // Propaga el error para manejarlo en el llamado
+    }
+}
+
+async function registrarDetallesConOrden(ID_orden, productos) {
+    try {
+        // Registrar los detalles con el ID de la orden creada
+        const detallesIDs = await Promise.all(productos.map(async (producto) => {
+            const response = await fetch('https://latosca.up.railway.app/detalle/registrar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ID_product: producto.ID_product,
+                    ID_orden: ID_orden, // Asigna el ID de la orden creada
+                    cantidad_p: producto.cantidad_p
+                })
+            });
+            const data = await response.json();
+            return data.insertId; // Devuelve el ID del detalle insertado
+        }));
+
+        return detallesIDs;
+    } catch (error) {
+        console.error('Error al registrar detalles del producto:', error);
+        throw error;
     }
 }
 
 document.querySelector('.botB').addEventListener('click', async (event) => {
-    event.preventDefault();  // Evita el envío del formulario por defecto
+    event.preventDefault(); // Evita el envío del formulario por defecto
 
     // Obtén los productos seleccionados y otros datos del formulario
     const productos = [...document.querySelectorAll('.producto-item')].map((prod) => ({
@@ -265,12 +280,14 @@ document.querySelector('.botB').addEventListener('click', async (event) => {
         }
     }
 
-    // Obtén el total directamente desde el elemento h3 con id totalO
+    // Obtener el total directamente desde el elemento h3 con id totalO
     const totalElement = document.getElementById("totalO");
     const Precio_total = parseFloat(totalElement.textContent.replace("Total: ", "")) || 0;
 
     // Obtener la dirección seleccionada desde el select con id 'direccionS'
-    const Direccion = document.getElementById('direccionS').options[document.getElementById('direccionS').selectedIndex].text;
+    const direccionSelectF = document.getElementById('direccionS');
+    const Direccion = direccionSelectF.value; // Obtiene el value de la opción seleccionada
+    
     if (!Direccion) {
         console.error("No se ha seleccionado una dirección.");
         return;
@@ -279,11 +296,15 @@ document.querySelector('.botB').addEventListener('click', async (event) => {
     // Obtener la fecha y hora actual en los formatos correctos
     const Fecha = new Date().toISOString().split('T')[0]; // yyyy-mm-dd
     const Hora = new Date().toTimeString().split(' ')[0]; // HH:MM:SS en formato 24 horas
+    const fechaE = document.getElementById('fechaE').value;
+    const fechaEConvertida = fechaE.replace("T", " "); // Reemplaza la 'T' con un espacio
 
+    alert(fechaE)
     const datosOrden = {
         productos: productos,
         Fecha: Fecha,
         Hora: Hora,
+        fechaE: fechaE,
         Estatus: 'activo',
         Direccion: Direccion,  // Dirección seleccionada
         Precio_total: Precio_total,
@@ -292,9 +313,19 @@ document.querySelector('.botB').addEventListener('click', async (event) => {
         tipo_pago: document.getElementById('tipoP').value
     };
 
-    console.log("Datos de la orden a registrar:", datosOrden);
 
-    await registrarOrden(datosOrden);
+    try {
+        // Primero registrar la orden
+        const ID_orden = await registrarOrdenPrimero(datosOrden);
+
+        // Luego registrar los detalles con el ID de la orden
+        await registrarDetallesConOrden(ID_orden, productos);
+
+        alert("la orden se creo con exito")
+        window.location.href = 'orden.html';
+    } catch (error) {
+        console.error("Error al registrar la orden y detalles:", error);
+    }
 });
 
 

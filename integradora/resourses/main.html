@@ -9,8 +9,16 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="../styles/lateral.css">
+    <link rel="stylesheet" href="../styles/loader.css">
+    <script src="../js/loader.js"></script>
 </head>
 <body style="border-top: 10px solid #8B2437;">
+    <div class="loader-container" id="loaderContainer">
+        <div class="loader">
+            <div class="moving-line"></div>
+            <img src="../img/logo-tosca-grad.png" alt="Logo">
+        </div>
+    </div>
     <aside>
         <!--<a href="" id="logotipo"><span class="tooltip">Inicio</span> logo </a> -->
         <nav>
@@ -27,12 +35,7 @@
                 </span>
             <span class="tooltip">tabla ordenes</span>
             </a></li>
-            <li><a href="crearOrden.html" class="lateral">
-                <span class="material-symbols-outlined">
-                    edit_square
-                </span>
-                <span class="tooltip">crear Orden</span>
-                </a></li>
+             
             <li><a href="productos.html" class="lateral admin">
                 <span class="material-symbols-outlined">inventory</span>
                 <span class="tooltip">Productos</span>
@@ -55,7 +58,7 @@
             <span class="material-symbols-outlined profile-icon">account_circle</span>
             <div class="dropdown-menu">
                 <button class="buser" onclick="cerrarSesion()">Cerrar sesión</button>
-                <a href="recuperacion.html"><button class="buser">Cambiar contraseña</button></a>
+                <a href="cambio.html"><button class="buser">Cambiar contraseña</button></a>
             </div>
         </div>
     </aside>
@@ -144,15 +147,7 @@
                     <h3>3</h3>
                 </div>
             </div>
-            <div class="card">
-                <div class="icon-container">
-                    <span class="material-icons icon">add_circle</span>
-                </div>
-                <div class="content">
-                    <p>Crear Nueva Orden</p>
-                    <a id="nuevaO" href="crearOrden.html">Nueva orden</a>
-                </div>
-            </div>
+            
         </section>
         <section class="grafica admin">
             <canvas id="ventas"></canvas>
@@ -168,6 +163,36 @@
         </section>
     </main>
     
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('https://latosca.up.railway.app/api/rol', { credentials: 'include' }) // Incluye cookies
+                .then(response => response.json())
+                .then(data => {
+                    if (data.rol === 'admin') {
+                        ocultarElementosUser(); // Oculta elementos solo para usuarios normales
+                    } else if (data.rol === 'empleado') {
+                        ocultarElementosAdmin(); // Oculta elementos solo para administradores
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al obtener el rol del usuario:', error);
+                    ocultarElementosAdmin(); // Por seguridad, oculta si no se puede determinar el rol
+                    ocultarElementosUser(); // Por seguridad, oculta si no se puede determinar el rol
+                });
+        });
+        
+        function ocultarElementosAdmin() {
+            const elementos = document.querySelectorAll('.admin'); // Selecciona los elementos con la clase "admin"
+            elementos.forEach(elemento => elemento.style.display = 'none'); // Oculta los elementos
+        }
+
+        function ocultarElementosUser() {
+            const elementos = document.querySelectorAll('.user'); // Selecciona los elementos con la clase "user"
+            elementos.forEach(elemento => elemento.style.display = 'none'); // Oculta los elementos
+        }
+
+    </script>
+    <script src="../js/session.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/graficas.js"></script>
 </body>

@@ -10,9 +10,16 @@
     <link rel="stylesheet" href="../styles/lateral.css">
     <link rel="stylesheet" href="../styles/tablas.css">
     <link rel="stylesheet" href="../styles/formularios.css">
-    
+    <link rel="stylesheet" href="../styles/loader.css">
+    <script src="../js/loader.js"></script>
 </head>
-<body>
+<body style="border-top: 10px solid #8B2437;">
+    <div class="loader-container" id="loaderContainer">
+        <div class="loader">
+            <div class="moving-line"></div>
+            <img src="../img/logo-tosca-grad.png" alt="Logo">
+        </div>
+    </div>
     <aside>
         <!--<a href="" id="logotipo"><span class="tooltip">Inicio</span> logo </a> -->
         <nav>
@@ -29,12 +36,7 @@
                 </span>
             <span class="tooltip">tabla ordenes</span>
             </a></li>
-            <li><a href="crearOrden.html" class="lateral">
-                <span class="material-symbols-outlined">
-                    edit_square
-                </span>
-                <span class="tooltip">crear Orden</span>
-                </a></li>
+             
             <li><a href="productos.html" class="lateral admin">
                 <span class="material-symbols-outlined">inventory</span>
                 <span class="tooltip">Productos</span>
@@ -57,7 +59,7 @@
             <span class="material-symbols-outlined profile-icon">account_circle</span>
             <div class="dropdown-menu">
                 <button class="buser" onclick="cerrarSesion()">Cerrar sesión</button>
-                <a href="recuperacion.html"><button class="buser">Cambiar contraseña</button></a>
+                <a href="cambio.html"><button class="buser">Cambiar contraseña</button></a>
             </div>
         </div>
     </aside>
@@ -74,14 +76,12 @@
 
         <table>
             <thead>
-                <th>ID</th>
                 <th>Nombre</th>
                 <th>Apellido Paterno</th>
                 <th>Apellido Materno</th>
                 <th>Teléfono</th>
                 <th>Direcciones</th>
                 <th>Correo</th>
-                <th>Estatus</th>
                 <th>Acciones</th>
             </thead>
             <tbody id="clientes-body">
@@ -117,39 +117,42 @@
         const clientesToShow = filteredClientes.slice(start, end); // Paginación de registros
         
         let clientesHTML = '';
-        clientesToShow.forEach(emp => {
-            clientesHTML += `
+        clientesToShow.forEach(client => {
+            if (client.estatus == 1) {
+                clientesHTML += `
                 <tr>
-                    <td id="ID${emp.ID_cliente}">${emp.ID_cliente}</td>
-                    <td id="nombre${emp.ID_cliente}">${emp.Nombres}</td>
-                    <td id="ApellidoP${emp.ID_cliente}">${emp.Apellido_P}</td>
-                    <td id="ApellidoM${emp.ID_cliente}">${emp.Apellido_M}</td>
-                    <td id="telefono${emp.ID_cliente}">${emp.Telefono}</td>
-                    <td><a href="direcciones.html?id=${emp.ID_cliente}&nombres=${emp.Nombres} ${emp.Apellido_P}"><button id="ver_direccion" class="ver">ver</button></a></td>
-                    <td id="correo${emp.ID_cliente}">${emp.correo}</td>
-                    <td id="estatus${emp.ID_cliente}" class="${emp.estatus === 1 ? 'positive' : 'negative'}">${emp.estatus === 1 ? 'activo' : 'inactivo'}</td>
+                    <td id="nombre${client.ID_cliente}">${client.Nombres}</td>
+                    <td id="ApellidoP${client.ID_cliente}">${client.Apellido_P}</td>
+                    <td id="ApellidoM${client.ID_cliente}">${client.Apellido_M}</td>
+                    <td id="telefono${client.ID_cliente}">${client.Telefono}</td>
+                    <td><a href="direcciones.html?id=${client.ID_cliente}&nombres=${client.Nombres} ${client.Apellido_P}"><button id="ver_direccion" class="ver">ver</button></a></td>
+                    <td id="correo${client.ID_cliente}">${client.correo}</td>
                     <td class="acciones">
-                        <button class="B_editar" onclick="updateCliente(${emp.ID_cliente})"><span class="material-symbols-outlined">edit</span></button>
-                        <button class="B_eliminar"><span class="material-symbols-outlined">delete</span></button>
+                        <button class="B_editar" onclick="updateCliente(${client.ID_cliente})"><span class="material-symbols-outlined">edit</span></button>
+                        <button class="B_eliminar" onclick="eliminarCliente(${client.ID_cliente})"><span class="material-symbols-outlined">delete</span></button>
                     </td>
                 </tr>
             `;
+            }
+            
         });
 
         document.getElementById("clientes-body").innerHTML = clientesHTML;
     }
+// Función para renderizar los controles de paginación de clientes
+        function paginacionClientes() {
+            // Filtrar solo los clientes activos
+            const activeClientes = filteredClientes.filter(cliente => cliente.estatus == 1);
+            const totalPages = Math.ceil(activeClientes.length / NpaginaClientes);
+            let paginationHTML = '';
 
-    // Función para renderizar los controles de paginación
-    function paginacionClientes() {
-        const totalPages = Math.ceil(filteredClientes.length / NpaginaClientes);
-        let paginationHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHTML += `<button onclick="goToClientesPage(${i})" class="pagination-button ${i === NumpagClientes ? 'active' : ''}">${i}</button>`;
+            }
 
-        for (let i = 1; i <= totalPages; i++) {
-            paginationHTML += `<button onclick="goToClientesPage(${i})" class="pagination-button ${i === NumpagClientes ? 'active' : ''}">${i}</button>`;
+            document.getElementById("pagination-controls-clientes").innerHTML = paginationHTML;
         }
 
-        document.getElementById("pagination-controls-clientes").innerHTML = paginationHTML;
-    }
 
     // Función para ir a una página específica de clientes
     function goToClientesPage(page) {
@@ -202,7 +205,8 @@
         </form>
     </div>
     <div id="upPopup" class="Popup"></div>
-
+    
+    <script src="../js/session.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
