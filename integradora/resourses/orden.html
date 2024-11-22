@@ -143,17 +143,17 @@
         let NumpagOrden = 1; // Página inicial
         let ordenesData = []; // Arreglo para almacenar los datos de órdenes
 
-        function fetchOrdenes() {
-            fetch('https://latosca.up.railway.app/ordenes')
-                .then(response => response.json())
-                .then(ordenes => {
-                    ordenesData = ordenes; // Guardamos los datos en una variable global
-                    renderOrdenesTable();
-                    renderOrdenesPaginationControls();
-                })
-                .catch(error => console.error('Error al cargar las órdenes:', error));
-        }
-
+function fetchOrdenes() {
+    fetch('https://latosca.up.railway.app/ordenes')
+        .then(response => response.json())
+        .then(ordenes => {
+            console.log("Datos de órdenes recibidos:", ordenes); // Verifica las fechas aquí
+            ordenesData = ordenes;
+            renderOrdenesTable();
+            renderOrdenesPaginationControls();
+        })
+        .catch(error => console.error('Error al cargar las órdenes:', error));
+}
         function renderOrdenesTable() {
             const start = (NumpagOrden - 1) * NpaginaOrdenes;
             const end = start + NpaginaOrdenes;
