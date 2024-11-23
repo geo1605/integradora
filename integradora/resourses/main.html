@@ -190,6 +190,20 @@
             const elementos = document.querySelectorAll('.user'); // Selecciona los elementos con la clase "user"
             elementos.forEach(elemento => elemento.style.display = 'none'); // Oculta los elementos
         }
+        document.addEventListener('DOMContentLoaded', () => {
+    // Obtener las fechas
+    const fechaHoy = new Date();
+    const fechaPasado = new Date();
+    fechaPasado.setDate(fechaHoy.getDate() - 7); // Restar 7 días a la fecha actual
+
+    // Formatear las fechas en formato YYYY-MM-DD
+    const formatoFecha = fecha => fecha.toISOString().split('T')[0];
+
+    console.log(fechaHoy);
+    console.log(fechaPasado);
+
+});
+
 
     </script>
     <script src="../js/session.js"></script>
