@@ -256,7 +256,11 @@ table button .material-symbols-outlined {
 #Ndirecciones {
     font-size: 1.5rem;
 }
-
+.error {
+    background-color: rgba(170, 15, 44, 0.5);
+    padding: 1%;
+    padding-left: 10%;
+}
 
 #pagination-controls button {
     margin: 0 5px;
@@ -325,7 +329,7 @@ table button .material-symbols-outlined {
     .bot {
         padding: 5px 8px;
         font-size: 0.7rem;
-        width: 100%; /* Asegurar que los botones ocupen el 100% del ancho */
+        width: 95%; /* Asegurar que los botones ocupen el 100% del ancho */
     }
 
     #barra_busqueda {

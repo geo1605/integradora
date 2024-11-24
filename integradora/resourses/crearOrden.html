@@ -61,7 +61,14 @@
             </ul>
         </nav>
         <div class="profile-container">
-            <span class="material-symbols-outlined profile-icon">account_circle</span>
+            <!-- Checkbox oculto -->
+            <input type="checkbox" id="toggle-menu" class="menu-checkbox">
+            <!-- Contenedor de íconos con animación -->
+            <label for="toggle-menu" class="profile-icon">
+                <span class="icon account-circle material-symbols-outlined">account_circle</span>
+                <span class="icon close-icon material-symbols-outlined">close</span>
+            </label>
+            <!-- Menú desplegable -->
             <div class="dropdown-menu">
                 <button class="buser" onclick="cerrarSesion()">Cerrar sesión</button>
                 <a href="cambio.html"><button class="buser">Cambiar contraseña</button></a>
@@ -118,7 +125,7 @@
               
                   <div class="campo">
                     <label for="fechaE">Fecha de entrega:</label>
-                    <input id="fechaE" type="datetime-local" placeholder="Fecha de entrega">
+                    <input id="fechaE" name="fecha" type="datetime-local" placeholder="Fecha de entrega">
                   </div>
                 </div>
               
@@ -127,40 +134,10 @@
                 </div>
               </section>
               
-            
             <button type="submit" class="botB">Hacer orden</button>
         </form>
     </main>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('https://latosca.up.railway.app/api/rol', { credentials: 'include' }) // Incluye cookies
-                .then(response => response.json())
-                .then(data => {
-                    if (data.rol === 'admin') {
-                        ocultarElementosUser(); // Oculta elementos solo para usuarios normales
-                    } else if (data.rol === 'empleado') {
-                        ocultarElementosAdmin(); // Oculta elementos solo para administradores
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al obtener el rol del usuario:', error);
-                    ocultarElementosAdmin(); // Por seguridad, oculta si no se puede determinar el rol
-                    ocultarElementosUser(); // Por seguridad, oculta si no se puede determinar el rol
-                });
-        });
-        
-        function ocultarElementosAdmin() {
-            const elementos = document.querySelectorAll('.admin'); // Selecciona los elementos con la clase "admin"
-            elementos.forEach(elemento => elemento.style.display = 'none'); // Oculta los elementos
-        }
-
-        function ocultarElementosUser() {
-            const elementos = document.querySelectorAll('.user'); // Selecciona los elementos con la clase "user"
-            elementos.forEach(elemento => elemento.style.display = 'none'); // Oculta los elementos
-        }
-
-    </script>
+    <script src="../js/usuarios.js"></script>
     <script src="../js/session.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -180,6 +157,8 @@
     <script src="../js/session.js"></script>
     <script src="../js/formulario.js"></script>
     <script src="../js/orden.js">
+        
     </script>
+    <script src="../js/validaciones/validacionOr.js"></script>
 </body>
 </html>

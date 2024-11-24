@@ -54,7 +54,14 @@
                 </ul>
             </nav>
             <div class="profile-container">
-                <span class="material-symbols-outlined profile-icon">account_circle</span>
+                <!-- Checkbox oculto -->
+                <input type="checkbox" id="toggle-menu" class="menu-checkbox">
+                <!-- Contenedor de íconos con animación -->
+                <label for="toggle-menu" class="profile-icon">
+                    <span class="icon account-circle material-symbols-outlined">account_circle</span>
+                    <span class="icon close-icon material-symbols-outlined">close</span>
+                </label>
+                <!-- Menú desplegable -->
                 <div class="dropdown-menu">
                     <button class="buser" onclick="cerrarSesion()">Cerrar sesión</button>
                     <a href="cambio.html"><button class="buser">Cambiar contraseña</button></a>
@@ -67,11 +74,6 @@
             <h2>Ordenes</h2>
             <a href="crearOrden.html" style="text-decoration: none;" class="bot" type="button"><span class="material-symbols-outlined">add_circle</span> Añadir</a>
             <div id="barra_busqueda">
-                <select class="js-example-basic-single" name="state">
-                    <option value="" selected disabled>categoría</option>
-                    <option value="AL">Alabama</option>
-                    <option value="WY">Wyoming</option>
-                </select>
                 <input id="Search_principal" type="search" placeholder="Buscar">
                 <button id="Bot_busqueda" class="botS"><span class="material-symbols-outlined">search</span></button>
             </div>
@@ -101,36 +103,8 @@
     </main>
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('https://latosca.up.railway.app/api/rol', { credentials: 'include' }) // Incluye cookies
-                .then(response => response.json())
-                .then(data => {
-                    if (data.rol === 'admin') {
-                        ocultarElementosUser(); // Oculta elementos solo para usuarios normales
-                    } else if (data.rol === 'empleado') {
-                        ocultarElementosAdmin(); // Oculta elementos solo para administradores
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al obtener el rol del usuario:', error);
-                    ocultarElementosAdmin(); // Por seguridad, oculta si no se puede determinar el rol
-                    ocultarElementosUser(); // Por seguridad, oculta si no se puede determinar el rol
-                });
-        });
-        
-        function ocultarElementosAdmin() {
-            const elementos = document.querySelectorAll('.admin'); // Selecciona los elementos con la clase "admin"
-            elementos.forEach(elemento => elemento.style.display = 'none'); // Oculta los elementos
-        }
 
-        function ocultarElementosUser() {
-            const elementos = document.querySelectorAll('.user'); // Selecciona los elementos con la clase "user"
-            elementos.forEach(elemento => elemento.style.display = 'none'); // Oculta los elementos
-        }
 
-    </script>
-    <script src="../js/session.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
@@ -139,61 +113,185 @@
             fetchOrdenes(); // Cargar las órdenes al iniciar
         });
 
+let userRole = null;
+let userName = null; // Nombre del empleado actual
+
         const NpaginaOrdenes = 20; // Número de elementos por página
         let NumpagOrden = 1; // Página inicial
         let ordenesData = []; // Arreglo para almacenar los datos de órdenes
 
+// Función para obtener las órdenes
+let allOrdenes = []; // Para almacenar todas las órdenes originales
+
 function fetchOrdenes() {
-    fetch('https://latosca.up.railway.app/ordenes')
-        .then(response => response.json())
-        .then(ordenes => {
-            console.log("Datos de órdenes recibidos:", ordenes); // Verifica las fechas aquí
-            ordenesData = ordenes;
-            renderOrdenesTable();
-            renderOrdenesPaginationControls();
-        })
-        .catch(error => console.error('Error al cargar las órdenes:', error));
+
+
+    fetch('http://localhost:5000/ViewOrden')
+    .then(response => response.json())
+    .then(ordenes => {
+        console.log("Órdenes recibidas del servidor:", ordenes); // Verificar los datos recibidos
+
+        ordenesData = Array.isArray(ordenes) ? ordenes : [ordenes];
+        allOrdenes = ordenesData;
+
+        if (userRole === 'empleado') {
+    console.log("Nombre del usuario actual:", userName);
+    console.log("Órdenes completas:", ordenesData);
+
+    filteredOrdenes = ordenesData.filter(orden => {
+        console.log("Empleado en la orden:", orden.Empleado);
+        return (
+            orden.Empleado &&
+            userName &&
+            orden.Empleado.trim().toLowerCase() === userName.trim().toLowerCase()
+        );
+    });
+
+    console.log("Órdenes filtradas para el empleado:", filteredOrdenes);
+} else {
+    filteredOrdenes = ordenesData;
 }
-        function renderOrdenesTable() {
-            const start = (NumpagOrden - 1) * NpaginaOrdenes;
-            const end = start + NpaginaOrdenes;
-            const ordenesToShow = ordenesData.slice(start, end); // Paginación de registros
 
-            let ordenesHTML = '';
-            const ordenesFiltradas = ordenesToShow
-            .filter((orden) => orden.Estatus !== 'cancelado') // Filtrar las órdenes canceladas
-            .sort((a, b) => {
-                // Ordenar: proceso primero, luego activo
-                const prioridad = { proceso: 1, activo: 2 };
-                return (prioridad[a.Estatus] || 3) - (prioridad[b.Estatus] || 3);
-            });
+        console.log("Órdenes filtradas para el empleado:", filteredOrdenes); // Verificar las órdenes filtradas
 
-        ordenesFiltradas.forEach((orden) => {
-            ordenesHTML += `
-                <tr>
-                    <td>${orden.ID_Empleados}</td> <!-- Suponiendo que "ID_Empleados" es el encargado -->
-                    <td>${orden.ID_cliente}</td> <!-- Suponiendo que "ID_cliente" es el cliente -->
-                    <td>${orden.Direccion}</td> <!-- Suponiendo que "ID_detalle" representa la dirección -->
-                    <td>${formatDate(orden.FechaE)}</td>
-                    <td class="${orden.Estatus === 'activo' ? 'positive' : 'negative'}">${orden.Estatus}</td>
-                    <td>${orden.Precio_total || 'N/A'}</td>
-                    <td>${orden.tipo_pago || 'N/A'}</td>
-                    <td><a href="detalles.html?id=${orden.ID_orden}" class="ver">detalle</a></td>
-                    <td id="acciones">
-                        ${orden.Estatus === 'activo' ? `
-                            <button class="proceso"><span class="material-symbols-outlined">acute</span></button>
-                            <button class="cancelado"><span class="material-symbols-outlined">block</span></button>
-                        ` : orden.Estatus === 'proceso' ? `
-                            <button class="completar"><span class="material-symbols-outlined">task_alt</span></button>
-                        ` : ''}
-                    </td>
-                </tr>
-            `;
-        });
+        renderOrdenesTable();
+        renderOrdenesPaginationControls();
+    })
+    .catch(error => console.error('Error al cargar las órdenes:', error));
+}
 
-            document.getElementById("ordenes-body").innerHTML = ordenesHTML;
+
+
+// Función para renderizar la tabla de órdenes
+function renderOrdenesTable() {
+    const start = (NumpagOrden - 1) * NpaginaOrdenes;
+    const end = start + NpaginaOrdenes;
+    const ordenesToShow = filteredOrdenes.slice(start, end); // Paginación de registros
+
+    let ordenesHTML = '';
+    const ordenesFiltradas = ordenesToShow
+    .filter((orden) => orden.Estatus !== 'cancelado' && orden.Estatus !== 'completado') // Filtrar canceladas y completadas
+    .sort((a, b) => {
+        const prioridad = { proceso: 1, activo: 2 };
+        return (prioridad[a.Estatus] || 3) - (prioridad[b.Estatus] || 3);
+    });
+
+
+    ordenesFiltradas.forEach((orden) => {
+        ordenesHTML += `
+            <tr>
+                <td>${orden.Empleado || 'Sin asignar'}</td>
+                <td>${orden.Cliente || 'N/A'}</td>
+                <td>${orden.Direccion_Completa || 'N/A'}</td>
+                <td>${formatDate(orden.fechaE || orden.Fecha)}</td>
+                <td class="${orden.Estatus === 'activo' ? 'positive' : 'negative'}">${orden.Estatus}</td>
+                <td>${orden.Precio_total || 'N/A'}</td>
+                <td>${orden.tipo_pago || 'N/A'}</td>
+                <td><a href="detalles.html?id=${orden.ID_orden}" class="ver">detalle</a></td>
+                <td id="acciones">
+                    ${orden.Estatus === 'activo' ? `
+                        <button class="proceso" onclick="actualizarEstatusO('proceso', ${orden.ID_orden})"><span class="material-symbols-outlined">acute</span></button>
+                        <button class="cancelado" onclick="actualizarEstatusO('cancelado', ${orden.ID_orden}")><span class="material-symbols-outlined">block</span></button>
+                    ` : orden.Estatus === 'proceso' ? `
+                        <button class="completar" onclick="actualizarEstatusO('completado',${orden.ID_orden})"><span class="material-symbols-outlined">task_alt</span></button>
+                    ` : ''}
+                </td>
+            </tr>
+        `;
+    });
+
+    document.getElementById("ordenes-body").innerHTML = ordenesHTML;
+}
+
+function buscadorOrdenes() {
+    const searchTerm = document.getElementById("Search_principal").value.toLowerCase();
+
+
+    let ordenesFiltradas;
+
+    // Si el campo de búsqueda está vacío, se restauran todas las órdenes de acuerdo con el rol
+    if (searchTerm === "") {
+        // Si el rol es 'empleado', muestra solo las órdenes del empleado
+        if (userRole === 'empleado') {
+
+            ordenesFiltradas = allOrdenes.filter(orden => 
+                orden.Empleado && userName && 
+                orden.Empleado.trim().toLowerCase() === userName.trim().toLowerCase()
+            );
+        } else {
+            // Si el rol no es 'empleado', muestra todas las órdenes
+
+            ordenesFiltradas = allOrdenes; // Muestra todas las órdenes
         }
-function formatDate(fechaISO) {
+    } else {
+        // Si hay un término de búsqueda, filtra las órdenes
+        if (userRole === 'empleado') {
+            ordenesFiltradas = allOrdenes.filter(orden => {
+                return (
+                    (orden.Empleado && orden.Empleado.trim().toLowerCase() === userName.trim().toLowerCase()) && // Solo las órdenes de este empleado
+                    (
+                        (orden.Cliente && orden.Cliente.toLowerCase().includes(searchTerm)) ||
+                        (orden.Direccion_Completa && orden.Direccion_Completa.toLowerCase().includes(searchTerm)) ||
+                        (orden.Estatus && orden.Estatus.toLowerCase().includes(searchTerm)) ||
+                        (orden.tipo_pago && orden.tipo_pago.toLowerCase().includes(searchTerm)) ||
+                        (orden.Precio_total && orden.Precio_total.toString().includes(searchTerm))
+                    )
+                );
+            });
+        } else {
+            // Si no es 'empleado', realiza la búsqueda normal en todas las órdenes
+            ordenesFiltradas = allOrdenes.filter(orden => {
+                return (
+                    (orden.Empleado && orden.Empleado.toLowerCase().includes(searchTerm)) ||
+                    (orden.Cliente && orden.Cliente.toLowerCase().includes(searchTerm)) ||
+                    (orden.Direccion_Completa && orden.Direccion_Completa.toLowerCase().includes(searchTerm)) ||
+                    (orden.Estatus && orden.Estatus.toLowerCase().includes(searchTerm)) ||
+                    (orden.tipo_pago && orden.tipo_pago.toLowerCase().includes(searchTerm)) ||
+                    (orden.Precio_total && orden.Precio_total.toString().includes(searchTerm))
+                );
+            });
+        }
+    }
+
+    NumpagOrden = 1; // Reiniciamos la paginación al hacer una búsqueda
+    filteredOrdenes = ordenesFiltradas; // Asigna las órdenes filtradas a filteredOrdenes
+    renderOrdenesTable(); // Renderizamos las órdenes filtradas
+    renderOrdenesPaginationControls(); // Actualizamos los controles de paginación
+}
+
+
+
+
+
+
+// Función para renderizar los controles de paginación
+function renderOrdenesPaginationControls() {
+    const totalPages = Math.ceil(filteredOrdenes.length / NpaginaOrdenes);
+    let paginationHTML = '';
+
+    for (let i = 1; i <= totalPages; i++) {
+        paginationHTML += `<button onclick="goToOrdenesPage(${i})" class="pagination-button ${i === NumpagOrden ? 'active' : ''}">${i}</button>`;
+    }
+
+    document.getElementById("pagination-controls-ordenes").innerHTML = paginationHTML;
+}
+
+// Función para ir a una página específica
+function goToOrdenesPage(page) {
+    NumpagOrden = page;
+    renderOrdenesTable();
+    renderOrdenesPaginationControls();
+}
+
+// Añadir evento de búsqueda al campo de búsqueda
+document.getElementById("Search_principal").addEventListener("input", buscadorOrdenes);
+
+
+// Llamar a la función para cargar las órdenes y configurar la paginación
+fetchOrdenes();
+
+
+        function formatDate(fechaISO) {
     if (!fechaISO) return "Fecha no válida";
 
     try {
@@ -212,30 +310,79 @@ function formatDate(fechaISO) {
         return "Fecha no válida";
     }
 }
-
-
-        function renderOrdenesPaginationControls() {
-            const totalPages = Math.ceil(ordenesData.length / NpaginaOrdenes);
-            let paginationHTML = '';
-
-            for (let i = 1; i <= totalPages; i++) {
-                paginationHTML += `<button onclick="goToOrdenesPage(${i})" class="pagination-button ${i === NumpagOrden ? 'active' : ''}">${i}</button>`;
+// Función para cargar el rol del usuario y filtrar órdenes
+function cargarDatosUsuarioYRol() {
+    cargarUsuarioId()
+        .then(userId => {
+            if (userId) {
+                return cargarEmpleadoNombre(userId).then(nombre => {
+                    userName = nombre;
+                    return userName;
+                });
             }
+        })
+        .then(() => fetch('http://localhost:5000/api/rol', { credentials: 'include' }))
+        .then(response => response.json())
+        .then(data => {
+            userRole = data.rol;
+            fetchOrdenes(); // Cargar órdenes después de asignar rol
+        })
+        .catch(error => {
+            console.error('Error al cargar los datos del usuario o rol:', error);
+        });
+}
 
-            document.getElementById("pagination-controls-ordenes").innerHTML = paginationHTML;
-        }
 
-        function goToOrdenesPage(page) {
-            NumpagOrden = page;
-            renderOrdenesTable();
-            renderOrdenesPaginationControls();
-        }
+function actualizarEstatusO(estatusN, id) {
+     // Validar parámetros
+     if (!id || isNaN(id)) {
+        console.error("El ID de la orden es inválido.");
+        return;
+    }
 
-        // Llamar a la función para cargar las órdenes y configurar la paginación
-        fetchOrdenes();
+    if (!estatusN) {
+        console.error("El nuevo estatus no puede estar vacío.");
+        return;
+    }
+
+    // URL del endpoint
+    const url = `http://localhost:5000/orden/estatus/${id}`;
+
+    // Opciones de la solicitud
+    const opciones = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ Estatus: estatusN })
+    };
+
+    // Realizar la solicitud
+    fetch(url, opciones)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Error al actualizar el estatus: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then((data) => {
+            alert("Estatus actualizado con éxito:", data);
+            window.location.reload();
+        })
+        .catch((error) => {
+            console.error("Error al realizar la solicitud:", error);
+        });
+}
+
+// Llamar a cargarDatosUsuarioYRol al cargar la página
+document.addEventListener("DOMContentLoaded", () => {
+    cargarDatosUsuarioYRol();
+});
     </script>
+        <script src="../js/usuarios.js"></script>
         <script src="../js/session.js"></script>
         <script src="../js/script.js"></script>
+        
 
     </body>
     </html>

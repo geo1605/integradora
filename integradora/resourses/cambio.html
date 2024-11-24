@@ -18,13 +18,82 @@
     </div>
     <form id="login">
         <h2 class="fuente">actualiza Contraseña</h2>
-        <input class="sesion" type="text" placeholder="Contraseña antigua">
-        <input class="sesion" type="text" placeholder="Nueva contraseña">
-        <input class="sesion" type="text" placeholder="Reafimacion">
+        <input class="sesion" type="password" id="antigua" placeholder="Contraseña antigua">
+        <input class="sesion" type="password" id="nueva" placeholder="Nueva contraseña">
+        <input class="sesion" type="password" id="confirmacion" placeholder="Confirmar contraseña">
 
-        <button onclick="recuperacion()" class="boton">Enviar correo</button>
+        <button onclick="recuperacion()" class="boton">Actualizar</button>
     </form>
     <script src="../js/session.js"></script>
+    <script>
+        /* --------------------- Variables Globales --------------------- */
+let usuarioId = null; // Variable global para almacenar el ID del usuario
+
+/* --------------------- Funciones --------------------- */
+
+// Función para cargar el ID del usuario
+function cargarUsuarioId() {
+    return fetch("http://localhost:5000/api/usuario/id", { credentials: 'include' }) // Incluye cookies de sesión
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("No se pudo obtener el ID del usuario. Verifica si estás autenticado.");
+            }
+        })
+        .then(data => {
+            usuarioId = data.id; // Almacenar el ID en la variable global
+            return usuarioId;
+        })
+        .catch(error => {
+            console.error("Error al cargar el ID del usuario:", error);
+            throw error;
+        });
+}
+
+async function recuperacion() {
+    event.preventDefault();
+
+    // Obtener los valores de los campos
+    const antiguaPassword = document.getElementById("antigua").value;
+    const nuevaPassword = document.getElementById("nueva").value;
+    const confirmacion = document.getElementById("confirmacion").value;
+
+    // Validar que las contraseñas coincidan
+    if (nuevaPassword !== confirmacion) {
+        alert("La nueva contraseña y la confirmación no coinciden.");
+        return;
+    }
+
+    try {
+        // Cargar el ID del usuario
+        if (!usuarioId) {
+            usuarioId = await cargarUsuarioId();
+        }
+
+        // Enviar la solicitud de actualización al servidor
+        const response = await fetch(`http://localhost:5000/passC/${usuarioId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ antiguaPassword, nuevaPassword }),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            alert(data.mensaje); // Mostrar mensaje de éxito
+            document.getElementById("login").reset(); // Resetear el formulario
+        } else {
+            const errorData = await response.json();
+            alert(errorData.mensaje); // Mostrar mensaje de error
+        }
+    } catch (error) {
+        console.error("Error al actualizar la contraseña:", error);
+        alert("Error al intentar actualizar la contraseña.");
+    }
+}
+    </script>
     <script src="../js/script.js"></script>
 </body>
 </html>

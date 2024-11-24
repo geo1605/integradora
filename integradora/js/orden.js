@@ -5,7 +5,7 @@ let zonasData = []; // Almacenará todas las zonas de la API
 
 // Cargar productos de la API y guardarlos en productosData
 function cargarproductos() {
-    fetch("https://latosca.up.railway.app/productos")
+    fetch("http://localhost:5000/productos")
       .then((response) => response.json())
       .then((productos) => {
         productosData = productos; // Guardar todos los productos en productosData
@@ -85,7 +85,7 @@ function actualizarTotal() {
 
 // Cargar empleados y aplicar select2
 function cargarEmpleados() {
-    fetch("https://latosca.up.railway.app/empleados")
+    fetch("http://localhost:5000/empleados")
       .then((response) => response.json())
       .then((empleados) => {
         const select = document.getElementById('EmpleadoO');
@@ -106,7 +106,7 @@ function cargarEmpleados() {
 
 // Función para cargar clientes y aplicar select2
 function cargarCliente() {
-    fetch("https://latosca.up.railway.app/clientes")
+    fetch("http://localhost:5000/clientes")
       .then((response) => response.json())
       .then((clientes) => {
         const select = document.getElementById('cliente');
@@ -131,7 +131,7 @@ function cargarCliente() {
 
 // Cargar todas las direcciones
 function cargarDirecciones() {
-    fetch("https://latosca.up.railway.app/direcciones")
+    fetch("http://localhost:5000/direcciones")
       .then((response) => response.json())
       .then((direcciones) => {
         direccionesData = direcciones; // Almacena todas las direcciones en la variable global
@@ -141,7 +141,7 @@ function cargarDirecciones() {
 
 // Función para cargar todas las zonas y almacenarlas en zonasData
 function cargarOrZona() {
-    fetch("https://latosca.up.railway.app/zonas")
+    fetch("http://localhost:5000/zonas")
     .then((response) => response.json())
     .then((zonas) => {
         zonasData = zonas;
@@ -205,7 +205,7 @@ async function registrarOrdenPrimero(datosOrden) {
         const {fechaE, Fecha, Hora, Estatus, Direccion, Precio_total, ID_cliente, ID_Empleados, tipo_pago } = datosOrden;
 
         // Crear la orden primero
-        const response = await fetch('https://latosca.up.railway.app/orden/registrar', {
+        const response = await fetch('http://localhost:5000/orden/registrar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -241,7 +241,7 @@ async function registrarDetallesConOrden(ID_orden, productos) {
     try {
         // Registrar los detalles con el ID de la orden creada
         const detallesIDs = await Promise.all(productos.map(async (producto) => {
-            const response = await fetch('https://latosca.up.railway.app/detalle/registrar', {
+            const response = await fetch('http://localhost:5000/detalle/registrar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -299,7 +299,6 @@ document.querySelector('.botB').addEventListener('click', async (event) => {
     const fechaE = document.getElementById('fechaE').value;
     const fechaEConvertida = fechaE.replace("T", " "); // Reemplaza la 'T' con un espacio
 
-    alert(fechaE)
     const datosOrden = {
         productos: productos,
         Fecha: Fecha,
@@ -322,7 +321,7 @@ document.querySelector('.botB').addEventListener('click', async (event) => {
         await registrarDetallesConOrden(ID_orden, productos);
 
         alert("la orden se creo con exito")
-        window.location.href = 'orden.html';
+        window.location.href = 'orden.html'; 
     } catch (error) {
         console.error("Error al registrar la orden y detalles:", error);
     }
@@ -336,3 +335,8 @@ document.querySelector('.botB').addEventListener('click', async (event) => {
 
 // Cargar las zonas al iniciar
 cargarOrZona();
+
+
+
+
+// --------------------validacion --------------------------

@@ -56,7 +56,14 @@
         </ul>
         </nav>
         <div class="profile-container">
-            <span class="material-symbols-outlined profile-icon">account_circle</span>
+            <!-- Checkbox oculto -->
+            <input type="checkbox" id="toggle-menu" class="menu-checkbox">
+            <!-- Contenedor de íconos con animación -->
+            <label for="toggle-menu" class="profile-icon">
+                <span class="icon account-circle material-symbols-outlined">account_circle</span>
+                <span class="icon close-icon material-symbols-outlined">close</span>
+            </label>
+            <!-- Menú desplegable -->
             <div class="dropdown-menu">
                 <button class="buser" onclick="cerrarSesion()">Cerrar sesión</button>
                 <a href="cambio.html"><button class="buser">Cambiar contraseña</button></a>
@@ -99,7 +106,7 @@
 
     // Función para obtener los clientes
     function fetchClientes() {
-        fetch('https://latosca.up.railway.app/clientes')
+        fetch('http://localhost:5000/clientes')
             .then(response => response.json())
             .then(clientes => {
                 clientesData = clientes; // Guardamos los datos en una variable global
@@ -191,7 +198,7 @@
     
     <div id="addPopup" class="Popup">
         <form action="" id="clienteForm" class="modificacion">
-            <h2>Formulario Clientes</h2>
+            <h2>Añadir Cliente</h2>
             <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
             <input type="text" class="tercio" name="NombreC" placeholder="Nombre(s)">
             <input type="text" class="tercio" name="PaternoC" placeholder="Apellido Paterno">
@@ -200,7 +207,7 @@
             <input type="text" class="medio" name="correoC" placeholder="correo">
             <div id="contDicc"></div>
             <button type="button" class="full" id="B_direcciones" onclick="agregarDireccion()">Añadir dirección</button>
-            
+            <ul class="error full" id="errorC"></ul>
             <input type="submit" class="cuarto" value="Enviar">
         </form>
     </div>
@@ -217,6 +224,7 @@
     <script src="../js/formulario.js">
     cargarZonas();
     </script>
+    <script src="../js/validaciones/validacionCli.js"></script>
     <script src="../js/script.js"></script>
     
 </body>

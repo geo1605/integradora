@@ -68,6 +68,13 @@ body {
   margin: 0.2rem 0 !important;
 
 }
+.error {
+  background-color: rgba(170, 15, 44, 0.5);
+  padding: 1%;
+  padding-left: 10%;
+  grid-column: 1/-1;
+}
+
 /* Contenedor de productos */
 .producto-item {
   display: grid;

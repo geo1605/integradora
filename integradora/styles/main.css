@@ -254,7 +254,23 @@ body {
   background-color: transparent;
   color: var(--color-primary);
 }
+/*  estilos fecha */
+#fecha {
+  grid-column: 1 / -1;
+    display: flex;
+    padding: 3%;
+}
+#fecha h2 {
+  margin-left: 3;
+    margin-right: 10%; 
+}
+#fecha input {
+  border: 0;
+}
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
 
 
 /* Adaptabilidad en mobile */

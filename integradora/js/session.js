@@ -6,7 +6,7 @@ async function iniciarSesion() {
 
     try {
         // Realiza la solicitud al servidor para verificar el login
-        const response = await fetch('https://latosca.up.railway.app/login', {
+        const response = await fetch('http://localhost:5000/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ correo: correo, password: password }) // Envía los datos
@@ -31,7 +31,7 @@ async function iniciarSesion() {
         
 
 function cerrarSesion() {
-    fetch('https://latosca.up.railway.app/logout', {
+    fetch('http://localhost:5000/logout', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

@@ -37,13 +37,8 @@
                 <span class="material-symbols-outlined">add_circle</span> Añadir
             </button>
             <div id="barra_busqueda">
-                <select class="js-example-basic-single zonas" name="zonas">
-                    <option value="" selected disabled>Zonas</option>
-                </select>
+
                 <input id="Search_principal" type="search" placeholder="Buscar">
-                <button id="Bot_busqueda" class="botS">
-                    <span class="material-symbols-outlined">search</span>
-                </button>
             </div>
         </form>
 
@@ -68,7 +63,7 @@
 
     <div id="addPopup" class="Popup">
         <form action="" class="modificacion" id="direcciones">
-            <h2>Formulario Direcciones</h2>
+            <h2>Añadir Direcciones</h2>
             <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
 
             <input type="text" class="medio" name="calle" placeholder="Calle">
@@ -89,85 +84,112 @@
 
     <script src="../js/session.js"></script>
     <script src="../js/formulario.js"></script>
+    <script src="../js/validaciones/validaciondicc.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('.js-example-basic-single').select2();
-        });
+$(document).ready(function() {
+    $('.js-example-basic-single').select2();
+});
 
-        const NpaginaDirecciones = 10; // Número de elementos por página
-        let NumpagDirecciones = 1; // Página inicial
-        let direccionesData = []; // Arreglo para almacenar los datos de direcciones
+const NpaginaDirecciones = 10; // Número de elementos por página
+let NumpagDirecciones = 1; // Página inicial
+let direccionesData = []; // Arreglo para almacenar los datos de direcciones
+let filteredDirecciones = []; // Arreglo para almacenar los datos filtrados
 
-        document.addEventListener("DOMContentLoaded", function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const clienteId = parseInt(urlParams.get("id"));
-            const nombreC = urlParams.get("nombres");
-            document.getElementById('Ndirecciones').innerText += " " + nombreC;
+document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const clienteId = parseInt(urlParams.get("id"));
+    const nombreC = urlParams.get("nombres");
+    document.getElementById('Ndirecciones').innerText += " " + nombreC;
 
-            if (clienteId) {
-                fetch('https://latosca.up.railway.app/direcciones')
-                    .then(response => response.json())
-                    .then(direcciones => {
-                        direccionesData = direcciones.filter(direccion => direccion.ID_cliente == clienteId);
-                        cargarDirecciones();
-                        paginacionDirecciones();
-                    })
-                    .catch(error => console.error("Error al cargar las direcciones:", error));
-            } else {
-                console.error("No se encontró el ID de cliente en la URL");
-            }
-        });
+    if (clienteId) {
+        fetch('http://localhost:5000/direcciones')
+            .then(response => response.json())
+            .then(direcciones => {
+                direccionesData = direcciones.filter(direccion => direccion.ID_cliente == clienteId);
+                filteredDirecciones = [...direccionesData]; // Inicializamos los datos filtrados con todos los datos
+                cargarDirecciones();
+                paginacionDirecciones();
+            })
+            .catch(error => console.error("Error al cargar las direcciones:", error));
+    } else {
+        console.error("No se encontró el ID de cliente en la URL");
+    }
 
-        function cargarDirecciones() {
-            const start = (NumpagDirecciones - 1) * NpaginaDirecciones;
-            const end = start + NpaginaDirecciones;
-            const direccionesToShow = direccionesData.slice(start, end);
+    // Añadimos el evento para el buscador
+    document.getElementById("Search_principal").addEventListener("input", buscarDirecciones);
+});
 
-            let direccionesHTML = '';
-            direccionesToShow.forEach(direccion => {
-                if (direccion.estatus === 1) {
-                direccionesHTML += `
-                    <tr>
-                        <td id='calle${direccion.id_direccion}'>${direccion.calle}</td>
-                        <td id='num_ext${direccion.id_direccion}'>${direccion.numero}</td>
-                        <td id='num_int${direccion.id_direccion}'>${direccion.Numero_int || ""}</td>
-                        <td id='colonia${direccion.id_direccion}'>${direccion.colonia}</td>
-                        <td id='zona${direccion.id_direccion}'>${direccion.id_zona}</td>
-                        <td id='CP${direccion.id_direccion}'>${direccion.CP}</td>
-                        <td class="acciones">
-                            <button class="B_editar" onclick="updateDireccion(${direccion.id_direccion},${direccion.ID_cliente})">
-                                <span class="material-symbols-outlined">edit</span>
-                            </button>
-                            <button class="B_eliminar" onclick="eliminarDireccion(${direccion.id_direccion})">
-                                <span class="material-symbols-outlined">delete</span>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-                }
-            });
+function cargarDirecciones() {
+    const start = (NumpagDirecciones - 1) * NpaginaDirecciones;
+    const end = start + NpaginaDirecciones;
+    const direccionesToShow = filteredDirecciones.slice(start, end); // Usamos los datos filtrados
 
-            document.getElementById("direcciones-body").innerHTML = direccionesHTML;
+    let direccionesHTML = '';
+    direccionesToShow.forEach(direccion => {
+        if (direccion.estatus === 1) {
+            direccionesHTML += `
+                <tr>
+                    <td id='calle${direccion.id_direccion}'>${direccion.calle}</td>
+                    <td id='num_ext${direccion.id_direccion}'>${direccion.numero}</td>
+                    <td id='num_int${direccion.id_direccion}'>${direccion.Numero_int || ""}</td>
+                    <td id='colonia${direccion.id_direccion}'>${direccion.colonia}</td>
+                    <td id='zona${direccion.id_direccion}'>${direccion.id_zona}</td>
+                    <td id='CP${direccion.id_direccion}'>${direccion.CP}</td>
+                    <td class="acciones">
+                        <button class="B_editar" onclick="updateDireccion(${direccion.id_direccion},${direccion.ID_cliente})">
+                            <span class="material-symbols-outlined">edit</span>
+                        </button>
+                        <button class="B_eliminar" onclick="eliminarDireccion(${direccion.id_direccion})">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                    </td>
+                </tr>
+            `;
         }
+    });
 
-        function paginacionDirecciones() {
-            const totalPages = Math.ceil(direccionesData.length / NpaginaDirecciones);
-            let paginationHTML = '';
+    document.getElementById("direcciones-body").innerHTML = direccionesHTML;
+}
 
-            for (let i = 1; i <= totalPages; i++) {
-                paginationHTML += `<button onclick="goToDireccionesPage(${i})" class="pagination-button ${i === NumpagDirecciones ? 'active' : ''}">${i}</button>`;
-            }
+function paginacionDirecciones() {
+    const totalPages = Math.ceil(filteredDirecciones.length / NpaginaDirecciones); // Usamos los datos filtrados
+    let paginationHTML = '';
 
-            document.getElementById("pagination-controls-direcciones").innerHTML = paginationHTML;
-        }
+    for (let i = 1; i <= totalPages; i++) {
+        paginationHTML += `<button onclick="goToDireccionesPage(${i})" class="pagination-button ${i === NumpagDirecciones ? 'active' : ''}">${i}</button>`;
+    }
 
-        function goToDireccionesPage(page) {
-            NumpagDirecciones = page;
-            cargarDirecciones();
-            paginacionDirecciones();
-        }
+    document.getElementById("pagination-controls-direcciones").innerHTML = paginationHTML;
+}
+
+function goToDireccionesPage(page) {
+    NumpagDirecciones = page;
+    cargarDirecciones();
+    paginacionDirecciones();
+}
+
+function buscarDirecciones() {
+    const searchTerm = document.getElementById("Search_principal").value.toLowerCase();
+
+    // Filtramos las direcciones en función de los campos
+    filteredDirecciones = direccionesData.filter(direccion => {
+        return (
+            direccion.calle.toLowerCase().includes(searchTerm) ||
+            direccion.numero.toString().includes(searchTerm) ||
+            (direccion.Numero_int && direccion.Numero_int.toString().includes(searchTerm)) ||
+            direccion.colonia.toLowerCase().includes(searchTerm) ||
+            direccion.id_zona.toString().includes(searchTerm) ||
+            direccion.CP.toString().includes(searchTerm)
+        );
+    });
+
+    NumpagDirecciones = 1; // Reiniciamos a la primera página
+    cargarDirecciones();
+    paginacionDirecciones();
+}
+
     </script>
 
     <script src="../js/script.js"></script>

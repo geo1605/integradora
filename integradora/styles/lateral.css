@@ -105,58 +105,106 @@ a.lateral {
   display: block; /* Mostrar el tooltip al pasar el cursor */
 }
 /*botones user*/
-/* Contenedor del ícono de perfil */
+:root {
+  --color-primary: #8B2437;
+  --color-secondary: #F37022;
+  --color-white: #FFFFFF;
+  --color-gray-dark: #4A4A4A;
+}
+
+/* Contenedor principal */
 .profile-container {
   position: relative;
   display: inline-block;
   color: var(--color-white);
 }
 
-/* Estilos del ícono de perfil */
-.profile-icon {
-  font-size: 24px;
-  cursor: pointer;
+/* Ocultar el checkbox */
+.menu-checkbox {
+  display: none;
 }
 
-/* Contenedor del menú desplegable */
+/* Estilo del contenedor de íconos */
+.profile-icon {
+  font-size: 36px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 36px;
+  height: 36px;
+}
+
+/* Estilos generales de los iconos */
+aside .icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0; /* Ocultar por defecto */
+  transform: scale(0.8); /* Reducir tamaño inicial */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* Transición suave */
+}
+
+/* Mostrar el ícono de usuario por defecto */
+.menu-checkbox:not(:checked) + .profile-icon .account-circle {
+  opacity: 1;
+  transform: scale(1); /* Tamaño normal */
+}
+
+/* Mostrar la "X" cuando el checkbox está activo */
+.menu-checkbox:checked + .profile-icon .close-icon {
+  opacity: 1;
+  transform: scale(1); /* Tamaño normal */
+}
+
+/* Menú desplegable */
 .dropdown-menu {
   display: none; /* Oculto por defecto */
   position: absolute;
   top: 50%;
-  left: 120%; /* Aparece a la derecha del icono */
+  left: 100%;
   transform: translateY(-50%);
   background-color: var(--color-primary);
-  border-radius: 4px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  min-width: 150px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  min-width: 180px;
   z-index: 1;
   opacity: 0;
-  transition: opacity 0.3s ease-in-out; /* Transición suave */
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
 }
 
-/* Mostrar el menú cuando el cursor está sobre el contenedor o el menú */
-.profile-container:hover .dropdown-menu,
-.dropdown-menu:hover {
+/* Mostrar el menú cuando el checkbox está activo */
+.menu-checkbox:checked ~ .dropdown-menu {
   display: block;
   opacity: 1;
+  pointer-events: auto;
 }
 
-/* Estilos de los botones */
+/* Botones del menú */
 .dropdown-menu .buser {
   width: 100%;
-  padding: 10px;
+  padding: 12px 15px;
   border: none;
   background: none;
   text-align: left;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background-color 0.3s;
   color: var(--color-white);
+  font-size: 1rem;
 }
 
-/* Estilos de los botones al pasar el mouse */
 .dropdown-menu .buser:hover {
   background-color: var(--color-secondary);
 }
+
+
 
 
 /* Media query para pantallas menores de 837px */

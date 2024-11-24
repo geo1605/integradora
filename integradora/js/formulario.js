@@ -65,6 +65,7 @@ function updateCliente(id) {
 }
 
 function updateProducto(id) {
+  // Obtener datos del producto específico
   let Id = document.getElementById(`ID${id}`).innerText;
   let nombre = document.getElementById(`nombre${id}`).innerText;
   let tipo = document.getElementById(`tipo${id}`).innerText;
@@ -72,33 +73,48 @@ function updateProducto(id) {
   let precio = document.getElementById(`precio${id}`).innerText;
   let cont = document.getElementById("upPopup");
 
-  cont.innerHTML = `<form action="" class="modificacion" id="Actproducto">
-                <h2>Editar producto</h2>
-                <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
-                <input type="text" class="full" name="ActNombre" placeholder="Nombre" value="${nombre}">
-                <div class="full">
-                <select class="js-example-basic-single" name="Actcategoria" >
-                    <option value="" disabled>categoría</option>
-                    <option value="${categoria}" selected >${categoria}</option>
-                    <option value="AL">Alabama</option>
-                    <option value="WY">Wyoming</option>
-                </select>
-                </div>
-                <select class="medio" name="Acttipo" id="tipo" value="${tipo}">
-                    <option value="suelto">Suelto</option>
-                    <option value="unitario">Unitario</option>
-                </select>
-                
-                <input type="number" class="medio" name="Actprecio" placeholder="Precio" value="${precio}">
-                
-                <button type="button" class="full" onclick="actualizarProducto(${Id}, event)">Enviar</button>
-            </form>`;
+  // Obtener las categorías únicas de productosData
+  const categoriasUnicas = [...new Set(productosData.map(producto => producto.Categoria))];
 
+  // Generar las opciones para el select de categorías
+  let opcionesCategoria = categoriasUnicas.map(cat => {
+      return `<option value="${cat}" ${cat === categoria ? "selected" : ""}>${cat}</option>`;
+  }).join("");
+
+  // Crear el formulario dinámico con las opciones de categorías cargadas
+  cont.innerHTML = `<form action="" class="modificacion" id="Actproducto">
+              <h2>Editar producto</h2>
+              <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
+              <input type="text" class="full" name="ActNombre" placeholder="Nombre" value="${nombre}">
+              <div class="full">
+                  <select class="js-example-basic-single" name="Actcategoria">
+                      <option value="" disabled>Seleccione una categoría</option>
+                      ${opcionesCategoria} <!-- Opciones dinámicas -->
+                  </select>
+              </div>
+              <select class="medio" name="Acttipo" id="tipo">
+                  <option value="suelto" ${tipo === "suelto" ? "selected" : ""}>Suelto</option>
+                  <option value="unitario" ${tipo === "unitario" ? "selected" : ""}>Unitario</option>
+              </select>
+              <input type="number" class="medio" name="Actprecio" placeholder="Precio" value="${precio}">
+              <button type="button" class="full" onclick="actualizarProducto(${Id}, event)">Enviar</button>
+          </form>`;
+
+  // Mostrar el popup
   cont.style.display = "flex";
 
-  // Inicializar select2 después de que el contenido haya sido agregado
-  $(".js-example-basic-single").select2();
+  $(".js-example-basic-single").select2({
+    placeholder: "Selecciona o agrega una categoría",
+    tags: true, // Permite agregar nuevas opciones
+    allowClear: true, // Habilita limpiar la selección
+    width: "100%" // Asegura que se ajuste al diseño
+});
 }
+
+
+
+
+
 function updateZona(id) {
   let nombre_colonia = document.getElementById(`nombre_colonia${id}`).innerText;
   let costo_zona = document.getElementById(`costo_zona${id}`).innerText;
@@ -109,6 +125,7 @@ function updateZona(id) {
                 <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
                 <input type="text" class="medio" name="nombre_colonia" placeholder="Nombre de la colonia" value="${nombre_colonia}">
                 <input type="number" class="medio" name="costo_zona" placeholder="Costo de la zona" value="${costo_zona}">
+                <ul class="error full" id="errorU"></ul>
                 <button type="button" class="full" onclick="actualizarZona(${id}, event)">Enviar</button>
             </form>`;
 
@@ -188,7 +205,7 @@ function agregarDireccion() {
 
 
 function cargarZonasParaSelect(selector) {
-  fetch("https://latosca.up.railway.app/zonas")
+  fetch("http://localhost:5000/zonas")
     .then((response) => response.json())
     .then((zonas) => {
       const select = document.querySelector(selector);
@@ -206,7 +223,7 @@ function cargarZonasParaSelect(selector) {
 
 
 function cargarZonas() {
-  fetch("https://latosca.up.railway.app/zonas")
+  fetch("http://localhost:5000/zonas")
     .then((response) => response.json())
     .then((zonas) => {
       const selects = document.querySelectorAll('.zonas');

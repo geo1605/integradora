@@ -55,16 +55,34 @@
         </ul>
         </nav>
         <div class="profile-container">
-            <span class="material-symbols-outlined profile-icon">account_circle</span>
+            <!-- Checkbox oculto -->
+            <input type="checkbox" id="toggle-menu" class="menu-checkbox">
+            <!-- Contenedor de íconos con animación -->
+            <label for="toggle-menu" class="profile-icon">
+                <span class="icon account-circle material-symbols-outlined">account_circle</span>
+                <span class="icon close-icon material-symbols-outlined">close</span>
+            </label>
+            <!-- Menú desplegable -->
             <div class="dropdown-menu">
                 <button class="buser" onclick="cerrarSesion()">Cerrar sesión</button>
                 <a href="cambio.html"><button class="buser">Cambiar contraseña</button></a>
             </div>
         </div>
+        
+        
+        
+        
     </aside>
     <main id="main">
         <section id="nombre"><h1>Bienvenido a la Tosca</h1>
-        <h2>Angel Perez</h2></section>
+        <h2 id="nombre_user"></h2></section>
+        <section id="fecha">
+            <h2>datos desde:</h2>
+            <input type="date" id="fechapasado" readonly>
+            <h3>/</h3>
+            <input type="date" id="fechaHoy" readonly>
+        </section>
+
         <section id="Orden" class="user">
             <table id="tablaUs">
                 <thead>
@@ -74,24 +92,7 @@
                     <td>acciones</td>
                 </thead>
                 <tbody id="userOrden">
-                    <tr class="nada">
-                        <td>Carlos Alameda</td>
-                        <td>zona 1</td>
-                        <td>21/12/24 10:30</td>
-                        <td>
-                            <button>Completado</button>
-                            <button>En progreso</button>
-                        </td>
-                    </tr>
-                    <tr class="progreso">
-                        <td>Carlos Alameda</td>
-                        <td>zona 1</td>
-                        <td>21/12/24 10:30</td>
-                        <td>
-                            <button>Completado</button>
-                            <button>En progreso</button>
-                        </td>
-                    </tr>
+                    
                 </tbody>
             </table>
             <a href="orden.html" id="ver-mas">ver mas</a>
@@ -119,6 +120,7 @@
                 </div>
             </div>
         </section>
+        
         <section id="stadAd" class="admin">
             <div class="card">
                 <div class="icon-container">
@@ -126,7 +128,7 @@
                 </div>
                 <div class="content">
                     <p>Órdenes Completadas</p>
-                    <h3>1,200</h3>
+                    <h3 id="Ocompleta"></h3>
                 </div>
             </div>
             <div class="card">
@@ -135,7 +137,7 @@
                 </div>
                 <div class="content">
                     <p>Órdenes Canceladas</p>
-                    <h3>300</h3>
+                    <h3 id="Ocancelada"></h3>
                 </div>
             </div>
             <div class="card">
@@ -144,7 +146,7 @@
                 </div>
                 <div class="content">
                     <p>Órdenes pendientes</p>
-                    <h3>3</h3>
+                    <h3 id="Opendiente"></h3>
                 </div>
             </div>
             
@@ -162,52 +164,171 @@
             <canvas id="masVendidos"></canvas>
         </section>
     </main>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('https://latosca.up.railway.app/api/rol', { credentials: 'include' }) // Incluye cookies
-                .then(response => response.json())
-                .then(data => {
-                    if (data.rol === 'admin') {
-                        ocultarElementosUser(); // Oculta elementos solo para usuarios normales
-                    } else if (data.rol === 'empleado') {
-                        ocultarElementosAdmin(); // Oculta elementos solo para administradores
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al obtener el rol del usuario:', error);
-                    ocultarElementosAdmin(); // Por seguridad, oculta si no se puede determinar el rol
-                    ocultarElementosUser(); // Por seguridad, oculta si no se puede determinar el rol
-                });
-        });
-        
-        function ocultarElementosAdmin() {
-            const elementos = document.querySelectorAll('.admin'); // Selecciona los elementos con la clase "admin"
-            elementos.forEach(elemento => elemento.style.display = 'none'); // Oculta los elementos
-        }
-
-        function ocultarElementosUser() {
-            const elementos = document.querySelectorAll('.user'); // Selecciona los elementos con la clase "user"
-            elementos.forEach(elemento => elemento.style.display = 'none'); // Oculta los elementos
-        }
-        document.addEventListener('DOMContentLoaded', () => {
-    // Obtener las fechas
-    const fechaHoy = new Date();
-    const fechaPasado = new Date();
-    fechaPasado.setDate(fechaHoy.getDate() - 7); // Restar 7 días a la fecha actual
-
-    // Formatear las fechas en formato YYYY-MM-DD
-    const formatoFecha = fecha => fecha.toISOString().split('T')[0];
-
-    console.log(fechaHoy);
-    console.log(fechaPasado);
-
-});
-
-
-    </script>
     <script src="../js/session.js"></script>
+    <script src="../js/usuarios.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../js/graficas.js"></script>
+    <script>
+        // Obtener el ID o nombre del usuario actual
+        function getUserName() {
+            // Reemplaza esto con la lógica para obtener el usuario actual desde la sesión
+            return localStorage.getItem("userName") || "usuario_actual"; // Ejemplo
+        }
+        
+        // Filtrar y ordenar órdenes según la jerarquía deseada y el usuario
+        function filterAndSortOrdenes(ordenes, fechaInicio) {
+            const startDate = new Date(fechaInicio); // Fecha de inicio como objeto Date
+            const userName = getUserName().toLowerCase(); // Nombre del usuario actual en minúsculas
+        
+            // Filtrar por usuario y fecha igual o posterior a la actual usando FechaE
+            const filteredOrdenes = ordenes.filter((orden) => {
+                const ordenDateE = new Date(orden.fechaE); // Convertir FechaE de orden a objeto Date
+                if (isNaN(ordenDateE)) {
+                    console.error("FechaE inválida en orden:", orden);
+                    return false; // Ignorar órdenes con fechas inválidas
+                }
+        
+                const ordenUser = (orden.Empleado || "").toLowerCase(); // Asumimos que "Empleado" tiene el nombre del usuario
+                return ordenDateE >= startDate && ordenUser === userName; // Comparar FechaE y usuario
+            });
+        
+            // Ordenar por estado (proceso primero) y luego por FechaE
+            return filteredOrdenes.sort((a, b) => {
+                // Priorizar por estado
+                const prioridadEstado = { proceso: 1, activo: 2, completado: 3 };
+                const estadoA = prioridadEstado[a.Estatus] || 999;
+                const estadoB = prioridadEstado[b.Estatus] || 999;
+        
+                if (estadoA !== estadoB) {
+                    return estadoA - estadoB; // Ordenar por prioridad del estado
+                }
+        
+                // Si el estado es igual, ordenar por FechaE
+                const fechaEA = new Date(a.fechaE);
+                const fechaEB = new Date(b.fechaE);
+                return fechaEA - fechaEB; // De la más próxima a la más lejana
+            });
+        }
+        
+        // Renderizar la tabla con las órdenes filtradas
+        function renderTablaUs(ordenes) {
+            const tablaBody = document.getElementById("userOrden");
+        
+            let html = "";
+            if (ordenes.length === 0) {
+                // Si no hay órdenes, mostrar mensaje
+                html = `
+                    <tr>
+                        <td colspan="4" style="text-align: center; font-style: italic;">No tienes órdenes.</td>
+                    </tr>
+                `;
+            } else {
+                // Mostrar solo los primeros 5 registros
+                const ordenesToShow = ordenes.slice(0, 5);
+        
+                ordenesToShow.forEach((orden) => {
+                    html += `
+                        <tr>
+                            <td>${orden.Cliente || "N/A"}</td>
+                            <td>${orden.zona || "N/A"}</td>
+                            <td>${formatDate(orden.fechaE)}</td>
+                            <td>
+                            ${
+                                orden.Estatus === "proceso"
+                                    ? `<button class="active" onclick="actualizarEstatusO('completado', ${orden.ID_orden})">Completado</button>`
+                                    : `<button class="proceso" onclick="actualizarEstatusO('proceso', ${orden.ID_orden})">En progreso</button>`
+                            }
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        
+            tablaBody.innerHTML = html;
+        }
+        
+        // Formatear la fecha
+        function formatDate(fechaISO) {
+            if (!fechaISO) return "N/A";
+        
+            const fecha = new Date(fechaISO);
+            return fecha.toLocaleString("es-MX", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+            });
+        }
+        
+        // Obtener la fecha seleccionada (o la actual si no se selecciona ninguna)
+        function getSelectedDate() {
+            const fechaInput = document.getElementById("fechapasado");
+            return fechaInput.value || new Date().toISOString().split("T")[0]; // Fecha seleccionada o actual
+        }
+        
+        // Inicialización al cargar la página
+        document.addEventListener("DOMContentLoaded", () => {
+            const hoy = new Date().toISOString().split("T")[0];
+            document.getElementById("fechaHoy").value = hoy;
+        
+            fetchAndRenderOrdenes();
+        });
+        
+        // Función principal para cargar y procesar las órdenes
+        function fetchAndRenderOrdenes() {
+            fetch("http://localhost:5000/ViewOrden")
+                .then((response) => response.json())
+                .then((ordenes) => {
+                    const fechaInicio = getSelectedDate();
+        
+                    // Filtrar y ordenar las órdenes por estado, fecha y usuario
+                    const ordenesFiltradas = filterAndSortOrdenes(ordenes, fechaInicio);
+        
+                    // Renderizar la tabla
+                    renderTablaUs(ordenesFiltradas);
+                })
+                .catch((error) => console.error("Error al cargar las órdenes:", error));
+        }
+        
+        // Actualizar estatus de la orden
+        function actualizarEstatusO(estatusN, id) {
+            if (!id || isNaN(id)) {
+                console.error("El ID de la orden es inválido.");
+                return;
+            }
+        
+            if (!estatusN) {
+                console.error("El nuevo estatus no puede estar vacío.");
+                return;
+            }
+        
+            const url = `http://localhost:5000/orden/estatus/${id}`;
+            const opciones = {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ Estatus: estatusN }),
+            };
+        
+            fetch(url, opciones)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`Error al actualizar el estatus: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    alert("Estatus actualizado con éxito:", data);
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    console.error("Error al realizar la solicitud:", error);
+                });
+        }
+        </script>
+        
+    
 </body>
 </html>

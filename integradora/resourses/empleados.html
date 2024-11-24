@@ -49,7 +49,14 @@
             </ul>
         </nav>
         <div class="profile-container">
-            <span class="material-symbols-outlined profile-icon">account_circle</span>
+            <!-- Checkbox oculto -->
+            <input type="checkbox" id="toggle-menu" class="menu-checkbox">
+            <!-- Contenedor de íconos con animación -->
+            <label for="toggle-menu" class="profile-icon">
+                <span class="icon account-circle material-symbols-outlined">account_circle</span>
+                <span class="icon close-icon material-symbols-outlined">close</span>
+            </label>
+            <!-- Menú desplegable -->
             <div class="dropdown-menu">
                 <button class="buser" onclick="cerrarSesion()">Cerrar sesión</button>
                 <a href="cambio.html"><button class="buser">Cambiar contraseña</button></a>
@@ -64,9 +71,6 @@
             </button>
             <div id="barra_busqueda">
                 <input id="Search_principal" type="search" placeholder="Buscar">
-                <button id="Bot_busqueda" class="botS">
-                    <span class="material-symbols-outlined">search</span>
-                </button>
             </div>
         </form>
 
@@ -94,23 +98,25 @@
             const Npagina = 20; // Número de elementos por página
             let Numpag = 1; // Página inicial
             let empleadosData = []; // Arreglo para almacenar los datos de empleados
-
+            let filteredEmpleados = []; // Arreglo para almacenar los datos filtrados
+        
             function fetchEmpleados() {
-                fetch('https://latosca.up.railway.app/empleados')
+                fetch('http://localhost:5000/empleados')
                     .then(response => response.json())
                     .then(empleados => {
                         empleadosData = empleados;
+                        filteredEmpleados = [...empleadosData]; // Inicializamos los datos filtrados con todos los datos
                         renderTable();
                         renderPaginationControls();
                     })
                     .catch(error => console.error('Error al cargar los empleados:', error));
             }
-
+        
             function renderTable() {
                 const start = (Numpag - 1) * Npagina;
                 const end = start + Npagina;
-                const empleadosToShow = empleadosData.slice(start, end);
-                
+                const empleadosToShow = filteredEmpleados.slice(start, end); // Usamos los datos filtrados
+        
                 let empleadosHTML = '';
                 empleadosToShow.forEach(emp => {
                     if (emp.estatus === 1) {
@@ -134,56 +140,59 @@
                     `;
                     }
                 });
-
+        
                 document.getElementById("empleados-body").innerHTML = empleadosHTML;
             }
-
+        
             function renderPaginationControls() {
-                const totalPages = Math.ceil(empleadosData.filter(emp => emp.estatus === 1).length / Npagina);
+                const totalPages = Math.ceil(filteredEmpleados.length / Npagina); // Usamos los datos filtrados
                 let paginationHTML = '';
-
+        
                 for (let i = 1; i <= totalPages; i++) {
                     paginationHTML += `<button onclick="goToPage(${i})" class="pagination-button ${i === Numpag ? 'active' : ''}">${i}</button>`;
                 }
-
+        
                 document.getElementById("pagination-controls").innerHTML = paginationHTML;
             }
-
+        
             function goToPage(page) {
                 Numpag = page;
                 renderTable();
                 renderPaginationControls();
             }
-
-            
+        
             // Función para realizar la búsqueda
             function buscadorEmpleados() {
                 const searchTerm = document.getElementById("Search_principal").value.toLowerCase();
+        
+                // Filtramos los empleados en función de los campos
                 filteredEmpleados = empleadosData.filter(empleado => {
                     return (
                         empleado.Nombres.toLowerCase().includes(searchTerm) ||
                         empleado.Apellido_P.toLowerCase().includes(searchTerm) ||
                         empleado.Apellido_M.toLowerCase().includes(searchTerm) ||
-                        empleado.Telefono.toLowerCase().includes(searchTerm) ||
+                        empleado.Telefono.toString().includes(searchTerm) || // Convertimos a string para evitar errores
                         empleado.correo.toLowerCase().includes(searchTerm)
                     );
                 });
-                Numpag = 1; // Reiniciar a la primera página
+        
+                Numpag = 1; // Reiniciamos a la primera página
                 renderTable();
                 renderPaginationControls();
             }
-
+        
             // Añadir un evento de búsqueda al campo de búsqueda
             document.getElementById("Search_principal").addEventListener("input", buscadorEmpleados);
-
+        
             // Llamar a la función para cargar los empleados y configurar la paginación
             fetchEmpleados();
         </script>
+        
     </main>
 
     <div id="addPopup" class="Popup">
-        <form action="" class="modificacion" id="empleadoForm">
-            <h2>Formulario Empleado</h2>
+        <form action="" class="modificacion" id="empleadoForm" onsubmit="">
+            <h2>Añadir Empleado</h2>
             <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
             <input type="text" class="tercio" name="Nombres" placeholder="Nombre(s)">
             <input type="text" class="tercio" name="Apellido_P" placeholder="Apellido Paterno">
@@ -199,7 +208,7 @@
         </form>
     </div>
     <div id="upPopup" class="Popup"></div>
-
+    <script src="../js/validaciones/validacionemp.js"></script>
     <script src="../js/session.js"></script>
     <script src="../js/formulario.js"></script>
     <script src="../js/script.js"></script>
