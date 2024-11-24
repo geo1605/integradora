@@ -277,7 +277,7 @@
         
         // Función principal para cargar y procesar las órdenes
         function fetchAndRenderOrdenes() {
-            fetch("http://localhost:5000/ViewOrden")
+            fetch("https://latosca.up.railway.app/ViewOrden")
                 .then((response) => response.json())
                 .then((ordenes) => {
                     const fechaInicio = getSelectedDate();
@@ -303,7 +303,7 @@
                 return;
             }
         
-            const url = `http://localhost:5000/orden/estatus/${id}`;
+            const url = `https://latosca.up.railway.app/orden/estatus/${id}`;
             const opciones = {
                 method: "PUT",
                 headers: {

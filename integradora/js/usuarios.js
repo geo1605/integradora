@@ -5,7 +5,7 @@ let usuarioId = null; // Variable global para almacenar el ID del usuario
 
 // Función para cargar el ID del usuario
 function cargarUsuarioId() {
-    return fetch("http://localhost:5000/api/usuario/id", { credentials: 'include' }) // Incluye cookies de sesión
+    return fetch("https://latosca.up.railway.app/api/usuario/id", { credentials: 'include' }) // Incluye cookies de sesión
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -25,7 +25,7 @@ function cargarUsuarioId() {
 
 // Función para cargar el nombre del empleado dado un ID
 function cargarEmpleadoNombre(empleadoId) {
-    return fetch("http://localhost:5000/empleados")
+    return fetch("https://latosca.up.railway.app/empleados")
         .then(response => response.json())
         .then(empleados => {
             const empleado = empleados.find(e => e.ID_Empleados == empleadoId && e.estatus == 1);
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // Obtener el rol del usuario y gestionar permisos
-    fetch('http://localhost:5000/api/rol', { credentials: 'include' }) // Incluye cookies
+    fetch('https://latosca.up.railway.app/api/rol', { credentials: 'include' }) // Incluye cookies
         .then(response => response.json())
         .then(data => {
             if (data.rol === 'admin') {

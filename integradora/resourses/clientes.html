@@ -106,7 +106,7 @@
 
     // Función para obtener los clientes
     function fetchClientes() {
-        fetch('http://localhost:5000/clientes')
+        fetch('https://latosca.up.railway.app/clientes')
             .then(response => response.json())
             .then(clientes => {
                 clientesData = clientes; // Guardamos los datos en una variable global

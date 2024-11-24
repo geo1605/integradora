@@ -458,7 +458,7 @@ app.get("/empleados", verificarSesion, (req, res) => {
 // Registrar Empleado
 
 
-app.post('/empleado/registrar', verificarSesion, async (req, res) => {
+app.post('/empleado/registrar',/*  verificarSesion, */ async (req, res) => {
   const { Nombres, Apellido_P, Apellido_M, Cargo, correo, Telefono, password, estatus } = req.body;
 
   try {
@@ -573,7 +573,7 @@ app.put('/orden/estatus/:id' , verificarSesion , (req, res) => {
     });
 });
 
-app.get("/ViewOrden", /* verificarSesion, */ (req, res) => {
+app.get("/ViewOrden",  verificarSesion, (req, res) => {
     const sql = 'CALL obtener_ordenes();';
     db.query(sql, (err, results) => {
         if (err) {
@@ -762,7 +762,7 @@ app.put('/passC/:id', verificarSesion, async (req, res) => {
 
 
 // procedures
-app.get("/topClientes", /* verificarSesion, verificarRol(['admin']), */ (req, res) => {
+app.get("/topClientes",  verificarSesion, verificarRol(['admin']),  (req, res) => {
     const { fechaInicio, fechaFin } = req.query; // Parámetros de fecha enviados en la URL
     const sql = 'CALL topClientes(?, ?)';
     db.query(sql, [fechaInicio, fechaFin], (err, result) => {
@@ -775,7 +775,7 @@ app.get("/topClientes", /* verificarSesion, verificarRol(['admin']), */ (req, re
     });
 });
 
-app.get("/topEmpleados", /* verificarSesion, verificarRol(['admin']), */ (req, res) => {
+app.get("/topEmpleados",  verificarSesion, verificarRol(['admin']),  (req, res) => {
     const { fechaInicio, fechaFin } = req.query; // Parámetros de fecha enviados en la URL
     const sql = 'CALL topEmpleados(?, ?)';
     db.query(sql, [fechaInicio, fechaFin], (err, result) => {
@@ -788,7 +788,7 @@ app.get("/topEmpleados", /* verificarSesion, verificarRol(['admin']), */ (req, r
     });
 });
 
-app.get("/topProductos", /* verificarSesion, verificarRol(['admin']), */ (req, res) => {
+app.get("/topProductos", verificarSesion, verificarRol(['admin']),  (req, res) => {
     const { fechaInicio, fechaFin } = req.query; // Parámetros de fecha enviados en la URL
     const sql = 'CALL topProductos(?, ?)';
     db.query(sql, [fechaInicio, fechaFin], (err, result) => {
@@ -801,7 +801,7 @@ app.get("/topProductos", /* verificarSesion, verificarRol(['admin']), */ (req, r
     });
 });
 
-app.get("/cantidadOrdenesPorDia", /* verificarSesion, verificarRol(['admin']), */ (req, res) => {
+app.get("/cantidadOrdenesPorDia",  verificarSesion, verificarRol(['admin']),  (req, res) => {
     const { fechaInicio, fechaFin } = req.query; // Parámetros de fecha enviados en la URL
     const sql = 'CALL cantidadOrdenesPorDia(?, ?)';
     db.query(sql, [fechaInicio, fechaFin], (err, result) => {
@@ -814,7 +814,7 @@ app.get("/cantidadOrdenesPorDia", /* verificarSesion, verificarRol(['admin']), *
     });
 });
 
-app.get("/cantidadOrdenesPorEstatus",/*  verificarSesion, verificarRol(['admin']), */ (req, res) => {
+app.get("/cantidadOrdenesPorEstatus",  verificarSesion, verificarRol(['admin']),  (req, res) => {
     const { fechaInicio, fechaFin, estatus } = req.query; // Parámetros de fecha y estatus enviados en la URL
     const sql = 'CALL cantidadOrdenesPorEstatus(?, ?, ?)';
     db.query(sql, [fechaInicio, fechaFin, estatus], (err, result) => {

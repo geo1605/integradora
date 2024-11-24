@@ -101,7 +101,7 @@
             let filteredEmpleados = []; // Arreglo para almacenar los datos filtrados
         
             function fetchEmpleados() {
-                fetch('http://localhost:5000/empleados')
+                fetch('https://latosca.up.railway.app/empleados')
                     .then(response => response.json())
                     .then(empleados => {
                         empleadosData = empleados;
