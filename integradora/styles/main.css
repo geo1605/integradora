@@ -272,6 +272,57 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
 }
 
+/* Estilo general para los botones */
+button {
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 18px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Efecto hover genérico */
+button:hover {
+  transform: scale(1.1); /* Aumenta el tamaño ligeramente */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra elegante */
+}
+
+/* Botón para estado 'proceso' */
+.proceso {
+  background-color: #ffcc00; /* Amarillo */
+  color: white;
+}
+.proceso:hover {
+  background-color: #e6b800; /* Amarillo oscuro */
+}
+
+/* Botón para estado 'cancelado' */
+.cancelado {
+  background-color: #e74c3c; /* Rojo */
+  color: white;
+}
+.cancelado:hover {
+  background-color: #c0392b; /* Rojo oscuro */
+}
+
+/* Botón para estado 'completar' */
+.completar {
+  background-color: #27ae60; /* Verde */
+  color: white;
+}
+.completar:hover {
+  background-color: #1e8449; /* Verde oscuro */
+}
+
+/* Iconos dentro de los botones */
+button .material-symbols-outlined {
+  font-size: 24px; /* Ajusta el tamaño del icono */
+}
+
 
 /* Adaptabilidad en mobile */
 @media (max-width: 760px) {

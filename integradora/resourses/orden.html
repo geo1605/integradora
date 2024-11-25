@@ -190,12 +190,18 @@ function renderOrdenesTable() {
                 <td><a href="detalles.html?id=${orden.ID_orden}" class="ver">detalle</a></td>
                 <td id="acciones">
                     ${orden.Estatus === 'activo' ? `
-                        <button class="proceso" onclick="actualizarEstatusO('proceso', ${orden.ID_orden})"><span class="material-symbols-outlined">acute</span></button>
-                        <button class="cancelado" onclick="actualizarEstatusO('cancelado', ${orden.ID_orden}")><span class="material-symbols-outlined">block</span></button>
+                        <button class="proceso" onclick="actualizarEstatusO('proceso', ${orden.ID_orden})" title="Marcar como en proceso">
+                            <span class="material-symbols-outlined">acute</span>
+                        </button>
+                        <button class="cancelado" onclick="actualizarEstatusO('cancelado', ${orden.ID_orden})" title="Cancelar orden">
+                            <span class="material-symbols-outlined">block</span>
+                        </button>
                     ` : orden.Estatus === 'proceso' ? `
-                        <button class="completar" onclick="actualizarEstatusO('completado',${orden.ID_orden})"><span class="material-symbols-outlined">task_alt</span></button>
+                        <button class="completar" onclick="actualizarEstatusO('completado',${orden.ID_orden})" title="Marcar como completado">
+                            <span class="material-symbols-outlined">task_alt</span>
+                        </button>
                     ` : ''}
-                </td>
+                    </td>
             </tr>
         `;
     });
