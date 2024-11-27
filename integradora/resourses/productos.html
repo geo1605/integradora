@@ -139,7 +139,7 @@
         let filteredProductos = []; // Nueva variable para los productos filtrados
     
         function fetchProductos() {
-    fetch('http://localhost:5000/productos')
+    fetch('https://latosca.up.railway.app/productos')
         .then(response => response.json())
         .then(productos => {
             // Filtrar productos para asegurar que solo los que tienen estatus = 1 sean procesados

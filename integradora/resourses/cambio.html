@@ -35,7 +35,7 @@ let usuarioId = null; // Variable global para almacenar el ID del usuario
 
 // Función para cargar el ID del usuario
 function cargarUsuarioId() {
-    return fetch("http://localhost:5000/api/usuario/id", { credentials: 'include' }) // Incluye cookies de sesión
+    return fetch("https://latosca.up.railway.app/api/usuario/id", { credentials: 'include' }) // Incluye cookies de sesión
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -74,7 +74,7 @@ async function recuperacion() {
         }
 
         // Enviar la solicitud de actualización al servidor
-        const response = await fetch(`http://localhost:5000/passC/${usuarioId}`, {
+        const response = await fetch(`https://latosca.up.railway.app/passC/${usuarioId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

@@ -128,7 +128,7 @@ let allOrdenes = []; // Para almacenar todas las órdenes originales
 function fetchOrdenes() {
 
 
-    fetch('http://localhost:5000/ViewOrden')
+    fetch('https://latosca.up.railway.app/ViewOrden')
     .then(response => response.json())
     .then(ordenes => {
         console.log("Órdenes recibidas del servidor:", ordenes); // Verificar los datos recibidos
@@ -329,7 +329,7 @@ function cargarDatosUsuarioYRol() {
                 });
             }
         })
-        .then(() => fetch('http://localhost:5000/api/rol', { credentials: 'include' }))
+        .then(() => fetch('https://latosca.up.railway.app/api/rol', { credentials: 'include' }))
         .then(response => response.json())
         .then(data => {
             userRole = data.rol;
@@ -376,7 +376,7 @@ function actualizarEstatusO(estatusN, id) {
 // Función que realiza la actualización de estatus
 function realizarActualizacion(estatusN, id) {
     // URL del endpoint
-    const url = `http://localhost:5000/orden/estatus/${id}`;
+    const url = `https://latosca.up.railway.app/orden/estatus/${id}`;
 
     // Opciones de la solicitud
     const opciones = {

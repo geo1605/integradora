@@ -4,7 +4,7 @@ async function iniciarSesion() {
     const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch('http://localhost:5000/login', {
+        const response = await fetch('https://latosca.up.railway.app/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ correo, password }),
@@ -33,7 +33,7 @@ function cerrarSesion() {
         .then((isConfirmed) => {
             if (isConfirmed) {
                 // Si el usuario confirma, proceder con la solicitud de cierre de sesión
-                fetch('http://localhost:5000/logout', {
+                fetch('https://latosca.up.railway.app/logout', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

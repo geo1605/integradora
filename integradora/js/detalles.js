@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const ordenId = urlParams.get("id");
 
     if (ordenId) {
-        fetch(`http://localhost:5000/Vorden/${ordenId}`)
+        fetch(`https://latosca.up.railway.app/Vorden/${ordenId}`)
             .then(response => {
                 if (!response.ok) throw new Error("Error en la respuesta de la API");
                 return response.json();
@@ -89,7 +89,7 @@ function editarOr() {
 
 // Función para cargar empleados dinámicamente
 function cargarEmpleados(empleadoId) {
-    fetch("http://localhost:5000/empleados")
+    fetch("https://latosca.up.railway.app/empleados")
         .then(response => response.json())
         .then(empleados => {
             const select = document.getElementById("empleado");
@@ -105,7 +105,7 @@ function cargarEmpleados(empleadoId) {
 
 // Función para cargar clientes dinámicamente
 function cargarCliente(clienteId) {
-    fetch("http://localhost:5000/clientes")
+    fetch("https://latosca.up.railway.app/clientes")
         .then(response => response.json())
         .then(clientes => {
             const select = document.getElementById("cliente");
@@ -121,7 +121,7 @@ function cargarCliente(clienteId) {
 
 // Función para cargar direcciones de un cliente y actualizar el costo extra
 function cargarDirecciones(clienteId, direccionSeleccionada) {
-    fetch("http://localhost:5000/direcciones")
+    fetch("https://latosca.up.railway.app/direcciones")
         .then(response => response.json())
         .then(direcciones => {
             const select = document.getElementById("direccion");
@@ -151,7 +151,7 @@ function actualizarCostoZona() {
     if (selectedOption && selectedOption.hasAttribute("data-zona")) {
         const zonaId = selectedOption.getAttribute("data-zona");
 
-        fetch("http://localhost:5000/zonas/")
+        fetch("https://latosca.up.railway.app/zonas/")
             .then((response) => response.json())
             .then((zonas) => {
                 const zona = zonas.find((z) => z.ID_zona == zonaId);
@@ -182,14 +182,14 @@ function cargarProductosOrden(ordenId) {
     const productosContainer = document.getElementById("productos-container");
 
     // Solicitar detalles de productos de la orden
-    fetch(`http://localhost:5000/Vdetalles/${ordenId}`)
+    fetch(`https://latosca.up.railway.app/Vdetalles/${ordenId}`)
         .then((response) => {
             if (!response.ok) throw new Error("Error al obtener los detalles de productos");
             return response.json();
         })
         .then((detallesData) => {
             // Solicitar todos los productos disponibles
-            return fetch("http://localhost:5000/productos")
+            return fetch("https://latosca.up.railway.app/productos")
                 .then((response) => {
                     if (!response.ok) throw new Error("Error al obtener los productos");
                     return response.json();
@@ -404,7 +404,7 @@ async function actualizarDetallesOrden(ordenId, detalles) {
     try {
         for (const detalle of detalles) {
 
-            const response = await fetch(`http://localhost:5000/detalle/modificar/${detalle.ID_detalle}`, { // Se usa ID_detalle
+            const response = await fetch(`https://latosca.up.railway.app/detalle/modificar/${detalle.ID_detalle}`, { // Se usa ID_detalle
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -434,7 +434,7 @@ async function actualizarDetallesOrden(ordenId, detalles) {
 async function actualizarOrdenPrincipal(ordenId, datosOrden) {
     try {
 
-        const response = await fetch(`http://localhost:5000/orden/modificar/${ordenId}`, {
+        const response = await fetch(`https://latosca.up.railway.app/orden/modificar/${ordenId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

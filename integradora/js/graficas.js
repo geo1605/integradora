@@ -31,7 +31,7 @@
 // Función para cargar productos más vendidos
 function cargarTopProductos(fechaInicio, fechaFin) {
     const ctx = document.getElementById('masVendidos');
-    fetch(`http://localhost:5000/topProductos?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
+    fetch(`https://latosca.up.railway.app/topProductos?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
         .then(response => response.json())
         .then(data => {
             
@@ -87,7 +87,7 @@ function cargarTopProductos(fechaInicio, fechaFin) {
 // Función para cargar empleados destacados
 function cargarTopEmpleados(fechaInicio, fechaFin) {
     const ctx = document.getElementById('empleados');
-    fetch(`http://localhost:5000/topEmpleados?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
+    fetch(`https://latosca.up.railway.app/topEmpleados?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
         .then(response => response.json())
         .then(data => {
             
@@ -139,7 +139,7 @@ function cargarTopEmpleados(fechaInicio, fechaFin) {
 // Función para cargar clientes destacados
 function cargarTopClientes(fechaInicio, fechaFin) {
     const ctx = document.getElementById('clientes');
-    fetch(`http://localhost:5000/topClientes?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
+    fetch(`https://latosca.up.railway.app/topClientes?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
         .then(response => response.json())
         .then(data => {
 
@@ -183,7 +183,7 @@ function cargarTopClientes(fechaInicio, fechaFin) {
 function cargarVentasPorDia(fechaInicio, fechaFin) {
     const ctx2 = document.getElementById('ventas');
 
-    fetch(`http://localhost:5000/cantidadOrdenesPorDia?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
+    fetch(`https://latosca.up.railway.app/cantidadOrdenesPorDia?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
         .then(response => response.json())
         .then(data => {
 
@@ -232,7 +232,7 @@ function cargarVentasPorDia(fechaInicio, fechaFin) {
 function cargarActivas(fechaInicio, fechaFin) {
     const bloque = document.getElementById("Ocompleta");
     
-    fetch(`http://localhost:5000/cantidadOrdenesPorEstatus?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&estatus=activo`)
+    fetch(`https://latosca.up.railway.app/cantidadOrdenesPorEstatus?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&estatus=activo`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error al obtener las órdenes activas');
@@ -253,7 +253,7 @@ function cargarActivas(fechaInicio, fechaFin) {
 function cargarPendientes(fechaInicio, fechaFin) {
     const bloque = document.getElementById("Opendiente");
     
-    fetch(`http://localhost:5000/cantidadOrdenesPorEstatus?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&estatus=proceso`)
+    fetch(`https://latosca.up.railway.app/cantidadOrdenesPorEstatus?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&estatus=proceso`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error al obtener las órdenes pendientes');
@@ -272,7 +272,7 @@ function cargarPendientes(fechaInicio, fechaFin) {
 function cargarCanceladas(fechaInicio, fechaFin) {
     const bloque = document.getElementById("Ocancelada");
     
-    fetch(`http://localhost:5000/cantidadOrdenesPorEstatus?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&estatus=cancelado`)
+    fetch(`https://latosca.up.railway.app/cantidadOrdenesPorEstatus?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&estatus=cancelado`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error al obtener las órdenes canceladas');

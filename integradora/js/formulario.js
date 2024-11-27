@@ -581,7 +581,7 @@ function agregarDireccion() {
 
 
 function cargarZonasParaSelect(selector) {
-  fetch("http://localhost:5000/zonas")
+  fetch("https://latosca.up.railway.app/zonas")
     .then((response) => response.json())
     .then((zonas) => {
       const select = document.querySelector(selector);
@@ -600,7 +600,7 @@ function cargarZonasParaSelect(selector) {
 
 function cargarZonas() {
   return new Promise((resolve, reject) => {
-    fetch("http://localhost:5000/zonas")
+    fetch("https://latosca.up.railway.app/zonas")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error en la respuesta del servidor: ${response.status}`);

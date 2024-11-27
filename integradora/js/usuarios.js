@@ -7,7 +7,7 @@ let usuarioNombre = null; // Variable global para almacenar el nombre del usuari
 // Función para cargar el ID del usuario autenticado
 async function cargarUsuarioId() {
     try {
-        const response = await fetch("http://localhost:5000/api/usuario/id", { credentials: 'include' });
+        const response = await fetch("https://latosca.up.railway.app/api/usuario/id", { credentials: 'include' });
         if (!response.ok) throw new Error("No se pudo obtener el ID del usuario. Verifica si estás autenticado.");
 
         const data = await response.json();
@@ -22,7 +22,7 @@ async function cargarUsuarioId() {
 // Función para cargar el nombre del empleado dado un ID
 async function cargarEmpleadoNombre(empleadoId) {
     try {
-        const response = await fetch("http://localhost:5000/empleados");
+        const response = await fetch("https://latosca.up.railway.app/empleados");
         const empleados = await response.json();
 
         const empleado = empleados.find(e => e.ID_Empleados == empleadoId && e.estatus == 1);
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // Obtener el rol del usuario y gestionar permisos
-        const response = await fetch('http://localhost:5000/api/rol', { credentials: 'include' });
+        const response = await fetch('https://latosca.up.railway.app/api/rol', { credentials: 'include' });
         const data = await response.json();
 
         if (data.rol === 'admin') {

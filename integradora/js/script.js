@@ -30,7 +30,7 @@ function addProducto(event) {
   };
 
   // Enviar datos al servidor
-  fetch("http://localhost:5000/producto/registrar", {
+  fetch("https://latosca.up.railway.app/producto/registrar", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -74,7 +74,7 @@ function addZona(event) {
   };
 
   // Enviar datos al servidor
-  fetch("http://localhost:5000/zona/registrar", {
+  fetch("https://latosca.up.railway.app/zona/registrar", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -133,7 +133,7 @@ function addEmpleado(event) {
   };
 
   // Enviar datos al servidor
-  fetch("http://localhost:5000/empleado/registrar", {
+  fetch("https://latosca.up.railway.app/empleado/registrar", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -183,7 +183,7 @@ function addCliente(event) {
   };
 
   // Registrar cliente en la API
-  fetch("http://localhost:5000/cliente/registrar", {
+  fetch("https://latosca.up.railway.app/cliente/registrar", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -218,7 +218,7 @@ function addCliente(event) {
 
 // Función para obtener el último ID de cliente registrado
 function obtenerUltimoClienteId() {
-  return fetch("http://localhost:5000/clientes") // Asegúrate de que devuelve una lista de clientes
+  return fetch("https://latosca.up.railway.app/clientes") // Asegúrate de que devuelve una lista de clientes
     .then((response) => {
       if (!response.ok) {
         throw new Error("No se pudo obtener el último ID de cliente");
@@ -263,7 +263,7 @@ function addDireccionesC(clienteId) {
     };
 
     // Enviar cada dirección al servidor
-    fetch("http://localhost:5000/direccion/registrar", {
+    fetch("https://latosca.up.railway.app/direccion/registrar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -315,7 +315,7 @@ function addDireccion(event) {
     ID_cliente: cliente
   };
 
-  fetch("http://localhost:5000/direccion/registrar", {
+  fetch("https://latosca.up.railway.app/direccion/registrar", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -381,7 +381,7 @@ function actualizarZona(ID, event) {
   // Mostrar alerta de carga antes de realizar la solicitud
   const loading = Alerts.loadingAlert('Actualizando zona...');
 
-  fetch(`http://localhost:5000/zona/modificar/${ID}`, {
+  fetch(`https://latosca.up.railway.app/zona/modificar/${ID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(zonaData),
@@ -420,7 +420,7 @@ function eliminarZona(id) {
     // Mostrar alerta de carga antes de realizar la eliminación
     const loading = Alerts.loadingAlert('Eliminando zona...');
 
-    fetch(`http://localhost:5000/zona/eliminar/${id}`, { method: "PUT" })
+    fetch(`https://latosca.up.railway.app/zona/eliminar/${id}`, { method: "PUT" })
     .then((response) => {
         if (!response.ok) throw new Error(`Error al eliminar la zona: ${response.status}`);
         // Cerrar alerta de carga
@@ -461,7 +461,7 @@ function actualizarEmpleado(ID, event) {
   // Mostrar alerta de carga antes de hacer la solicitud
   const loading = Alerts.loadingAlert('Actualizando empleado...');
 
-  fetch(`http://localhost:5000/empleado/modificar/${ID}`, {
+  fetch(`https://latosca.up.railway.app/empleado/modificar/${ID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(empleadoData),
@@ -500,7 +500,7 @@ function eliminarEmpleado(id) {
     // Mostrar alerta de carga antes de realizar la eliminación
     const loading = Alerts.loadingAlert('Eliminando empleado...');
 
-    fetch(`http://localhost:5000/empleado/eliminar/${id}`, { method: "PUT" })
+    fetch(`https://latosca.up.railway.app/empleado/eliminar/${id}`, { method: "PUT" })
     .then((response) => {
         if (!response.ok) throw new Error(`Error al eliminar el empleado: ${response.status}`);
         // Cerrar alerta de carga
@@ -538,7 +538,7 @@ function actualizarCliente(ID, event) {
   // Mostrar alerta de carga antes de hacer la solicitud
   const loading = Alerts.loadingAlert('Actualizando cliente...');
 
-  fetch(`http://localhost:5000/cliente/modificar/${ID}`, {
+  fetch(`https://latosca.up.railway.app/cliente/modificar/${ID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(clienteData),
@@ -577,7 +577,7 @@ function eliminarCliente(id) {
     // Mostrar alerta de carga antes de realizar la eliminación
     const loading = Alerts.loadingAlert('Eliminando cliente...');
 
-    fetch(`http://localhost:5000/cliente/eliminar/${id}`, { method: "PUT" })
+    fetch(`https://latosca.up.railway.app/cliente/eliminar/${id}`, { method: "PUT" })
     .then((response) => {
         if (!response.ok) throw new Error(`Error al eliminar el cliente: ${response.status}`);
         // Cerrar alerta de carga
@@ -615,7 +615,7 @@ function actualizarProducto(ID, event) {
   // Mostrar alerta de carga antes de hacer la solicitud
   const loading = Alerts.loadingAlert('Actualizando producto...');
 
-  fetch(`http://localhost:5000/producto/modificar/${ID}`, {
+  fetch(`https://latosca.up.railway.app/producto/modificar/${ID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(productoData),
@@ -654,7 +654,7 @@ function eliminarProducto(id) {
     // Mostrar alerta de carga antes de realizar la eliminación
     const loading = Alerts.loadingAlert('Eliminando producto...');
 
-    fetch(`http://localhost:5000/producto/eliminar/${id}`, { method: "PUT" })
+    fetch(`https://latosca.up.railway.app/producto/eliminar/${id}`, { method: "PUT" })
     .then((response) => {
         if (!response.ok) throw new Error(`Error al eliminar el producto: ${response.status}`);
         // Cerrar alerta de carga
@@ -701,7 +701,7 @@ function actualizarDireccion(ID, event, idC) {
   const loading = Alerts.loadingAlert('Actualizando dirección...');
 
   // Hacer la solicitud PUT
-  fetch(`http://localhost:5000/direccion/modificar/${idV}`, {
+  fetch(`https://latosca.up.railway.app/direccion/modificar/${idV}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(direccionData),
@@ -752,7 +752,7 @@ function eliminarDireccion(id) {
     // Mostrar alerta de carga antes de realizar la eliminación
     const loading = Alerts.loadingAlert('Eliminando dirección...');
 
-    fetch(`http://localhost:5000/direccion/eliminar/${id}`, { method: "PUT" })
+    fetch(`https://latosca.up.railway.app/direccion/eliminar/${id}`, { method: "PUT" })
     .then((response) => {
         if (!response.ok) throw new Error(`Error al eliminar la dirección: ${response.status}`);
         
