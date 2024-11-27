@@ -38,8 +38,11 @@
     </aside>
     <main>
         <div id="DetalleO">
+            
             <form id="detalles" class="mod">
-                <h2>Orden</h2>
+                <h2>Orden</h2><button id="editarOr" onclick="editarOr()"  class="admin bot" style="float: right;"><span class="material-symbols-outlined">
+                    edit
+                    </span></button>
                 <!-- Empleado -->
                 <section id="general" class="full sec">
                     <h3 class="full">Datos Generales</h3>
@@ -102,7 +105,7 @@
                     <button id="enviarOr" class="bot" style="display: none;" type="button">Enviar</button>
                 </div>
             </form>
-            <button id="editarOr" onclick="editarOr()" class="admin bot">Editar</button>
+            
         </div>
     </main>
 </body>

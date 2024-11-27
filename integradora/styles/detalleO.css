@@ -49,9 +49,12 @@ body {
 }
 
 main h2 {
-    grid-column: span 12;
+    grid-column: span 10;
     text-align: center;
     color: var(--color-primary) !important;
+}
+#editarOr{
+    grid-column: span 2;
 }
 
 .inputs, .selects {
