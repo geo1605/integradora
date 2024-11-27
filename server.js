@@ -79,6 +79,19 @@ function verificarRol(rolesPermitidos) {
     };
 }
 
+
+app.get('/api/usuario/verificar', verificarSesion, (req, res) => {
+    const sql = "SELECT @current_user_id AS currentUserId";
+    db.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).send({ mensaje: "Error al obtener el ID del usuario actual" });
+        } else {
+            res.status(200).send({ currentUserId: result[0].currentUserId });
+        }
+    });
+});
+
+
 // ====================== RUTAS DE AUTENTICACIÓN ====================== //
 
 app.post('/login', (req, res) => {
@@ -97,6 +110,15 @@ app.post('/login', (req, res) => {
                 const isMatch = await bcrypt.compare(password, usuario.password);
                 if (isMatch) {
                     req.session.user = usuario;
+
+                    // Configurar la variable global en MySQL para el usuario actual
+                    const setSessionQuery = "SET @current_user_id = ?";
+                    db.query(setSessionQuery, [usuario.ID_Empleados], (err) => {
+                        if (err) {
+                            console.error("Error al establecer la variable de sesión en MySQL:", err);
+                        }
+                    });
+
                     res.status(200).send({ mensaje: "Inicio de sesión exitoso", usuario });
                 } else {
                     res.status(401).send({ mensaje: "Correo o contraseña incorrectos" });

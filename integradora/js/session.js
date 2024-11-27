@@ -41,11 +41,10 @@ function cerrarSesion() {
                 })
                     .then((response) => {
                         if (response.ok) {
-                            Alerts.basicAlert('¡Éxito!', 'Sesión cerrada correctamente.', 'success');
-                            setTimeout(() => {
-                                // Redirige al usuario a la página de inicio de sesión
-                                window.location.href = '/';
-                            }, 2000);
+                            Alerts.basicAlert('¡Éxito!', 'Sesión cerrada correctamente.', 'success')
+                            .then(() => {
+                                window.location.href = '/'; 
+                              });
                         } else {
                             Alerts.basicAlert('Error', 'Error al cerrar sesión.', 'error');
                         }
