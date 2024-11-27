@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const ordenId = urlParams.get("id");
 
     if (ordenId) {
-        fetch(`https://latosca.up.railway.app/Vorden/${ordenId}`)
+        fetch(`http://localhost:5000/Vorden/${ordenId}`)
             .then(response => {
                 if (!response.ok) throw new Error("Error en la respuesta de la API");
                 return response.json();
@@ -49,18 +49,47 @@ function editarOr() {
     const selects = document.querySelectorAll('#detalles select');
     const but = document.getElementById('editarOr');
     const butE = document.getElementById('enviarOr');
+    const error = document.getElementById('error');
+    const totalZInput = document.getElementById('totalZ'); // Seleccionar el input totalZ
 
-    inputs.forEach(input => input.removeAttribute('readonly'));
-    selects.forEach(select => select.removeAttribute('disabled'));
+    // Habilitar los campos de entrada, excepto los bloqueados
+    inputs.forEach(input => {
+        if (input.id === 'totalZ') {
+            input.setAttribute('readonly', 'true'); // Asegurar que totalZ se mantenga bloqueado
+        } else if (!input.classList.contains('precio-input') && 
+                   !input.classList.contains('total-input')) {
+            input.removeAttribute('readonly'); // Permitir editar otros inputs
+        }
+    });
 
+    selects.forEach(select => {
+        if (select.id !== 'cliente') {
+            select.removeAttribute('disabled'); // Habilitar selects que no sean 'cliente'
+        } else {
+            select.setAttribute('disabled', 'true'); // Bloquear 'cliente'
+        }
+    });
+
+    // Asegurar que totalZ esté bloqueado
+    totalZInput.setAttribute('readonly', 'true');
+
+    // Mostrar el error y botones correspondientes
+    error.style.display = 'block';
     but.style.display = 'none';
     butE.style.display = 'block';
-    alert("Has cambiado al modo edición");
+
+    // Mostrar alerta de cambio a modo edición
+    Alerts.successAlert("Éxito", "Haz cambiado al modo edición");
 }
+
+
+
+
+
 
 // Función para cargar empleados dinámicamente
 function cargarEmpleados(empleadoId) {
-    fetch("https://latosca.up.railway.app/empleados")
+    fetch("http://localhost:5000/empleados")
         .then(response => response.json())
         .then(empleados => {
             const select = document.getElementById("empleado");
@@ -76,7 +105,7 @@ function cargarEmpleados(empleadoId) {
 
 // Función para cargar clientes dinámicamente
 function cargarCliente(clienteId) {
-    fetch("https://latosca.up.railway.app/clientes")
+    fetch("http://localhost:5000/clientes")
         .then(response => response.json())
         .then(clientes => {
             const select = document.getElementById("cliente");
@@ -92,7 +121,7 @@ function cargarCliente(clienteId) {
 
 // Función para cargar direcciones de un cliente y actualizar el costo extra
 function cargarDirecciones(clienteId, direccionSeleccionada) {
-    fetch("https://latosca.up.railway.app/direcciones")
+    fetch("http://localhost:5000/direcciones")
         .then(response => response.json())
         .then(direcciones => {
             const select = document.getElementById("direccion");
@@ -122,7 +151,7 @@ function actualizarCostoZona() {
     if (selectedOption && selectedOption.hasAttribute("data-zona")) {
         const zonaId = selectedOption.getAttribute("data-zona");
 
-        fetch("https://latosca.up.railway.app/zonas/")
+        fetch("http://localhost:5000/zonas/")
             .then((response) => response.json())
             .then((zonas) => {
                 const zona = zonas.find((z) => z.ID_zona == zonaId);
@@ -153,14 +182,14 @@ function cargarProductosOrden(ordenId) {
     const productosContainer = document.getElementById("productos-container");
 
     // Solicitar detalles de productos de la orden
-    fetch(`https://latosca.up.railway.app/Vdetalles/${ordenId}`)
+    fetch(`http://localhost:5000/Vdetalles/${ordenId}`)
         .then((response) => {
             if (!response.ok) throw new Error("Error al obtener los detalles de productos");
             return response.json();
         })
         .then((detallesData) => {
             // Solicitar todos los productos disponibles
-            return fetch("https://latosca.up.railway.app/productos")
+            return fetch("http://localhost:5000/productos")
                 .then((response) => {
                     if (!response.ok) throw new Error("Error al obtener los productos");
                     return response.json();
@@ -375,7 +404,7 @@ async function actualizarDetallesOrden(ordenId, detalles) {
     try {
         for (const detalle of detalles) {
 
-            const response = await fetch(`https://latosca.up.railway.app/detalle/modificar/${detalle.ID_detalle}`, { // Se usa ID_detalle
+            const response = await fetch(`http://localhost:5000/detalle/modificar/${detalle.ID_detalle}`, { // Se usa ID_detalle
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -405,7 +434,7 @@ async function actualizarDetallesOrden(ordenId, detalles) {
 async function actualizarOrdenPrincipal(ordenId, datosOrden) {
     try {
 
-        const response = await fetch(`https://latosca.up.railway.app/orden/modificar/${ordenId}`, {
+        const response = await fetch(`http://localhost:5000/orden/modificar/${ordenId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -470,3 +499,104 @@ async function guardarCambiosOrden(ordenId) {
     }
 }
 
+
+// Validar formulario de orden
+function validarFormularioOrden() {
+    const errores = [];
+    const errorList = document.querySelector("ul.error");
+    errorList.innerHTML = ""; // Limpia errores previos
+  
+    // Validar campos principales de la orden
+    const fechaE = document.getElementById("fecha-hora").value;
+    const estatus = document.getElementById("estatus").value;
+    const cliente = document.getElementById("cliente").value;
+    const empleado = document.getElementById("empleado").value;
+    const tipoPago = document.getElementById("Tipo").value;
+  
+    if (!fechaE) {
+      errores.push("La fecha y hora no pueden estar vacías.");
+    }
+  
+    if (!estatus) {
+      errores.push("El estatus no puede estar vacío.");
+    }
+  
+    if (!cliente) {
+      errores.push("Debe seleccionar un cliente.");
+    }
+  
+    if (!empleado) {
+      errores.push("Debe seleccionar un empleado.");
+    }
+  
+    if (!tipoPago) {
+      errores.push("Debe seleccionar un tipo de pago.");
+    }
+  
+    // Validar detalles de productos
+    const productos = document.querySelectorAll("#productos-container .products");
+    if (productos.length === 0) {
+      errores.push("Debe agregar al menos un producto.");
+    } else {
+      productos.forEach((producto, index) => {
+        const idProducto = producto.querySelector(".select-producto").value;
+        const cantidad = producto.querySelector(".cantidad-input").value;
+  
+        if (!idProducto) {
+          errores.push(`El producto en la fila ${index + 1} no está seleccionado.`);
+        }
+  
+        if (!cantidad || parseInt(cantidad) <= 0) {
+          errores.push(`La cantidad del producto en la fila ${index + 1} debe ser mayor a 0.`);
+        }
+      });
+    }
+  
+    // Mostrar errores si los hay
+    if (errores.length > 0) {
+      errores.forEach((error) => {
+        const li = document.createElement("li");
+        li.textContent = error;
+        errorList.appendChild(li);
+      });
+      console.log("Errores encontrados:", errores);
+      return false; // Formulario no válido
+    }
+  
+    console.log("Formulario válido");
+    return true; // Formulario válido
+  }
+  
+  // Habilitar o deshabilitar el botón de envío
+  function actualizarEstadoBotonOrden() {
+    const botonEnviar = document.getElementById("enviarOr");
+    const esValido = validarFormularioOrden();
+    botonEnviar.disabled = !esValido; // Deshabilitar si el formulario no es válido
+    console.log("Estado del botón:", botonEnviar.disabled ? "Deshabilitado" : "Habilitado");
+  }
+  
+  // Asignar validación al botón
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("orden-formulario");
+    form.addEventListener("input", actualizarEstadoBotonOrden); // Validar dinámicamente
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const fechaHoraInput = document.getElementById("fecha-hora");
+
+    // Obtener la fecha y hora actual en formato ISO (YYYY-MM-DDTHH:mm)
+    const ahora = new Date();
+    const anio = ahora.getFullYear();
+    const mes = String(ahora.getMonth() + 1).padStart(2, "0");
+    const dia = String(ahora.getDate()).padStart(2, "0");
+    const horas = String(ahora.getHours()).padStart(2, "0");
+    const minutos = String(ahora.getMinutes()).padStart(2, "0");
+
+    // Formatear la fecha mínima para el atributo "min"
+    const fechaMinima = `${anio}-${mes}-${dia}T${horas}:${minutos}`;
+
+    // Establecer la fecha mínima en el input
+    fechaHoraInput.min = fechaMinima;
+});
+
+  

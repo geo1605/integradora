@@ -1,53 +1,64 @@
-
+// Función para iniciar sesión
 async function iniciarSesion() {
-    // Obtén los valores ingresados en los inputs
     const correo = document.getElementById('correo').value;
     const password = document.getElementById('password').value;
 
     try {
-        // Realiza la solicitud al servidor para verificar el login
-        const response = await fetch('https://latosca.up.railway.app/login', {
+        const response = await fetch('http://localhost:5000/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ correo: correo, password: password }) // Envía los datos
+            body: JSON.stringify({ correo, password }),
         });
 
         const data = await response.json();
 
         if (response.ok) {
-            // Login exitoso, redirige a la página principal
-            alert(data.mensaje);
-            window.location.href = 'resourses/main.html'; // Corrige "resourses" a "resources"
+            Alerts.basicAlert('¡Éxito!', data.mensaje, 'success')
+            .then(() => {
+                window.location.href = 'resourses/main.html'; 
+              });
         } else {
-            // Muestra un mensaje de error
-            alert(data.mensaje || 'Error al iniciar sesión');
+            Alerts.basicAlert('Error', data.mensaje || 'Error al iniciar sesión', 'error');
         }
     } catch (error) {
         console.error('Error al iniciar sesión:', error);
-        alert('Error al conectar con el servidor');
+        Alerts.basicAlert('Error', 'No se pudo conectar con el servidor. Intenta de nuevo.', 'error');
     }
 }
 
-        
-
+// Función para cerrar sesión
 function cerrarSesion() {
-    fetch('https://latosca.up.railway.app/logout', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            alert("Sesión cerrada correctamente.");
-            // Redirige al usuario a la página de inicio de sesión (por ejemplo, index.html)
-            window.location.href = '/';
-        } else {
-            alert("Error al cerrar sesión.");
-        }
-    })
-    .catch(error => {
-        console.error('Error al cerrar sesión:', error);
-        alert("Error al conectar con el servidor.");
-    });
+    // Mostrar una alerta de confirmación
+    Alerts.confirmAlert('¿Estás seguro?', '¿Quieres cerrar sesión?')
+        .then((isConfirmed) => {
+            if (isConfirmed) {
+                // Si el usuario confirma, proceder con la solicitud de cierre de sesión
+                fetch('http://localhost:5000/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                    .then((response) => {
+                        if (response.ok) {
+                            Alerts.basicAlert('¡Éxito!', 'Sesión cerrada correctamente.', 'success');
+                            setTimeout(() => {
+                                // Redirige al usuario a la página de inicio de sesión
+                                window.location.href = '/';
+                            }, 2000);
+                        } else {
+                            Alerts.basicAlert('Error', 'Error al cerrar sesión.', 'error');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error al cerrar sesión:', error);
+                        Alerts.basicAlert('Error', 'No se pudo conectar con el servidor. Intenta de nuevo.', 'error');
+                    });
+            } else {
+                // Si el usuario cancela, no hacer nada
+                Alerts.basicAlert('Cancelado', 'El cierre de sesión fue cancelado.', 'info');
+            }
+        });
 }
+
+

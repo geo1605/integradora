@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="../styles/formularios.css">
     <link rel="stylesheet" href="../styles/loader.css">
     <script src="../js/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js/alerts.js"></script>
 </head>
 <body style="border-top: 10px solid #8B2437;">
     <div class="loader-container" id="loaderContainer">
@@ -96,6 +98,37 @@ const NpaginaDirecciones = 10; // Número de elementos por página
 let NumpagDirecciones = 1; // Página inicial
 let direccionesData = []; // Arreglo para almacenar los datos de direcciones
 let filteredDirecciones = []; // Arreglo para almacenar los datos filtrados
+let zonasData = []; // Almacena las zonas cargadas
+
+function cargarZonas() {
+  return new Promise((resolve, reject) => {
+    fetch("http://localhost:5000/zonas")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error en la respuesta del servidor: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((zonas) => {
+        zonasData = zonas; // Guardar las zonas para usarlas en otras funciones
+        const selects = document.querySelectorAll('.zonas');
+        selects.forEach((select) => {
+          select.innerHTML = '<option value="" selected disabled>Zona</option>';
+          zonas.forEach((zona) => {
+            select.innerHTML += `<option value="${zona.ID_zona}">${zona.nombre_colonia}</option>`;
+          });
+          $(select).select2(); // Inicializa select2 para los nuevos elementos
+        });
+        console.log("Zonas cargadas correctamente.");
+        resolve(); // Indica que la carga se completó correctamente
+      })
+      .catch((error) => {
+        console.error("Error al cargar zonas:", error);
+        reject(error); // Indica que hubo un error
+      });
+  });
+}
+
 
 document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -122,36 +155,40 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function cargarDirecciones() {
-    const start = (NumpagDirecciones - 1) * NpaginaDirecciones;
-    const end = start + NpaginaDirecciones;
-    const direccionesToShow = filteredDirecciones.slice(start, end); // Usamos los datos filtrados
+  const start = (NumpagDirecciones - 1) * NpaginaDirecciones;
+  const end = start + NpaginaDirecciones;
+  const direccionesToShow = filteredDirecciones.slice(start, end); // Usamos los datos filtrados
 
-    let direccionesHTML = '';
-    direccionesToShow.forEach(direccion => {
-        if (direccion.estatus === 1) {
-            direccionesHTML += `
-                <tr>
-                    <td id='calle${direccion.id_direccion}'>${direccion.calle}</td>
-                    <td id='num_ext${direccion.id_direccion}'>${direccion.numero}</td>
-                    <td id='num_int${direccion.id_direccion}'>${direccion.Numero_int || ""}</td>
-                    <td id='colonia${direccion.id_direccion}'>${direccion.colonia}</td>
-                    <td id='zona${direccion.id_direccion}'>${direccion.id_zona}</td>
-                    <td id='CP${direccion.id_direccion}'>${direccion.CP}</td>
-                    <td class="acciones">
-                        <button class="B_editar" onclick="updateDireccion(${direccion.id_direccion},${direccion.ID_cliente})">
-                            <span class="material-symbols-outlined">edit</span>
-                        </button>
-                        <button class="B_eliminar" onclick="eliminarDireccion(${direccion.id_direccion})">
-                            <span class="material-symbols-outlined">delete</span>
-                        </button>
-                    </td>
-                </tr>
-            `;
-        }
-    });
+  let direccionesHTML = '';
+  direccionesToShow.forEach(direccion => {
+    if (direccion.estatus === 1) {
+      // Obtener el nombre de la zona usando el ID de la zona
+      const zonaNombre = zonasData.find(zona => zona.ID_zona === direccion.id_zona)?.nombre_colonia || "Zona no encontrada";
 
-    document.getElementById("direcciones-body").innerHTML = direccionesHTML;
+      direccionesHTML += `
+        <tr>
+          <td id='calle${direccion.id_direccion}'>${direccion.calle}</td>
+          <td id='num_ext${direccion.id_direccion}'>${direccion.numero}</td>
+          <td id='num_int${direccion.id_direccion}'>${direccion.Numero_int || ""}</td>
+          <td id='colonia${direccion.id_direccion}'>${direccion.colonia}</td>
+          <td id='zona${direccion.id_direccion}' data-zona-id='${direccion.id_zona}'>${zonaNombre}</td> <!-- Mostrar el nombre de la zona -->
+          <td id='CP${direccion.id_direccion}'>${direccion.CP}</td>
+          <td class="acciones">
+              <button class="B_editar" onclick="updateDireccion(${direccion.id_direccion},${direccion.ID_cliente})">
+                  <span class="material-symbols-outlined">edit</span>
+              </button>
+              <button class="B_eliminar" onclick="eliminarDireccion(${direccion.id_direccion})">
+                  <span class="material-symbols-outlined">delete</span>
+              </button>
+          </td>
+        </tr>
+      `;
+    }
+  });
+
+  document.getElementById("direcciones-body").innerHTML = direccionesHTML;
 }
+
 
 function paginacionDirecciones() {
     const totalPages = Math.ceil(filteredDirecciones.length / NpaginaDirecciones); // Usamos los datos filtrados

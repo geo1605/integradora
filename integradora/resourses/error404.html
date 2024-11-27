@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>error</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js/alerts.js"></script>
+</head>
+<body>
+    <script>
+        Alerts.basicAlert('Error', 'esta URL es incorrecta redireccionando al inicio', 'error')
+        .then(() => {
+                window.location.href = '../resourses/main.html'; 
+        });
+    </script>
+</body>
+</html>

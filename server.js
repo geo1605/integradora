@@ -177,7 +177,7 @@ function verificarAdmin(req, res, next) {
     if (req.session && req.session.user && req.session.user.Cargo === 'admin') {
         next(); // Permite el acceso si es admin
     } else {
-        res.status(403).send('Acceso denegado'); // Prohíbe el acceso
+        res.sendFile(path.join(__dirname, 'integradora', 'resourses', 'error404.html'));
     }
 }
 
@@ -458,7 +458,7 @@ app.get("/empleados", verificarSesion, (req, res) => {
 // Registrar Empleado
 
 
-app.post('/empleado/registrar',/*  verificarSesion, */ async (req, res) => {
+app.post('/empleado/registrar',  verificarSesion,  async (req, res) => {
   const { Nombres, Apellido_P, Apellido_M, Cargo, correo, Telefono, password, estatus } = req.body;
 
   try {
@@ -829,15 +829,11 @@ app.get("/cantidadOrdenesPorEstatus",  verificarSesion, verificarRol(['admin']),
 
 
 
-
-// Ruta no existente
 app.all("*", (req, res) => {
-    const respuesta = {
-        "codigo": 500,
-        "mensaje": "La ruta no existe"
-    };
-    res.send(respuesta);
+    res.sendFile(path.join(__dirname, 'integradora', 'resourses', 'error404.html'));
 });
+
+
 
 // ====================== INICIAR SERVIDOR ====================== //
 

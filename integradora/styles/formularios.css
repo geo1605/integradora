@@ -138,5 +138,11 @@
     width: 0px;
 }
 
+.error {
+    background-color: rgba(170, 15, 44, 0.5);
+    padding: 1%;
+    padding-left: 10%;
+}
+
 
 /*media 530*/

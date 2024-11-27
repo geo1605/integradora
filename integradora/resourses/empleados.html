@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="../styles/formularios.css">
     <link rel="stylesheet" href="../styles/loader.css">
     <script src="../js/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js/alerts.js"></script>
 </head>
 <body style="border-top: 10px solid #8B2437;">
     <div class="loader-container" id="loaderContainer">
@@ -101,7 +103,7 @@
             let filteredEmpleados = []; // Arreglo para almacenar los datos filtrados
         
             function fetchEmpleados() {
-                fetch('https://latosca.up.railway.app/empleados')
+                fetch('http://localhost:5000/empleados')
                     .then(response => response.json())
                     .then(empleados => {
                         empleadosData = empleados;

@@ -30,7 +30,7 @@ function addProducto(event) {
   };
 
   // Enviar datos al servidor
-  fetch("https://latosca.up.railway.app/producto/registrar", {
+  fetch("http://localhost:5000/producto/registrar", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -44,13 +44,16 @@ function addProducto(event) {
       return response.json();
     })
     .then((data) => {
-      colapsePopup("addPopup");
-      document.querySelector("#productoForm").reset();
-      alert("Producto registrado exitosamente");
-      location.reload(); // Recargar la página
+      // Usar alertas personalizadas en lugar de alert()
+      Alerts.successAlert('Éxito', 'Producto registrado exitosamente.')
+        .then(() => {
+          colapsePopup("addPopup");
+          document.querySelector("#productoForm").reset();
+          location.reload(); // Recargar la página después de presionar el botón de la alerta
+        });
     })
     .catch((error) => {
-      alert("Error al registrar el producto: " + error.message);
+      Alerts.errorAlert('Error', 'Error al registrar el producto: ' + error.message);
     });
 }
 
@@ -71,7 +74,7 @@ function addZona(event) {
   };
 
   // Enviar datos al servidor
-  fetch("https://latosca.up.railway.app/zona/registrar", {
+  fetch("http://localhost:5000/zona/registrar", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -85,15 +88,19 @@ function addZona(event) {
       return response.json();
     })
     .then((data) => {
-      colapsePopup("addPopup");
-      document.querySelector("#zonaForm").reset();
-      alert("Zona registrada exitosamente");
-      location.reload(); // Recargar la página
+      // Usar alertas personalizadas en lugar de alert()
+      Alerts.successAlert('Éxito', 'Zona registrada exitosamente.')
+        .then(() => {
+          colapsePopup("addPopup");
+          document.querySelector("#zonaForm").reset();
+          location.reload(); // Recargar la página después de presionar el botón de la alerta
+        });
     })
     .catch((error) => {
-      alert("Error al registrar la zona: " + error.message);
+      Alerts.errorAlert('Error', 'Error al registrar la zona: ' + error.message);
     });
 }
+
 
 // ==========================================
 //           Funciones de Empleado
@@ -126,7 +133,7 @@ function addEmpleado(event) {
   };
 
   // Enviar datos al servidor
-  fetch("https://latosca.up.railway.app/empleado/registrar", {
+  fetch("http://localhost:5000/empleado/registrar", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -140,16 +147,18 @@ function addEmpleado(event) {
       return response.json();
     })
     .then((data) => {
-      colapsePopup("addPopup");
-      document.querySelector("#empleadoForm").reset();
-      alert("Empleado registrado exitosamente");
-      location.reload(); // Recargar la página
+      // Usar alertas personalizadas en lugar de alert()
+      Alerts.successAlert('Éxito', 'Empleado registrado exitosamente')
+        .then(() => {
+          colapsePopup("addPopup");
+          document.querySelector("#empleadoForm").reset();
+          location.reload(); // Recargar la página después de que el usuario cierre la alerta
+        });
     })
     .catch((error) => {
-      alert("Error al registrar el empleado: " + error.message);
+      Alerts.errorAlert('Error', 'Error al registrar el empleado: ' + error.message);
     });
 }
-
 // ==========================================
 //           Funciones de Cliente
 // ==========================================
@@ -174,7 +183,7 @@ function addCliente(event) {
   };
 
   // Registrar cliente en la API
-  fetch("https://latosca.up.railway.app/cliente/registrar", {
+  fetch("http://localhost:5000/cliente/registrar", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -196,21 +205,20 @@ function addCliente(event) {
         // Llama a addDireccionesC con el ID del cliente recién creado
         addDireccionesC(clienteId);
       } else {
-        alert("Error al obtener el ID del cliente registrado" + clienteId);
+        Alerts.errorAlert('Error', 'Error al obtener el ID del cliente registrado');
       }
 
       colapsePopup("addPopup");
       document.querySelector("#clienteForm").reset(); // Reiniciar formulario cliente
     })
     .catch((error) => {
-      alert("Error al registrar el cliente: " + error.message);
+      Alerts.errorAlert('Error', 'Error al registrar el cliente: ' + error.message);
     });
 }
 
-
 // Función para obtener el último ID de cliente registrado
 function obtenerUltimoClienteId() {
-  return fetch("https://latosca.up.railway.app/clientes") // Asegúrate de que devuelve una lista de clientes
+  return fetch("http://localhost:5000/clientes") // Asegúrate de que devuelve una lista de clientes
     .then((response) => {
       if (!response.ok) {
         throw new Error("No se pudo obtener el último ID de cliente");
@@ -231,8 +239,6 @@ function obtenerUltimoClienteId() {
       return null;
     });
 }
-
-
 
 function addDireccionesC(clienteId) {
   const direcciones = document.querySelectorAll("#contDicc .continuos");
@@ -257,7 +263,7 @@ function addDireccionesC(clienteId) {
     };
 
     // Enviar cada dirección al servidor
-    fetch("https://latosca.up.railway.app/direccion/registrar", {
+    fetch("http://localhost:5000/direccion/registrar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -273,14 +279,17 @@ function addDireccionesC(clienteId) {
       })
       .catch((error) => {
         console.error("Error al registrar la dirección:", error);
-        alert("Error al registrar la dirección: " + error.message);
+        Alerts.errorAlert('Error', 'Error al registrar la dirección: ' + error.message);
       });
   });
 
   // Mensaje final una vez que todas las direcciones han sido procesadas
-  alert("Cliente y todas las direcciones registradas exitosamente");
-  location.reload(); // Recargar la página al finalizar
+  Alerts.successAlert('Éxito', 'Cliente y todas las direcciones registradas exitosamente')
+    .then(() => {
+      location.reload(); // Recargar la página después de que el usuario cierre la alerta
+    });
 }
+
 
 
 
@@ -306,7 +315,7 @@ function addDireccion(event) {
     ID_cliente: cliente
   };
 
-  fetch("https://latosca.up.railway.app/direccion/registrar", {
+  fetch("http://localhost:5000/direccion/registrar", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -329,7 +338,7 @@ function addDireccion(event) {
       colapsePopup("addPopup");
       document.getElementById("direcciones").reset();
       alert("Cliente registrado exitosamente");
-      /* location.reload(); // Recargar la página */
+      location.reload(); 
     })
     .catch((error) => {
       alert("Error al registrar el cliente: " + error.message);
@@ -359,6 +368,9 @@ function cerrarPopupYRecargar(popupId, formId) {
 // ================== ZONA ================== //
 
 // Actualizar Zona
+// ================== ZONA ================== //
+
+// Actualizar Zona
 function actualizarZona(ID, event) {
   event.preventDefault();
   const zonaData = {
@@ -366,7 +378,10 @@ function actualizarZona(ID, event) {
       costo_zona: parseFloat(document.querySelector('input[name="costo_zona"]').value),
   };
 
-  fetch(`https://latosca.up.railway.app/zona/modificar/${ID}`, {
+  // Mostrar alerta de carga antes de realizar la solicitud
+  const loading = Alerts.loadingAlert('Actualizando zona...');
+
+  fetch(`http://localhost:5000/zona/modificar/${ID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(zonaData),
@@ -376,24 +391,57 @@ function actualizarZona(ID, event) {
       return response.json();
   })
   .then(() => {
-      alert("Zona actualizada exitosamente");
-      cerrarPopupYRecargar("upPopup", "Actzona");
+      // Cerrar alerta de carga
+      loading.close();
+
+      // Mostrar alerta de éxito
+      Alerts.successAlert("Zona actualizada exitosamente", "La zona se ha actualizado correctamente.")
+      .then(() => {
+          // Cerrar popup y recargar la página
+          cerrarPopupYRecargar("upPopup", "Actzona");
+      });
   })
-  .catch((error) => alert("Error al actualizar la zona: " + error.message));
+  .catch((error) => {
+      // Cerrar alerta de carga
+      loading.close();
+
+      // Mostrar alerta de error
+      Alerts.errorAlert("Error al actualizar la zona", error.message);
+  });
 }
 
 // Eliminar Zona
 function eliminarZona(id) {
-  if (!confirm("¿Estás seguro de que deseas eliminar esta zona?")) return;
+  // Mostrar alerta de confirmación con SweetAlert
+  Alerts.confirmAlert("¿Estás seguro?", "¿Deseas eliminar esta zona permanentemente?")
+  .then((isConfirmed) => {
+    if (!isConfirmed) return; // Si el usuario cancela, no se hace nada
 
-  fetch(`https://latosca.up.railway.app/zona/eliminar/${id}`, { method: "PUT" })
-  .then((response) => {
-      if (!response.ok) throw new Error(`Error al eliminar la zona: ${response.status}`);
-      alert("Zona eliminada exitosamente");
-      location.reload();
-  })
-  .catch((error) => alert("Ocurrió un error al intentar eliminar la zona: " + error.message));
+    // Mostrar alerta de carga antes de realizar la eliminación
+    const loading = Alerts.loadingAlert('Eliminando zona...');
+
+    fetch(`http://localhost:5000/zona/eliminar/${id}`, { method: "PUT" })
+    .then((response) => {
+        if (!response.ok) throw new Error(`Error al eliminar la zona: ${response.status}`);
+        // Cerrar alerta de carga
+        loading.close();
+
+        // Mostrar alerta de éxito
+        Alerts.successAlert("Zona eliminada exitosamente", "La zona ha sido eliminada.")
+        .then(() => {
+            location.reload(); // Recargar la página después de la eliminación
+        });
+    })
+    .catch((error) => {
+        // Cerrar alerta de carga
+        loading.close();
+
+        // Mostrar alerta de error
+        Alerts.errorAlert("Ocurrió un error al eliminar la zona", error.message);
+    });
+  });
 }
+
 
 // ================== EMPLEADO ================== //
 
@@ -410,7 +458,10 @@ function actualizarEmpleado(ID, event) {
       estatus: 1,
   };
 
-  fetch(`https://latosca.up.railway.app/empleado/modificar/${ID}`, {
+  // Mostrar alerta de carga antes de hacer la solicitud
+  const loading = Alerts.loadingAlert('Actualizando empleado...');
+
+  fetch(`http://localhost:5000/empleado/modificar/${ID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(empleadoData),
@@ -420,25 +471,56 @@ function actualizarEmpleado(ID, event) {
       return response.json();
   })
   .then(() => {
-      alert("Empleado actualizado exitosamente");
-      cerrarPopupYRecargar("upPopup", "empleados");
+      // Cerrar alerta de carga
+      loading.close();
+
+      // Mostrar alerta de éxito
+      Alerts.successAlert("Empleado actualizado exitosamente", "El empleado se ha actualizado correctamente.")
+      .then(() => {
+          // Cerrar popup y recargar la página
+          cerrarPopupYRecargar("upPopup", "empleados");
+      });
   })
-  .catch((error) => alert("Error al actualizar el empleado: " + error.message));
+  .catch((error) => {
+      // Cerrar alerta de carga
+      loading.close();
+
+      // Mostrar alerta de error
+      Alerts.errorAlert("Error al actualizar el empleado", error.message);
+  });
 }
 
 // Eliminar Empleado
 function eliminarEmpleado(id) {
-  if (!confirm("¿Estás seguro de que deseas eliminar este empleado?")) return;
+  // Mostrar alerta de confirmación con SweetAlert
+  Alerts.confirmAlert("¿Estás seguro?", "¿Deseas eliminar este empleado permanentemente?")
+  .then((isConfirmed) => {
+    if (!isConfirmed) return; // Si el usuario cancela, no se hace nada
 
-  fetch(`https://latosca.up.railway.app/empleado/eliminar/${id}`, { method: "PUT" })
-  .then((response) => {
-      if (!response.ok) throw new Error(`Error al eliminar el empleado: ${response.status}`);
-      alert("Empleado eliminado exitosamente");
-      location.reload(); 
-  })
-  .catch((error) => alert("Ocurrió un error al intentar eliminar el empleado: " + error.message));
+    // Mostrar alerta de carga antes de realizar la eliminación
+    const loading = Alerts.loadingAlert('Eliminando empleado...');
+
+    fetch(`http://localhost:5000/empleado/eliminar/${id}`, { method: "PUT" })
+    .then((response) => {
+        if (!response.ok) throw new Error(`Error al eliminar el empleado: ${response.status}`);
+        // Cerrar alerta de carga
+        loading.close();
+
+        // Mostrar alerta de éxito
+        Alerts.successAlert("Empleado eliminado exitosamente", "El empleado ha sido eliminado.")
+        .then(() => {
+            location.reload(); // Recargar la página después de la eliminación
+        });
+    })
+    .catch((error) => {
+        // Cerrar alerta de carga
+        loading.close();
+
+        // Mostrar alerta de error
+        Alerts.errorAlert("Ocurrió un error al eliminar el empleado", error.message);
+    });
+  });
 }
-
 // ================== CLIENTE ================== //
 
 // Actualizar Cliente
@@ -453,7 +535,10 @@ function actualizarCliente(ID, event) {
       estatus: 1,
   };
 
-  fetch(`https://latosca.up.railway.app/cliente/modificar/${ID}`, {
+  // Mostrar alerta de carga antes de hacer la solicitud
+  const loading = Alerts.loadingAlert('Actualizando cliente...');
+
+  fetch(`http://localhost:5000/cliente/modificar/${ID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(clienteData),
@@ -463,23 +548,55 @@ function actualizarCliente(ID, event) {
       return response.json();
   })
   .then(() => {
-      alert("Cliente actualizado exitosamente");
-      cerrarPopupYRecargar("upPopup", "Actcliente");
+      // Cerrar alerta de carga
+      loading.close();
+
+      // Mostrar alerta de éxito
+      Alerts.successAlert("Cliente actualizado exitosamente", "El cliente ha sido actualizado correctamente.")
+      .then(() => {
+          // Cerrar popup y recargar la página
+          cerrarPopupYRecargar("upPopup", "Actcliente");
+      });
   })
-  .catch((error) => alert("Error al actualizar el cliente: " + error.message));
+  .catch((error) => {
+      // Cerrar alerta de carga
+      loading.close();
+
+      // Mostrar alerta de error
+      Alerts.errorAlert("Error al actualizar el cliente", error.message);
+  });
 }
 
 // Eliminar Cliente
 function eliminarCliente(id) {
-  if (!confirm("¿Estás seguro de que deseas eliminar este cliente?")) return;
+  // Mostrar alerta de confirmación con SweetAlert
+  Alerts.confirmAlert("¿Estás seguro?", "¿Deseas eliminar este cliente permanentemente?")
+  .then((isConfirmed) => {
+    if (!isConfirmed) return; // Si el usuario cancela, no se hace nada
 
-  fetch(`https://latosca.up.railway.app/cliente/eliminar/${id}`, { method: "PUT" })
-  .then((response) => {
-      if (!response.ok) throw new Error(`Error al eliminar el cliente: ${response.status}`);
-      alert("Cliente eliminado exitosamente");
-      location.reload();
-  })
-  .catch((error) => alert("Ocurrió un error al intentar eliminar el cliente: " + error.message));
+    // Mostrar alerta de carga antes de realizar la eliminación
+    const loading = Alerts.loadingAlert('Eliminando cliente...');
+
+    fetch(`http://localhost:5000/cliente/eliminar/${id}`, { method: "PUT" })
+    .then((response) => {
+        if (!response.ok) throw new Error(`Error al eliminar el cliente: ${response.status}`);
+        // Cerrar alerta de carga
+        loading.close();
+
+        // Mostrar alerta de éxito
+        Alerts.successAlert("Cliente eliminado exitosamente", "El cliente ha sido eliminado.")
+        .then(() => {
+            location.reload(); // Recargar la página después de la eliminación
+        });
+    })
+    .catch((error) => {
+        // Cerrar alerta de carga
+        loading.close();
+
+        // Mostrar alerta de error
+        Alerts.errorAlert("Ocurrió un error al eliminar el cliente", error.message);
+    });
+  });
 }
 
 // ================== PRODUCTO ================== //
@@ -495,7 +612,10 @@ function actualizarProducto(ID, event) {
       estatus: 1,
   };
 
-  fetch(`https://latosca.up.railway.app/producto/modificar/${ID}`, {
+  // Mostrar alerta de carga antes de hacer la solicitud
+  const loading = Alerts.loadingAlert('Actualizando producto...');
+
+  fetch(`http://localhost:5000/producto/modificar/${ID}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(productoData),
@@ -505,23 +625,55 @@ function actualizarProducto(ID, event) {
       return response.json();
   })
   .then(() => {
-      alert("Producto actualizado exitosamente");
-      cerrarPopupYRecargar("upPopup", "Actproducto");
+      // Cerrar alerta de carga
+      loading.close();
+
+      // Mostrar alerta de éxito
+      Alerts.successAlert("Producto actualizado exitosamente", "El producto ha sido actualizado correctamente.")
+      .then(() => {
+          // Cerrar popup y recargar la página
+          cerrarPopupYRecargar("upPopup", "Actproducto");
+      });
   })
-  .catch((error) => alert("Error al actualizar el producto: " + error.message));
+  .catch((error) => {
+      // Cerrar alerta de carga
+      loading.close();
+
+      // Mostrar alerta de error
+      Alerts.errorAlert("Error al actualizar el producto", error.message);
+  });
 }
 
 // Eliminar Producto
 function eliminarProducto(id) {
-  if (!confirm("¿Estás seguro de que deseas eliminar este producto?")) return;
+  // Mostrar alerta de confirmación con SweetAlert
+  Alerts.confirmAlert("¿Estás seguro?", "¿Deseas eliminar este producto permanentemente?")
+  .then((isConfirmed) => {
+    if (!isConfirmed) return; // Si el usuario cancela, no se hace nada
 
-  fetch(`https://latosca.up.railway.app/producto/eliminar/${id}`, { method: "PUT" })
-  .then((response) => {
-      if (!response.ok) throw new Error(`Error al eliminar el producto: ${response.status}`);
-      alert("Producto eliminado exitosamente");
-      location.reload();
-  })
-  .catch((error) => alert("Ocurrió un error al intentar eliminar el producto: " + error.message));
+    // Mostrar alerta de carga antes de realizar la eliminación
+    const loading = Alerts.loadingAlert('Eliminando producto...');
+
+    fetch(`http://localhost:5000/producto/eliminar/${id}`, { method: "PUT" })
+    .then((response) => {
+        if (!response.ok) throw new Error(`Error al eliminar el producto: ${response.status}`);
+        // Cerrar alerta de carga
+        loading.close();
+
+        // Mostrar alerta de éxito
+        Alerts.successAlert("Producto eliminado exitosamente", "El producto ha sido eliminado.")
+        .then(() => {
+            location.reload(); // Recargar la página después de la eliminación
+        });
+    })
+    .catch((error) => {
+        // Cerrar alerta de carga
+        loading.close();
+
+        // Mostrar alerta de error
+        Alerts.errorAlert("Ocurrió un error al eliminar el producto", error.message);
+    });
+  });
 }
 
 // ================== DIRECCION ================== //
@@ -545,8 +697,11 @@ function actualizarDireccion(ID, event, idC) {
   // Log para verificar los datos antes de enviarlos
   console.log("Datos a enviar:", direccionData);
 
+  // Mostrar alerta de carga antes de hacer la solicitud
+  const loading = Alerts.loadingAlert('Actualizando dirección...');
+
   // Hacer la solicitud PUT
-  fetch(`https://latosca.up.railway.app/direccion/modificar/${idV}`, {
+  fetch(`http://localhost:5000/direccion/modificar/${idV}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(direccionData),
@@ -556,7 +711,7 @@ function actualizarDireccion(ID, event, idC) {
 
     if (!response.ok) {
       return response.json().then((errorData) => {
-        console.error(idV,"Error en la respuesta del servidor:", errorData); // Log para ver detalles del error en el servidor
+        console.error(idV, "Error en la respuesta del servidor:", errorData); // Log para ver detalles del error en el servidor
         throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || "No message available"}`);
       });
     }
@@ -564,28 +719,60 @@ function actualizarDireccion(ID, event, idC) {
   })
   .then((data) => {
     console.log("Respuesta procesada correctamente:", data); // Log para confirmar éxito en la respuesta procesada
-    alert("Dirección actualizada exitosamente");
-    cerrarPopupYRecargar("upPopup", "direccion");
+
+    // Cerrar alerta de carga
+    loading.close();
+
+    // Mostrar alerta de éxito
+    Alerts.successAlert("Dirección actualizada exitosamente", "La dirección ha sido actualizada correctamente.")
+    .then(() => {
+      // Cerrar popup y recargar la página
+      cerrarPopupYRecargar("upPopup", "direccion");
+    });
   })
   .catch((error) => {
     console.error("Error en la actualización:", error); // Log para ver el detalle del error capturado
-    alert(`Error al actualizar la dirección:\n${error.message}\nDatos enviados: ${JSON.stringify(direccionData, null, 2)}`);
+
+    // Cerrar alerta de carga
+    loading.close();
+
+    // Mostrar alerta de error
+    Alerts.errorAlert("Error al actualizar la dirección", error.message);
   });
 }
 
 
-
 // Eliminar Dirección
 function eliminarDireccion(id) {
-  if (!confirm("¿Estás seguro de que deseas eliminar esta dirección?")) return;
+  // Mostrar alerta de confirmación con SweetAlert
+  Alerts.confirmAlert("¿Estás seguro?", "¿Deseas eliminar esta dirección permanentemente?")
+  .then((isConfirmed) => {
+    if (!isConfirmed) return; // Si el usuario cancela, no se hace nada
 
-  fetch(`https://latosca.up.railway.app/direccion/eliminar/${id}`, { method: "PUT" })
-  .then((response) => {
-      if (!response.ok) throw new Error(`Error al eliminar la dirección: ${response.status}`);
-      alert("Dirección eliminada exitosamente");
-      location.reload();
-  })
-  .catch((error) => alert("Ocurrió un error al intentar eliminar la dirección: " + error.message));
+    // Mostrar alerta de carga antes de realizar la eliminación
+    const loading = Alerts.loadingAlert('Eliminando dirección...');
+
+    fetch(`http://localhost:5000/direccion/eliminar/${id}`, { method: "PUT" })
+    .then((response) => {
+        if (!response.ok) throw new Error(`Error al eliminar la dirección: ${response.status}`);
+        
+        // Cerrar alerta de carga
+        loading.close();
+
+        // Mostrar alerta de éxito
+        Alerts.successAlert("Dirección eliminada exitosamente", "La dirección ha sido eliminada.")
+        .then(() => {
+            location.reload(); // Recargar la página después de la eliminación
+        });
+    })
+    .catch((error) => {
+        // Cerrar alerta de carga
+        loading.close();
+
+        // Mostrar alerta de error
+        Alerts.errorAlert("Ocurrió un error al eliminar la dirección", error.message);
+    });
+  });
 }
 
 

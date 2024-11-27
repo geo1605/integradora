@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="../styles/formularios.css">
     <link rel="stylesheet" href="../styles/loader.css">
     <script src="../js/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js/alerts.js"></script>
 </head>
 <body style="border-top: 10px solid #8B2437;">
     <div class="loader-container" id="loaderContainer">
@@ -34,7 +36,7 @@
             <span class="material-symbols-outlined">
                 checklist
                 </span>
-            <span class="tooltip">tabla ordenes</span>
+            <span class="tooltip">ordenes</span>
             </a></li>
              
             <li><a href="productos.html" class="lateral admin">
@@ -106,7 +108,7 @@
 
     // Función para obtener los clientes
     function fetchClientes() {
-        fetch('https://latosca.up.railway.app/clientes')
+        fetch('http://localhost:5000/clientes')
             .then(response => response.json())
             .then(clientes => {
                 clientesData = clientes; // Guardamos los datos en una variable global

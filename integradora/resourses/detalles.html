@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="../styles/loader.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Primero carga alerts.js, que define las alertas -->
+    <script src="../js/alerts.js"></script>
     <script src="../js/loader.js"></script>
 </head>
 <body style="border-top: 10px solid #8B2437;">
@@ -94,7 +97,8 @@
                 <!-- Total -->
                 <h3 class="medio"> <span id="total-general">$0.00</span></h3>
                 <!-- Botones -->
-                <div style="box-shadow: none;">
+                <div class="full" style="box-shadow: none;">
+                    <ul class="error" id="error"></ul>
                     <button id="enviarOr" class="bot" style="display: none;" type="button">Enviar</button>
                 </div>
             </form>
@@ -102,6 +106,7 @@
         </div>
     </main>
 </body>
+
 <script src="../js/session.js"></script>
 <script src="../js/usuarios.js"></script>
 <script src="../js/detalles.js"></script>

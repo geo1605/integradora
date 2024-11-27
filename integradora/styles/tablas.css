@@ -4,7 +4,7 @@
     --color-white: #FFFFFF;
     --color-accent: #F9D279;
     --color-danger: #C8502A;
-    --color-gray-dark: #4A4A4A;
+    --color-gray-dark: #0e0c0c;
     --color-background: #F2E4D6;
     --color-brown: #A65C3D;
     --color-black: #000000;
@@ -256,11 +256,7 @@ table button .material-symbols-outlined {
 #Ndirecciones {
     font-size: 1.5rem;
 }
-.error {
-    background-color: rgba(170, 15, 44, 0.5);
-    padding: 1%;
-    padding-left: 10%;
-}
+
 
 #pagination-controls button {
     margin: 0 5px;

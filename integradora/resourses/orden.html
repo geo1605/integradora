@@ -9,8 +9,11 @@
         <link rel="stylesheet" href="../styles/lateral.css">
         <link rel="stylesheet" href="../styles/tablas.css">
         <link rel="stylesheet" href="../styles/orden.css">
-        <title>ordenes</title><link rel="stylesheet" href="../styles/loader.css">
+        <title>ordenes</title>
+        <link rel="stylesheet" href="../styles/loader.css">
         <script src="../js/loader.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../js/alerts.js"></script>
     </head>
     <body style="border-top: 10px solid #8B2437;">
         <div class="loader-container" id="loaderContainer">
@@ -33,7 +36,7 @@
                 <span class="material-symbols-outlined">
                     checklist
                     </span>
-                <span class="tooltip">tabla ordenes</span>
+                <span class="tooltip">ordenes</span>
                 </a></li>
                     <li><a href="productos.html" class="lateral admin">
                         <span class="material-symbols-outlined">inventory</span>
@@ -75,7 +78,6 @@
             <a href="crearOrden.html" style="text-decoration: none;" class="bot" type="button"><span class="material-symbols-outlined">add_circle</span> Añadir</a>
             <div id="barra_busqueda">
                 <input id="Search_principal" type="search" placeholder="Buscar">
-                <button id="Bot_busqueda" class="botS"><span class="material-symbols-outlined">search</span></button>
             </div>
         </form>
 
@@ -126,7 +128,7 @@ let allOrdenes = []; // Para almacenar todas las órdenes originales
 function fetchOrdenes() {
 
 
-    fetch('https://latosca.up.railway.app/ViewOrden')
+    fetch('http://localhost:5000/ViewOrden')
     .then(response => response.json())
     .then(ordenes => {
         console.log("Órdenes recibidas del servidor:", ordenes); // Verificar los datos recibidos
@@ -327,7 +329,7 @@ function cargarDatosUsuarioYRol() {
                 });
             }
         })
-        .then(() => fetch('https://latosca.up.railway.app/api/rol', { credentials: 'include' }))
+        .then(() => fetch('http://localhost:5000/api/rol', { credentials: 'include' }))
         .then(response => response.json())
         .then(data => {
             userRole = data.rol;
@@ -340,19 +342,41 @@ function cargarDatosUsuarioYRol() {
 
 
 function actualizarEstatusO(estatusN, id) {
-     // Validar parámetros
-     if (!id || isNaN(id)) {
+    // Validar parámetros
+    if (!id || isNaN(id)) {
         console.error("El ID de la orden es inválido.");
+        Alerts.errorAlert("Error", "El ID de la orden es inválido.");
         return;
     }
 
     if (!estatusN) {
         console.error("El nuevo estatus no puede estar vacío.");
+        Alerts.errorAlert("Error", "El nuevo estatus no puede estar vacío.");
         return;
     }
 
+    // Si el nuevo estatus es 'cancelado', confirmar con el usuario
+    if (estatusN.toLowerCase() === 'cancelado') {
+        Alerts.confirmAlert("Confirmación", "¿Estás seguro de que deseas cancelar esta orden?")
+            .then((confirmed) => {
+                if (confirmed) {
+                    // Si el usuario confirma, proceder con la actualización del estatus
+                    realizarActualizacion(estatusN, id);
+                } else {
+                    // Si el usuario cancela, no hacer nada
+                    console.log("Cancelación de la orden cancelada.");
+                }
+            });
+    } else {
+        // Si el estatus no es 'cancelado', proceder normalmente
+        realizarActualizacion(estatusN, id);
+    }
+}
+
+// Función que realiza la actualización de estatus
+function realizarActualizacion(estatusN, id) {
     // URL del endpoint
-    const url = `https://latosca.up.railway.app/orden/estatus/${id}`;
+    const url = `http://localhost:5000/orden/estatus/${id}`;
 
     // Opciones de la solicitud
     const opciones = {
@@ -363,6 +387,9 @@ function actualizarEstatusO(estatusN, id) {
         body: JSON.stringify({ Estatus: estatusN })
     };
 
+    // Mostrar alerta de carga mientras se procesa la solicitud
+    Alerts.loadingAlert("Actualizando estatus...");
+
     // Realizar la solicitud
     fetch(url, opciones)
         .then((response) => {
@@ -372,13 +399,20 @@ function actualizarEstatusO(estatusN, id) {
             return response.json();
         })
         .then((data) => {
-            alert("Estatus actualizado con éxito:", data);
-            window.location.reload();
+            // Alerta de éxito
+            Alerts.successAlert("Estatus actualizado con éxito", `Estatus actualizado a: ${estatusN}`)
+                .then(() => {
+                    // Recargar la página después de que la alerta de éxito se cierre
+                    window.location.reload();
+                });
         })
         .catch((error) => {
+            // Alerta de error si algo falla
             console.error("Error al realizar la solicitud:", error);
+            Alerts.errorAlert("Error", "Hubo un problema al actualizar el estatus.");
         });
 }
+
 
 // Llamar a cargarDatosUsuarioYRol al cargar la página
 document.addEventListener("DOMContentLoaded", () => {

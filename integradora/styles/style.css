@@ -191,12 +191,13 @@ canvas {
 
 /* Ajuste general para el contenedor de las fechas */
 #fecha {
-    grid-column: 1/ -1;
+    grid-column: 1 / -1;
     display: flex;
-    flex-wrap: wrap; /* Permite que los elementos se envuelvan si es necesario */
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 0.5rem; /* Espaciado entre elementos */
+    width: 50%;
+    margin: auto;
 }
 
 /* Ajuste para los inputs de fecha */
@@ -207,7 +208,7 @@ canvas {
     padding: 0.5rem;
     border-radius: 5px;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 1.5rem;
     border: 0;
 }
 
@@ -217,9 +218,7 @@ canvas {
     font-size: 1.2rem;
     text-align: center;
 }
-  #fecha h2 {
-      margin-right: 10%; 
-  }
+
   #fecha #fechaHoy{
     margin-left: 1.5%;
   }

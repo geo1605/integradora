@@ -1,98 +1,111 @@
-// Asegúrate de tener SweetAlert2 instalado y referenciado en tu proyecto
-
-// Importa SweetAlert2 (si usas módulos)
-import Swal from 'sweetalert2';
-
-/**
- * Funciones de alertas reutilizables con SweetAlert2.
- */
 const Alerts = {
-    /**
-     * Muestra una alerta básica con título y mensaje.
-     * @param {string} title - El título de la alerta.
-     * @param {string} text - El mensaje de la alerta.
-     * @param {string} icon - El tipo de ícono: 'success', 'error', 'warning', 'info', 'question'.
-     */
-    basicAlert: (title, text, icon = 'info') => {
-        Swal.fire({
+    // Alerta básica
+    basicAlert: function (title, text, icon) {
+        return Swal.fire({
             title: title,
             text: text,
             icon: icon,
-            confirmButtonText: 'Aceptar',
+            confirmButtonText: 'OK'
         });
     },
 
-    /**
-     * Muestra una alerta de confirmación con callback en caso de aceptar.
-     * @param {string} title - El título de la alerta.
-     * @param {string} text - El mensaje de la alerta.
-     * @param {Function} onConfirm - Función que se ejecuta al confirmar.
-     */
-    confirmAlert: (title, text, onConfirm) => {
-        Swal.fire({
+    // Alerta de confirmación (Sí/No)
+    confirmAlert: function (title, text) {
+        return Swal.fire({
+            title: title,
+            text: text,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No'
+        }).then((result) => result.isConfirmed);
+    },
+
+    // Alerta de éxito
+    successAlert: function (title, text) {
+        return Swal.fire({
+            title: title,
+            text: text,
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    },
+
+    // Alerta de error
+    errorAlert: function (title, text) {
+        return Swal.fire({
+            title: title,
+            text: text,
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    },
+
+    // Alerta de advertencia
+    warningAlert: function (title, text) {
+        return Swal.fire({
             title: title,
             text: text,
             icon: 'warning',
+            confirmButtonText: 'OK'
+        });
+    },
+
+    // Alerta con temporizador
+    timerAlert: function (title, text, timer = 2000) {
+        return Swal.fire({
+            title: title,
+            text: text,
+            icon: 'info',
+            timer: timer,
+            showConfirmButton: false
+        });
+    },
+
+    // Alerta personalizada con botones adicionales
+    customAlert: function (title, text, buttons) {
+        return Swal.fire({
+            title: title,
+            text: text,
+            icon: 'info',
             showCancelButton: true,
-            confirmButtonText: 'Sí',
-            cancelButtonText: 'No',
+            confirmButtonText: buttons.confirmText || 'Aceptar',
+            cancelButtonText: buttons.cancelText || 'Cancelar',
         }).then((result) => {
             if (result.isConfirmed) {
-                onConfirm();
+                buttons.onConfirm && buttons.onConfirm();
+            } else if (result.isDismissed) {
+                buttons.onCancel && buttons.onCancel();
             }
         });
     },
 
-    /**
-     * Muestra una alerta con entrada de texto.
-     * @param {string} title - El título de la alerta.
-     * @param {string} inputPlaceholder - El texto de marcador de posición para el input.
-     * @param {Function} onInputSubmit - Función que se ejecuta con el valor ingresado.
-     */
-    inputAlert: (title, inputPlaceholder, onInputSubmit) => {
-        Swal.fire({
+    // Alerta de carga (loading)
+    loadingAlert: function (text) {
+        return Swal.fire({
+            title: 'Cargando...',
+            text: text || 'Por favor espera',
+            imageUrl: 'https://i.imgur.com/3l9zQxQ.gif',  // Puedes poner tu propia imagen de carga
+            imageWidth: 100,
+            imageHeight: 100,
+            showConfirmButton: false,
+            allowOutsideClick: false
+        });
+    },
+
+    // Alerta con imagen personalizada
+    imageAlert: function (title, text, imageUrl) {
+        return Swal.fire({
             title: title,
-            input: 'text',
-            inputPlaceholder: inputPlaceholder,
-            showCancelButton: true,
-            confirmButtonText: 'Aceptar',
-            cancelButtonText: 'Cancelar',
-        }).then((result) => {
-            if (result.isConfirmed && result.value) {
-                onInputSubmit(result.value);
-            }
+            text: text,
+            imageUrl: imageUrl,
+            imageWidth: 200,
+            imageHeight: 200,
+            imageAlt: 'Custom image',
+            confirmButtonText: 'OK'
         });
-    },
-
-    /**
-     * Muestra una alerta personalizada con configuración avanzada.
-     * @param {Object} options - Configuración avanzada de SweetAlert2.
-     */
-    customAlert: (options) => {
-        Swal.fire(options);
-    },
-
-    /**
-     * Muestra una alerta de carga/espera.
-     * @param {string} text - El mensaje mientras se espera.
-     */
-    loadingAlert: (text = 'Cargando...') => {
-        Swal.fire({
-            title: text,
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            },
-        });
-    },
-
-    /**
-     * Cierra manualmente cualquier alerta activa.
-     */
-    closeAlert: () => {
-        Swal.close();
-    },
+    }
 };
 
-// Exporta el objeto Alerts para usar en otros archivos
-export default Alerts;
+// Exponer Alerts globalmente para que esté disponible en todo el script
+window.Alerts = Alerts;

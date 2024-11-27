@@ -6,7 +6,9 @@
     <title>Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="styles/login.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Primero carga alerts.js, que define las alertas -->
+    <script src="js/alerts.js"></script>
 </head>
 <body id="log">
     <form id="login">
@@ -16,6 +18,9 @@
         <button type="button" onclick="iniciarSesion()" class="boton">Iniciar sesión</button>
 <!--         <a href="resourses/recuperacion.html">haz olvidado tu contraseña?</a> -->
     </form>
+    
+    
+    <!-- Luego carga session.js, que usa las alertas definidas en alerts.js -->
     <script src="js/session.js"></script>
 </body>
 </html>
