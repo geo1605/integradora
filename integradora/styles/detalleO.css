@@ -160,6 +160,122 @@ select:disabled {
     margin-top: 20px !important; /* Añade espacio superior al botón */
 }
 
+/* Para pantallas de 768px (tabletas) */
+@media (max-width: 768px) {
+    body {
+        font-size: 1rem;
+    }
+
+    #DetalleO {
+        width: 90%;
+        padding: 4%;
+    }
+
+    #detalles,#general {
+        grid-template-columns: repeat(6, 1fr); /* 6 columnas en pantallas de 768px */
+    }
+
+
+    main h2 {
+        font-size: 1.6rem;
+    }
+
+    .inputs, .selects {
+        font-size: 1.1rem;
+    }
+
+    #productos-container {
+        height: 30vh;
+    }
+
+    #detalles h3 {
+        font-size: 1.7rem;
+    }
+
+    .sec {
+        padding: 1rem;
+    }
+
+    .mod .select2-container {
+        font-size: 1.1rem;
+    }
+
+    /* Ajustar el tamaño de los botones y secciones */
+    #editarOr {
+        grid-column: span 6;
+    }
+
+    .full {
+        grid-column: span 6;
+    }
+
+    .medio {
+        grid-column: span 6;
+    }
+}
+
+/* Para pantallas de 480px (móviles) */
+@media (max-width: 480px) {
+    body {
+        font-size: 0.9rem;
+    }
+
+    #DetalleO {
+        width: 95%;
+        padding: 6%;
+    }
+
+    #detalles, #general {
+        grid-template-columns: repeat(1, 1fr); /* 1 columna en pantallas de 480px */
+    }
+    
+
+    main h2 {
+        font-size: 1.4rem;
+    }
+
+    .inputs, .selects {
+        font-size: 1rem;
+    }
+
+    #productos-container {
+        height: 25vh;
+    }
+
+    #detalles h3 {
+        font-size: 1.5rem;
+    }
+
+    .sec {
+        padding: 0.5rem;
+    }
+
+    .mod .select2-container {
+        font-size: 1rem;
+    }
+
+    /* Ajustar botones y secciones a pantalla completa */
+    #editarOr {
+        grid-column: span 12;
+    }
+
+    .full {
+        grid-column: span 12;
+    }
+
+    .medio {
+        grid-column: span 12;
+    }
+
+    .tercio {
+        grid-column: span 12;
+    }
+
+    .cuarto {
+        grid-column: span 12;
+    }
+}
+
 
 
 

@@ -20,7 +20,10 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
-    width: 100%;
+
+}
+main {
+    width: 90%;
     height: 95vh;
     display: flex;
     align-items: center;
