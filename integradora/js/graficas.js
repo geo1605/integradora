@@ -232,7 +232,7 @@ function cargarVentasPorDia(fechaInicio, fechaFin) {
 function cargarActivas(fechaInicio, fechaFin) {
     const bloque = document.getElementById("Ocompleta");
     
-    fetch(`https://latosca.up.railway.app/cantidadOrdenesPorEstatus?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&estatus=activo`)
+    fetch(`https://latosca.up.railway.app/cantidadOrdenesPorEstatus?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&estatus=completado`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error al obtener las órdenes activas');
