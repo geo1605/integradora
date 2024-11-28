@@ -84,10 +84,6 @@ function editarOr() {
 
         // Mostrar alerta de cambio a modo edición
         Alerts.successAlert("Éxito", "Haz cambiado al modo edición");
-
-        // Si necesitas redirigir a otra página o recargar la página, asegúrate de incluir el ID
-        // Por ejemplo, para redirigir a la misma página con el id:
-        window.location.href = `detalles.html?id=${ordenId}`;
     } else {
         console.error("No se encontró el ID de la orden en la URL");
     }
