@@ -42,52 +42,46 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("No se encontró el ID de la orden en la URL");
     }
 });
-// Redirigir a la misma página con el parámetro `id` preservado
+
+// Función para habilitar la edición
 function editarOr() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const ordenId = urlParams.get("id");
+    const inputs = document.querySelectorAll('#detalles input');
+    const selects = document.querySelectorAll('#detalles select');
+    const but = document.getElementById('editarOr');
+    const butE = document.getElementById('enviarOr');
+    const error = document.getElementById('error');
+    const totalZInput = document.getElementById('totalZ'); // Seleccionar el input totalZ
 
-    if (ordenId) {
-        // Habilitar la edición de campos
-        const inputs = document.querySelectorAll('#detalles input');
-        const selects = document.querySelectorAll('#detalles select');
-        const but = document.getElementById('editarOr');
-        const butE = document.getElementById('enviarOr');
-        const error = document.getElementById('error');
-        const totalZInput = document.getElementById('totalZ');
+    // Habilitar los campos de entrada, excepto los bloqueados
+    inputs.forEach(input => {
+        if (input.id === 'totalZ') {
+            input.setAttribute('readonly', 'true'); // Asegurar que totalZ se mantenga bloqueado
+        } else if (!input.classList.contains('precio-input') && 
+                   !input.classList.contains('total-input')) {
+            input.removeAttribute('readonly'); // Permitir editar otros inputs
+        }
+    });
 
-        // Habilitar los campos de entrada, excepto los bloqueados
-        inputs.forEach(input => {
-            if (input.id === 'totalZ') {
-                input.setAttribute('readonly', 'true'); // Asegurar que totalZ se mantenga bloqueado
-            } else if (!input.classList.contains('precio-input') && 
-                    !input.classList.contains('total-input')) {
-                input.removeAttribute('readonly'); // Permitir editar otros inputs
-            }
-        });
+    selects.forEach(select => {
+        if (select.id !== 'cliente') {
+            select.removeAttribute('disabled'); // Habilitar selects que no sean 'cliente'
+        } else {
+            select.setAttribute('disabled', 'true'); // Bloquear 'cliente'
+        }
+    });
 
-        selects.forEach(select => {
-            if (select.id !== 'cliente') {
-                select.removeAttribute('disabled'); // Habilitar selects que no sean 'cliente'
-            } else {
-                select.setAttribute('disabled', 'true'); // Bloquear 'cliente'
-            }
-        });
+    // Asegurar que totalZ esté bloqueado
+    totalZInput.setAttribute('readonly', 'true');
 
-        // Asegurar que totalZ esté bloqueado
-        totalZInput.setAttribute('readonly', 'true');
+    // Mostrar el error y botones correspondientes
+    error.style.display = 'block';
+    but.style.display = 'none';
+    butE.style.display = 'block';
 
-        // Mostrar el error y botones correspondientes
-        error.style.display = 'block';
-        but.style.display = 'none';
-        butE.style.display = 'block';
-
-        // Mostrar alerta de cambio a modo edición
-        Alerts.successAlert("Éxito", "Haz cambiado al modo edición");
-    } else {
-        console.error("No se encontró el ID de la orden en la URL");
-    }
+    // Mostrar alerta de cambio a modo edición
+    Alerts.successAlert("Éxito", "Haz cambiado al modo edición");
 }
+
 
 
 
@@ -498,10 +492,13 @@ async function guardarCambiosOrden(ordenId) {
         // Actualizar los detalles de la orden
         await actualizarDetallesOrden(ordenId, detalles);
 
-        alert("Cambios guardados correctamente");
+        Alerts.successAlert('Éxito', 'Orden actualizada exitosamente')
+        .then(() => {
+            window.location.href = 'orden.html';
+        })
     } catch (error) {
         console.error("Error al guardar los cambios de la orden:", error);
-        alert("Error al guardar los cambios de la orden. Revisa la consola para más detalles.");
+        Alerts.errorAlert('Error', 'Error al guardar cambios la orden: ' + error.message);
     }
 }
 
