@@ -566,7 +566,7 @@ function agregarDireccion() {
     <input type="text" name="numeroEX" class="cuarto" placeholder="Número Exterior">
     <input type="text" name="numeroIC" class="cuarto" placeholder="Número Interior">
     <input type="text" name="CP" class="cuarto" placeholder="Código Postal">
-    <button type="button" id="B_direcciones" onclick="eliminarDireccion(this)">Eliminar dirección</button><br>
+    <button type="button" id="B_direcciones" onclick="eliminarDireccionCampo(this)">Eliminar dirección</button><br>
   `;
 
   // Agregar el nuevo contenedor de dirección al contenedor principal
@@ -628,7 +628,7 @@ function cargarZonas() {
 
 
 
-function eliminarDireccion(button) {
+function eliminarDireccionCampo(this) {
   let direccion = button.parentNode; // Obtiene el div contenedor de la dirección
   direccion.remove(); // Elimina el div contenedor
 }
