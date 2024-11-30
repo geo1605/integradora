@@ -24,6 +24,8 @@
         cargarActivas(fechaInicio, fechaFin);
         cargarPendientes(fechaInicio, fechaFin);
         cargarCanceladas(fechaInicio, fechaFin);
+        cargarActivas(fechaInicio, fechaFin);
+
 
 
     });
@@ -267,6 +269,25 @@ function cargarPendientes(fechaInicio, fechaFin) {
         .catch(error => {
             console.error('Error en cargarpendientes:', error);
             bloque.textContent = 'Error al cargar las órdenes pendientes';
+        });
+}
+function cargarActivas(fechaInicio, fechaFin) {
+    const bloque = document.getElementById("Oactiva");
+    
+    fetch(`https://latosca.up.railway.app/cantidadOrdenesPorEstatus?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&estatus=activo`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al obtener las órdenes Activas');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const cantidad = data.data[0]?.Total_Ordenes || 0; // Supongamos que el resultado incluye un campo "cantidad"
+            bloque.textContent = ` ${cantidad}`;
+        })
+        .catch(error => {
+            console.error('Error en cargarpendientes:', error);
+            bloque.textContent = 'Error al cargar las órdenes Activas';
         });
 }
 function cargarCanceladas(fechaInicio, fechaFin) {

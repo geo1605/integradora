@@ -105,21 +105,21 @@
             <div class="item">
                 <span class="material-icons icon">check_circle</span>
                 <div>
-                    <strong>Ordenes completadas</strong>
+                    <strong>Órdenes completadas</strong>
                     <p id="completadasCount">0</p>
                 </div>
             </div>
             <div class="item">
                 <span class="material-icons icon">start</span>
                 <div>
-                    <strong>Ordenes activas</strong>
+                    <strong>Órdenes activas</strong>
                     <p id="enProcesoCount">0</p>
                 </div>
             </div>
             <div class="item">
                 <span class="material-icons icon">pending</span>
                 <div>
-                    <strong>Ordenes pendientes</strong>
+                    <strong>Órdenes pendientes</strong>
                     <p id="pendientesCount">0</p>
                 </div>
             </div>
@@ -137,11 +137,11 @@
             </div>
             <div class="card">
                 <div class="icon-container">
-                    <span class="material-icons icon">cancel</span>
+                    <span class="material-icons icon">pending</span>
                 </div>
                 <div class="content">
-                    <p>Órdenes Canceladas</p>
-                    <h3 id="Ocancelada"></h3>
+                    <p>Órdenes activas</p>
+                    <h3 id="Oactiva"></h3>
                 </div>
             </div>
             <div class="card">
@@ -153,7 +153,15 @@
                     <h3 id="Opendiente"></h3>
                 </div>
             </div>
-            
+            <div class="card">
+                <div class="icon-container">
+                    <span class="material-icons icon">cancel</span>
+                </div>
+                <div class="content">
+                    <p>Órdenes Canceladas</p>
+                    <h3 id="Ocancelada"></h3>
+                </div>
+            </div>
         </section>
         <section class="grafica admin">
             <canvas id="ventas"></canvas>
