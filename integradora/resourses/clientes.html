@@ -101,97 +101,94 @@
         <div id="pagination-controls-clientes" class="pagination-container"></div>
         
         <script>
-    const NpaginaClientes = 15; // Número de elementos por página
-    let NumpagClientes = 1; // Página inicial
-    let clientesData = []; // Arreglo para almacenar los datos de clientes
-    let filteredClientes = []; // Arreglo para los clientes filtrados
+const NpaginaClientes = 15; // Número de elementos por página
+let NumpagClientes = 1; // Página inicial
+let clientesData = []; // Arreglo para almacenar los datos de clientes
+let filteredClientes = []; // Arreglo para los clientes filtrados
 
-    // Función para obtener los clientes
-    function fetchClientes() {
-        fetch('https://latosca.up.railway.app/clientes')
-            .then(response => response.json())
-            .then(clientes => {
-                clientesData = clientes; // Guardamos los datos en una variable global
-                filteredClientes = clientesData; // Inicialmente mostramos todos los clientes
-                cargarClientes(); // Renderizamos la tabla de clientes
-                paginacionClientes(); // Renderizamos los controles de paginación
-            })
-            .catch(error => console.error('Error al cargar los clientes:', error));
-    }
+// Función para obtener los clientes
+function fetchClientes() {
+    fetch('https://latosca.up.railway.app/clientes')
+        .then(response => response.json())
+        .then(clientes => {
+            clientesData = clientes; // Guardamos los datos en una variable global
+            filteredClientes = clientes.filter(cliente => cliente.estatus == 1); // Filtramos solo los activos
+            cargarClientes(); // Renderizamos la tabla de clientes
+            paginacionClientes(); // Renderizamos los controles de paginación
+        })
+        .catch(error => console.error('Error al cargar los clientes:', error));
+}
 
-    // Función para renderizar la tabla de clientes
-    function cargarClientes() {
-        const start = (NumpagClientes - 1) * NpaginaClientes;
-        const end = start + NpaginaClientes;
-        const clientesToShow = filteredClientes.slice(start, end); // Paginación de registros
-        
-        let clientesHTML = '';
-        clientesToShow.forEach(client => {
-            if (client.estatus == 1) {
-                clientesHTML += `
-                <tr>
-                    <td id="nombre${client.ID_cliente}">${client.Nombres}</td>
-                    <td id="ApellidoP${client.ID_cliente}">${client.Apellido_P}</td>
-                    <td id="ApellidoM${client.ID_cliente}">${client.Apellido_M}</td>
-                    <td id="telefono${client.ID_cliente}">${client.Telefono}</td>
-                    <td><a href="direcciones.html?id=${client.ID_cliente}&nombres=${client.Nombres} ${client.Apellido_P}"><button id="ver_direccion" class="ver">ver</button></a></td>
-                    <td id="correo${client.ID_cliente}">${client.correo}</td>
-                    <td class="acciones">
-                        <button class="B_editar" onclick="updateCliente(${client.ID_cliente})"><span class="material-symbols-outlined">edit</span></button>
-                        <button class="B_eliminar" onclick="eliminarCliente(${client.ID_cliente})"><span class="material-symbols-outlined">delete</span></button>
-                    </td>
-                </tr>
-            `;
-            }
-            
-        });
+// Función para renderizar la tabla de clientes
+function cargarClientes() {
+    const start = (NumpagClientes - 1) * NpaginaClientes;
+    const end = start + NpaginaClientes;
+    const clientesToShow = filteredClientes.slice(start, end); // Paginación de registros
+    
+    let clientesHTML = '';
+    clientesToShow.forEach(client => {
+        clientesHTML += `
+            <tr>
+                <td id="nombre${client.ID_cliente}">${client.Nombres}</td>
+                <td id="ApellidoP${client.ID_cliente}">${client.Apellido_P}</td>
+                <td id="ApellidoM${client.ID_cliente}">${client.Apellido_M}</td>
+                <td id="telefono${client.ID_cliente}">${client.Telefono}</td>
+                <td><a href="direcciones.html?id=${client.ID_cliente}&nombres=${client.Nombres} ${client.Apellido_P}"><button id="ver_direccion" class="ver">ver</button></a></td>
+                <td id="correo${client.ID_cliente}">${client.correo}</td>
+                <td class="acciones">
+                    <button class="B_editar" onclick="updateCliente(${client.ID_cliente})"><span class="material-symbols-outlined">edit</span></button>
+                    <button class="B_eliminar" onclick="eliminarCliente(${client.ID_cliente})"><span class="material-symbols-outlined">delete</span></button>
+                </td>
+            </tr>
+        `;
+    });
 
-        document.getElementById("clientes-body").innerHTML = clientesHTML;
-    }
+    document.getElementById("clientes-body").innerHTML = clientesHTML;
+}
+
 // Función para renderizar los controles de paginación de clientes
-        function paginacionClientes() {
-            // Filtrar solo los clientes activos
-            const activeClientes = filteredClientes.filter(cliente => cliente.estatus == 1);
-            const totalPages = Math.ceil(activeClientes.length / NpaginaClientes);
-            let paginationHTML = '';
+function paginacionClientes() {
+    const totalPages = Math.ceil(filteredClientes.length / NpaginaClientes);
+    let paginationHTML = '';
 
-            for (let i = 1; i <= totalPages; i++) {
-                paginationHTML += `<button onclick="goToClientesPage(${i})" class="pagination-button ${i === NumpagClientes ? 'active' : ''}">${i}</button>`;
-            }
-
-            document.getElementById("pagination-controls-clientes").innerHTML = paginationHTML;
-        }
-
-
-    // Función para ir a una página específica de clientes
-    function goToClientesPage(page) {
-        NumpagClientes = page;
-        cargarClientes();
-        paginacionClientes();
+    for (let i = 1; i <= totalPages; i++) {
+        paginationHTML += `<button onclick="goToClientesPage(${i})" class="pagination-button ${i === NumpagClientes ? 'active' : ''}">${i}</button>`;
     }
 
-    // Función para realizar la búsqueda
-    function buscadorClientes() {
-        const searchTerm = document.getElementById("Search_principal").value.toLowerCase();
-        filteredClientes = clientesData.filter(cliente => {
-            return (
-                cliente.Nombres.toLowerCase().includes(searchTerm) ||
-                cliente.Apellido_P.toLowerCase().includes(searchTerm) ||
-                cliente.Apellido_M.toLowerCase().includes(searchTerm) ||
-                cliente.Telefono.toLowerCase().includes(searchTerm) ||
-                cliente.correo.toLowerCase().includes(searchTerm)
-            );
-        });
-        NumpagClientes = 1; // Reiniciar a la primera página
-        cargarClientes();
-        paginacionClientes();
-    }
+    document.getElementById("pagination-controls-clientes").innerHTML = paginationHTML;
+}
 
-    // Añadir un evento de búsqueda al campo de búsqueda
-    document.getElementById("Search_principal").addEventListener("input", buscadorClientes);
+// Función para ir a una página específica de clientes
+function goToClientesPage(page) {
+    NumpagClientes = page;
+    cargarClientes();
+    paginacionClientes();
+}
 
-    // Llamar a la función para cargar los clientes y configurar la paginación
-    fetchClientes();
+// Función para realizar la búsqueda
+function buscadorClientes() {
+    const searchTerm = document.getElementById("Search_principal").value.toLowerCase();
+    filteredClientes = clientesData.filter(cliente => {
+        return (
+            cliente.Nombres.toLowerCase().includes(searchTerm) ||
+            cliente.Apellido_P.toLowerCase().includes(searchTerm) ||
+            cliente.Apellido_M.toLowerCase().includes(searchTerm) ||
+            cliente.Telefono.toLowerCase().includes(searchTerm) ||
+            cliente.correo.toLowerCase().includes(searchTerm)
+        );
+    }).filter(cliente => cliente.estatus == 1); // Solo clientes activos
+
+    NumpagClientes = 1; // Reiniciar a la primera página
+    cargarClientes();
+    paginacionClientes();
+}
+
+// Añadir un evento de búsqueda al campo de búsqueda
+document.getElementById("Search_principal").addEventListener("input", buscadorClientes);
+
+// Llamar a la función para cargar los clientes y configurar la paginación
+fetchClientes();
+
 
 </script>
 
