@@ -99,10 +99,12 @@ a.lateral {
 
 #user:hover .tooltip {
   display: block; /* Mostrar el tooltip al pasar el cursor */
+  z-index: 1;
 }
 
 .lateral:hover .tooltip {
   display: block; /* Mostrar el tooltip al pasar el cursor */
+  z-index: 1;
 }
 /*botones user*/
 :root {

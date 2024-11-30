@@ -30,7 +30,7 @@
 }
 
 .modificacion {
-    width: 80%;
+    width: 90%;
     display: grid;
     grid-template-columns: repeat(12, 1fr); /* 12 columnas de ancho */
     gap: 1rem; /* Espacio entre elementos */
@@ -146,3 +146,9 @@
 
 
 /*media 530*/
+@media (max-width:420px) {
+    .modificacion h2 {
+        grid-column: span 10;
+    }
+
+}

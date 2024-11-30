@@ -25,6 +25,10 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     color: var(--color-black);
 }
+h1 {
+    font-size: 3rem;
+    color: var(--color-primary);
+}
 
 #main {
     display: grid;
@@ -198,6 +202,7 @@ canvas {
     align-items: center;
     width: 50%;
     margin: auto;
+    padding: 0.5rem;
 }
 
 /* Ajuste para los inputs de fecha */
@@ -208,10 +213,12 @@ canvas {
     padding: 0.5rem;
     border-radius: 5px;
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     border: 0;
 }
-
+#fecha h2 {
+    font-size: 2rem;
+}
 /* Estilo para el separador "/" */
 #fecha h3 {
     margin: 0;
@@ -232,6 +239,9 @@ canvas {
   @media (max-width: 480px) {
     #main {
         grid-template-columns: 1fr;
+    }
+    h1 {
+        font-size: 2rem;
     }
 
     section {
@@ -260,6 +270,35 @@ canvas {
     #main #nombre {
         text-align: center;
         padding: 5%;
+    }
+    /* Ajuste general para el contenedor de las fechas */
+#fecha {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 50%;
+    margin: auto;
+    padding: 0.5rem;
+}
+
+    /* Ajuste para los inputs de fecha */
+    #fecha input {
+        flex: 1; /* Hace que ambos inputs se adapten al espacio disponible */
+        padding: 0;
+
+        text-align: center;
+        font-size: 1rem;
+    }
+    #fecha h2 {
+        font-size: 1.5rem;
+    }
+    /* Estilo para el separador "/" */
+    #fecha h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        text-align: center;
     }
 }
 @media (min-width: 769px) and (max-width: 1024px) {

@@ -101,13 +101,7 @@
             <a href="orden.html" id="ver-mas">ver mas</a>
         </section>
         <section id="MasU" class="user">
-            <div class="item">
-                <span class="material-icons icon">pending</span>
-                <div>
-                    <strong>Ordenes pendientes</strong>
-                    <p id="pendientesCount">0</p>
-                </div>
-            </div>
+            
             <div class="item">
                 <span class="material-icons icon">check_circle</span>
                 <div>
@@ -116,10 +110,17 @@
                 </div>
             </div>
             <div class="item">
-                <span class="material-icons icon">bar_chart</span>
+                <span class="material-icons icon">start</span>
                 <div>
-                    <strong>Ordenes en proceso</strong>
+                    <strong>Ordenes activas</strong>
                     <p id="enProcesoCount">0</p>
+                </div>
+            </div>
+            <div class="item">
+                <span class="material-icons icon">pending</span>
+                <div>
+                    <strong>Ordenes pendientes</strong>
+                    <p id="pendientesCount">0</p>
                 </div>
             </div>
         </section>
@@ -216,6 +217,12 @@ async function inicializarUsuario() {
         if (userId) {
             usuarioNombre = await cargarEmpleadoNombre(userId); // Guardar el nombre globalmente
 
+            // Actualizar el nombre del usuario en el HTML
+            const nombreUserElement = document.getElementById("nombre_user");
+            if (nombreUserElement) {
+                nombreUserElement.innerText = `Bienvenido, ${usuarioNombre}`;
+            }
+
         } else {
             console.error("No se pudo cargar el usuario. Redirigiendo a login...");
         }
@@ -223,6 +230,7 @@ async function inicializarUsuario() {
         console.error("Error al inicializar el usuario:", error);
     }
 }
+
 
 // Función para filtrar y ordenar órdenes
 function filterAndSortOrdenes(ordenes, fechaInicio) {
