@@ -511,9 +511,9 @@ app.post('/empleado/registrar',  verificarSesion,  async (req, res) => {
 // Modificar Empleados
 app.put('/empleado/modificar/:id', /* verificarSesion, verificarRol(['admin']), */ (req, res) => {
     const { id } = req.params;
-    const { Nombres, Apellido_P, Apellido_M, Cargo, correo, Telefono, password, estatus } = req.body;
-    const sql = "UPDATE empleado SET Nombres = ?, Apellido_P = ?, Apellido_M = ?, Cargo = ?, correo = ?, Telefono = ?, password = ?, estatus = ? WHERE ID_Empleados = ?";
-    db.query(sql, [Nombres, Apellido_P, Apellido_M, Cargo, correo, Telefono, password, estatus, id], (err, result) => {
+    const { Nombres, Apellido_P, Apellido_M, Cargo, correo, Telefono, estatus } = req.body;
+    const sql = "UPDATE empleado SET Nombres = ?, Apellido_P = ?, Apellido_M = ?, Cargo = ?, correo = ?, Telefono = ?, estatus = ? WHERE ID_Empleados = ?";
+    db.query(sql, [Nombres, Apellido_P, Apellido_M, Cargo, correo, Telefono, estatus, id], (err, result) => {
         if (err) {
             res.status(500).send(err);
         } else if (result.affectedRows === 0) {

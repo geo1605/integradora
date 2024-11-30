@@ -445,56 +445,50 @@ function eliminarZona(id) {
 
 // ================== EMPLEADO ================== //
 
+// Actualizar Empleado
 function actualizarEmpleado(ID, event) {
   event.preventDefault();
-
-  // Crear el objeto con los datos del empleado
   const empleadoData = {
-    Nombres: document.querySelector('input[name="ActNombre"]').value,
-    Apellido_P: document.querySelector('input[name="ActPaterno"]').value,
-    Apellido_M: document.querySelector('input[name="ActMaterno"]').value,
-    Cargo: document.querySelector('select[name="Actcargo"]').value,
-    correo: document.querySelector('input[name="Actcorreo"]').value,
-    Telefono: document.querySelector('input[name="Acttelefono"]').value,
-    estatus: 1,
+      Nombres: document.querySelector('input[name="ActNombre"]').value,
+      Apellido_P: document.querySelector('input[name="ActPaterno"]').value,
+      Apellido_M: document.querySelector('input[name="ActMaterno"]').value,
+      Cargo: document.querySelector('select[name="Actcargo"]').value,
+      correo: document.querySelector('input[name="Actcorreo"]').value,
+      Telefono: document.querySelector('input[name="Acttelefono"]').value,
+      estatus: 1,
   };
-
-  // Mostrar los datos que se están enviando en la consola para depuración
-  console.log("Datos enviados al backend:", JSON.stringify(empleadoData));
 
   // Mostrar alerta de carga antes de hacer la solicitud
   const loading = Alerts.loadingAlert('Actualizando empleado...');
 
-  // Hacer la solicitud fetch al servidor
   fetch(`https://latosca.up.railway.app/empleado/modificar/${ID}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(empleadoData),
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(empleadoData),
   })
-    .then((response) => {
+  .then((response) => {
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       return response.json();
-    })
-    .then(() => {
+  })
+  .then(() => {
       // Cerrar alerta de carga
       loading.close();
 
       // Mostrar alerta de éxito
       Alerts.successAlert("Empleado actualizado exitosamente", "El empleado se ha actualizado correctamente.")
-        .then(() => {
+      .then(() => {
           // Cerrar popup y recargar la página
           cerrarPopupYRecargar("upPopup", "empleados");
-        });
-    })
-    .catch((error) => {
+      });
+  })
+  .catch((error) => {
       // Cerrar alerta de carga
       loading.close();
 
       // Mostrar alerta de error
       Alerts.errorAlert("Error al actualizar el empleado", error.message);
-    });
+  });
 }
-
 
 // Eliminar Empleado
 function eliminarEmpleado(id) {
