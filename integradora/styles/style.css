@@ -278,13 +278,14 @@ canvas {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    width: 50%;
+    width: 90%;
     margin: auto;
     padding: 0.5rem;
 }
 
     /* Ajuste para los inputs de fecha */
     #fecha input {
+        max-width: 80%; /* Limita el ancho máximo */
         flex: 1; /* Hace que ambos inputs se adapten al espacio disponible */
         padding: 0;
 

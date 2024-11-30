@@ -39,7 +39,6 @@ main {
     display: flex;
     flex-direction: column;
 }
-/*          DE AQUI PA ARRIBA NO SE QUE HIZO EL GEOVANY                 */
 
 /* modificacion del estilo */
 .fuente{
@@ -93,14 +92,23 @@ input::placeholder{
     transition: 1s;
 }
 
-#login a {
-    margin-top: 1%;
-    font-size: 0.7rem;
-    text-align: center;
-}
-
 @media (max-width: 768px) {
+    main {
+        margin-left: 7%;
+    }
     #login {
         width: 50%;
     }
+    .boton {
+        padding: 1%;
+        font-size: 1rem;
+        width: 80%;
+    }
 }
+@media (max-width: 420px) {
+    #login {
+        width: 80%;
+    }
+
+}
+
