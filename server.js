@@ -509,7 +509,7 @@ app.post('/empleado/registrar',  verificarSesion,  async (req, res) => {
 
 
 // Modificar Empleados
-app.put('/empleado/modificar/:id', verificarSesion, verificarRol(['admin']), (req, res) => {
+app.put('/empleado/modificar/:id', /* verificarSesion, verificarRol(['admin']), */ (req, res) => {
     const { id } = req.params;
     const { Nombres, Apellido_P, Apellido_M, Cargo, correo, Telefono, password, estatus } = req.body;
     const sql = "UPDATE empleado SET Nombres = ?, Apellido_P = ?, Apellido_M = ?, Cargo = ?, correo = ?, Telefono = ?, password = ?, estatus = ? WHERE ID_Empleados = ?";
