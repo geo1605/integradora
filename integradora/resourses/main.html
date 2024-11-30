@@ -358,7 +358,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Función principal para cargar y procesar las órdenes
         function fetchAndRenderOrdenes() {
             const fechaInicio = getSelectedDate(); // Obtener la fecha de inicio seleccionada
-            const fechaFin = document.getElementById("fechaFin").value || new Date().toISOString().split("T")[0]; // Obtener la fecha de fin, por defecto es la fecha actual
+            const fechaFin = document.getElementById("fechapasado").value || new Date().toISOString().split("T")[0]; // Obtener la fecha de fin, por defecto es la fecha actual
 
             fetch("https://latosca.up.railway.app/ViewOrden")
                 .then((response) => response.json())
