@@ -439,9 +439,6 @@ function validarFormularioDireccion() {
     errores.push("El número exterior debe ser un número positivo.");
   }
 
-  if (numInt && (isNaN(numInt) || Number(numInt) <= 0)) {
-    errores.push("El número interior debe ser un número positivo o estar vacío.");
-  }
 
   if (!validarCampoNoVacio(colonia)) {
     errores.push("La colonia no puede estar vacía.");
@@ -566,7 +563,7 @@ function agregarDireccion() {
     <input type="text" name="numeroEX" class="cuarto" placeholder="Número Exterior">
     <input type="text" name="numeroIC" class="cuarto" placeholder="Número Interior">
     <input type="text" name="CP" class="cuarto" placeholder="Código Postal">
-    <button type="button" id="B_direcciones" onclick="eliminarDireccionCampo(this)">Eliminar dirección</button><br>
+    <button type="button" id="B_direcciones" onclick="eliminarCampoDireccion(this)">Eliminar dirección</button><br>
   `;
 
   // Agregar el nuevo contenedor de dirección al contenedor principal
@@ -628,7 +625,7 @@ function cargarZonas() {
 
 
 
-function eliminarDireccionCampo(this) {
+function eliminarCampoDireccion(button) {
   let direccion = button.parentNode; // Obtiene el div contenedor de la dirección
   direccion.remove(); // Elimina el div contenedor
 }
