@@ -218,10 +218,7 @@ function updateCliente(id) {
 
 
 //producto
-
-
-
-// Validar formulario completo (productos)
+// Función para validar el formulario completo (productos)
 function validarFormularioProducto() {
   const form = document.querySelector("#Actproducto");
   const nombre = form.querySelector("input[name='ActNombre']").value;
@@ -273,6 +270,7 @@ function actualizarEstadoBotonProducto() {
   botonEnviar.disabled = !esValido; // Deshabilitar si el formulario no es válido
   console.log("Estado del botón:", botonEnviar.disabled ? "Deshabilitado" : "Habilitado");
 }
+
 
 // Función para actualizar producto con validaciones
 function actualizarProducto(id, event) {
