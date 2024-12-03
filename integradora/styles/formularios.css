@@ -98,6 +98,8 @@
     all: unset;
     cursor: pointer;
     font-weight: bold;
+    margin-left: 80%;
+    color: white;
 }
 #salirP:hover {
     color: var(--color-primary);
