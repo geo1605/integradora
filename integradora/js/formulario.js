@@ -266,10 +266,12 @@ function actualizarEstadoBotonProducto() {
   const form = document.querySelector("#Actproducto");
   const botonEnviar = form.querySelector("button[type='button']");
   const esValido = validarFormularioProducto();
-
+  
+  console.log("Formulario válido:", esValido); // Depurar el estado de la validación
   botonEnviar.disabled = !esValido; // Deshabilitar si el formulario no es válido
   console.log("Estado del botón:", botonEnviar.disabled ? "Deshabilitado" : "Habilitado");
 }
+
 
 
 // Función para actualizar producto con validaciones
@@ -629,14 +631,24 @@ function cargarZonas() {
 }
 
 
-
 function eliminarCampoDireccion(button) {
   let direccion = button.parentNode; // Obtiene el div contenedor de la dirección
-  let zonaSelect = direccion.querySelector("select"); // Obtiene el select correspondiente
   
+  // Verifica si el select tiene el widget Select2
+  let zonaSelect = direccion.querySelector("select.js-example-basic-single");
+
   if (zonaSelect) {
-    zonaSelect.remove(); // Elimina el select de la zona
+    // Eliminar Select2 (destruye el widget)
+    $(zonaSelect).select2('destroy'); // Destruye el widget Select2 y lo vuelve a su forma original
+
+    // Ahora eliminamos el select del DOM
+    zonaSelect.remove(); 
+    console.log("Zona eliminada");
+  } else {
+    console.log("No se encontró el select con Select2");
   }
 
-  direccion.remove(); // Elimina el div contenedor
+  // Elimina el div contenedor de la dirección
+  direccion.remove(); 
+  console.log("Dirección eliminada");
 }
