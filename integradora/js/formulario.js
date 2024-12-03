@@ -220,7 +220,7 @@ function updateCliente(id) {
 //producto
 // Función para validar el formulario completo (productos)
 function validarFormularioProducto() {
-  const form = document.querySelector("#Actproducto");
+  const form = document.querySelector("#Actproductos");
   const nombre = form.querySelector("input[name='ActNombre']").value;
   const categoria = form.querySelector("select[name='Actcategoria']").value;
   const tipo = form.querySelector("select[name='Acttipo']").value;
@@ -263,7 +263,7 @@ function validarFormularioProducto() {
 
 // Habilitar o deshabilitar el botón de envío para productos
 function actualizarEstadoBotonProducto() {
-  const form = document.querySelector("#Actproducto");
+  const form = document.querySelector("#Actproductos");
   const botonEnviar = form.querySelector("button[type='button']");
   const esValido = validarFormularioProducto();
   
@@ -306,7 +306,7 @@ function updateProducto(id) {
   cont.innerHTML = `
                 <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
 
-                <form action="" class="modificacion" id="Actproducto">
+                <form action="" class="modificacion" id="Actproductos">
                 <h2>Editar producto</h2>
                 <input type="text" maxlength="50" class="full" name="ActNombre" placeholder="Nombre" value="${nombre}" oninput="actualizarEstadoBotonProducto()">
                 <div class="full">
@@ -321,7 +321,7 @@ function updateProducto(id) {
                 </select>
                 <input type="number" class="medio" name="Actprecio" placeholder="Precio" value="${precio}" oninput="actualizarEstadoBotonProducto()">
                 <ul class="full error"></ul>
-                <button type="button" class="full" onclick="actualizarProducto(${Id}, event)" disabled>Enviar</button>
+                <button type="button" class="full" onclick="actualizarProducto(${Id}, event)">Enviar</button>
             </form>`;
 
   // Mostrar el popup

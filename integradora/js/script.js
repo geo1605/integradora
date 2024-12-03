@@ -632,7 +632,7 @@ function actualizarProducto(ID, event) {
       Alerts.successAlert("Producto actualizado exitosamente", "El producto ha sido actualizado correctamente.")
       .then(() => {
           // Cerrar popup y recargar la página
-          cerrarPopupYRecargar("upPopup", "Actproducto");
+          cerrarPopupYRecargar("upPopup", "Actproductos");
       });
   })
   .catch((error) => {
