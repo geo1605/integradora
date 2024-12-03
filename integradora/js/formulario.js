@@ -222,7 +222,7 @@ function updateCliente(id) {
 function validarFormularioProducto() {
   const form = document.querySelector("#Actproducto");
   const nombre = form.querySelector("input[name='ActNombre']").value;
-  const categoria = form.querySelector("select[name='Actcategoria']").value;
+  const categoria = $(form.querySelector("select[name='Actcategoria']")).val(); // Usar select2
   const tipo = form.querySelector("select[name='Acttipo']").value;
   const precio = form.querySelector("input[name='Actprecio']").value;
 
@@ -245,14 +245,9 @@ function validarFormularioProducto() {
   }
 
   const errorList = form.querySelector("ul.error");
-  errorList.innerHTML = ""; // Limpia los errores previos
+  mostrarErrores(errores, errorList); // Usar función de errores reutilizable
 
   if (errores.length > 0) {
-    errores.forEach((error) => {
-      const li = document.createElement("li");
-      li.textContent = error;
-      errorList.appendChild(li);
-    });
     console.log("Errores encontrados:", errores);
     return false; // El formulario no es válido
   }
@@ -261,31 +256,18 @@ function validarFormularioProducto() {
   return true; // El formulario es válido
 }
 
+// Habilitar o deshabilitar el botón de envío para productos
 function actualizarEstadoBotonProducto() {
   const form = document.querySelector("#Actproducto");
   const botonEnviar = form.querySelector("button[type='button']");
-  const esValido = validarFormularioProducto(); // Llamamos a la validación
+  const esValido = validarFormularioProducto();
 
-  console.log("Formulario válido:", esValido); // Depurar el estado de la validación
   botonEnviar.disabled = !esValido; // Deshabilitar si el formulario no es válido
   console.log("Estado del botón:", botonEnviar.disabled ? "Deshabilitado" : "Habilitado");
 }
 
-
-
-
-// Función para actualizar producto con validaciones
-function actualizarProducto(id, event) {
-  event.preventDefault(); // Evita el envío del formulario
-
-  if (validarFormularioProducto()) {
-    console.log("Formulario válido. Enviando datos...");
-    // Aquí agregarías el código para realizar la actualización en el backend (fetch o AJAX)
-  }
-}
-
+// Función para mostrar el formulario de producto y configurar validaciones dinámicas
 function updateProducto(id) {
-  // Obtener datos del producto específico
   let Id = document.getElementById(`ID${id}`).innerText;
   let nombre = document.getElementById(`nombre${id}`).innerText;
   let tipo = document.getElementById(`tipo${id}`).innerText;
@@ -293,25 +275,21 @@ function updateProducto(id) {
   let precio = document.getElementById(`precio${id}`).innerText;
   let cont = document.getElementById("upPopup");
 
-  // Obtener las categorías únicas de productosData
   const categoriasUnicas = [...new Set(productosData.map(producto => producto.Categoria))];
 
-  // Generar las opciones para el select de categorías
   let opcionesCategoria = categoriasUnicas.map(cat => {
     return `<option value="${cat}" ${cat === categoria ? "selected" : ""}>${cat}</option>`;
   }).join("");
 
-  // Crear el formulario dinámico con las opciones de categorías cargadas
   cont.innerHTML = `
     <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
-
     <form action="" class="modificacion" id="Actproducto">
       <h2>Editar producto</h2>
       <input type="text" maxlength="50" class="full" name="ActNombre" placeholder="Nombre" value="${nombre}" oninput="actualizarEstadoBotonProducto()">
       <div class="full">
-        <select class="js-example-basic-single" name="Actcategoria" onchange="actualizarEstadoBotonProducto()">
+        <select class="js-example-basic-single" name="Actcategoria">
           <option value="" disabled>Seleccione una categoría</option>
-          ${opcionesCategoria} <!-- Opciones dinámicas -->
+          ${opcionesCategoria}
         </select>
       </div>
       <select class="medio" name="Acttipo" id="tipo" onchange="actualizarEstadoBotonProducto()">
@@ -323,22 +301,20 @@ function updateProducto(id) {
       <button type="button" class="full" onclick="actualizarProducto(${Id}, event)">Enviar</button>
     </form>`;
 
-  // Mostrar el popup
   cont.style.display = "flex";
 
-  // Inicializar select2 para la selección de categorías
   $(".js-example-basic-single").select2({
     placeholder: "Selecciona o agrega una categoría",
     tags: true,
     allowClear: true,
-    width: "100%" // Asegura que se ajuste al diseño
-  }).on('change', function() {
-    actualizarEstadoBotonProducto(); // Llamar a la función de validación
+    width: "100%"
+  }).on('select2:select select2:unselect change', function () {
+    actualizarEstadoBotonProducto();
   });
 
-  // Llamar a la validación al abrir el formulario para actualizar el estado del botón
-  actualizarEstadoBotonProducto(); 
+  actualizarEstadoBotonProducto();
 }
+
 
 
 
