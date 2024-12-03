@@ -321,7 +321,7 @@ function updateProducto(id) {
                 </select>
                 <input type="number" class="medio" name="Actprecio" placeholder="Precio" value="${precio}" oninput="actualizarEstadoBotonProducto()">
                 <ul class="full error"></ul>
-                <button type="button" class="full" onclick="actualizarProducto(${Id}, event)">Enviar</button>
+                <button type="button" class="full" onclick="actualizarProducto(${Id}, event)" disabled>Enviar</button>
             </form>`;
 
   // Mostrar el popup
