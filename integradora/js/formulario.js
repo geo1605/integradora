@@ -222,7 +222,7 @@ function updateCliente(id) {
 function validarFormularioProducto() {
   const form = document.querySelector("#Actproducto");
   const nombre = form.querySelector("input[name='ActNombre']").value;
-  const categoria = $(form.querySelector("select[name='Actcategoria']")).val(); // Usar select2
+  const categoria = form.querySelector("select[name='Actcategoria']").value;
   const tipo = form.querySelector("select[name='Acttipo']").value;
   const precio = form.querySelector("input[name='Actprecio']").value;
 
@@ -245,9 +245,14 @@ function validarFormularioProducto() {
   }
 
   const errorList = form.querySelector("ul.error");
-  mostrarErrores(errores, errorList); // Usar función de errores reutilizable
+  errorList.innerHTML = ""; // Limpia los errores previos
 
   if (errores.length > 0) {
+    errores.forEach((error) => {
+      const li = document.createElement("li");
+      li.textContent = error;
+      errorList.appendChild(li);
+    });
     console.log("Errores encontrados:", errores);
     return false; // El formulario no es válido
   }
@@ -261,13 +266,27 @@ function actualizarEstadoBotonProducto() {
   const form = document.querySelector("#Actproducto");
   const botonEnviar = form.querySelector("button[type='button']");
   const esValido = validarFormularioProducto();
-
+  
+  console.log("Formulario válido:", esValido); // Depurar el estado de la validación
   botonEnviar.disabled = !esValido; // Deshabilitar si el formulario no es válido
   console.log("Estado del botón:", botonEnviar.disabled ? "Deshabilitado" : "Habilitado");
 }
 
+
+
+// Función para actualizar producto con validaciones
+function actualizarProducto(id, event) {
+  event.preventDefault(); // Evita el envío del formulario
+
+  if (validarFormularioProducto()) {
+    console.log("Formulario válido. Enviando datos...");
+    // Aquí agregarías el código para realizar la actualización en el backend (fetch o AJAX)
+  }
+}
+
 // Función para mostrar el formulario de producto y configurar validaciones dinámicas
 function updateProducto(id) {
+  // Obtener datos del producto específico
   let Id = document.getElementById(`ID${id}`).innerText;
   let nombre = document.getElementById(`nombre${id}`).innerText;
   let tipo = document.getElementById(`tipo${id}`).innerText;
@@ -275,46 +294,49 @@ function updateProducto(id) {
   let precio = document.getElementById(`precio${id}`).innerText;
   let cont = document.getElementById("upPopup");
 
+  // Obtener las categorías únicas de productosData
   const categoriasUnicas = [...new Set(productosData.map(producto => producto.Categoria))];
 
+  // Generar las opciones para el select de categorías
   let opcionesCategoria = categoriasUnicas.map(cat => {
     return `<option value="${cat}" ${cat === categoria ? "selected" : ""}>${cat}</option>`;
   }).join("");
 
+  // Crear el formulario dinámico con las opciones de categorías cargadas
   cont.innerHTML = `
-    <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
-    <form action="" class="modificacion" id="Actproducto">
-      <h2>Editar producto</h2>
-      <input type="text" maxlength="50" class="full" name="ActNombre" placeholder="Nombre" value="${nombre}" oninput="actualizarEstadoBotonProducto()">
-      <div class="full">
-        <select class="js-example-basic-single" name="Actcategoria">
-          <option value="" disabled>Seleccione una categoría</option>
-          ${opcionesCategoria}
-        </select>
-      </div>
-      <select class="medio" name="Acttipo" id="tipo" onchange="actualizarEstadoBotonProducto()">
-        <option value="suelto" ${tipo === "suelto" ? "selected" : ""}>Suelto</option>
-        <option value="unitario" ${tipo === "unitario" ? "selected" : ""}>Unitario</option>
-      </select>
-      <input type="number" class="medio" name="Actprecio" placeholder="Precio" value="${precio}" oninput="actualizarEstadoBotonProducto()">
-      <ul class="full error"></ul>
-      <button type="button" class="full" onclick="actualizarProducto(${Id}, event)">Enviar</button>
-    </form>`;
+                <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
 
+                <form action="" class="modificacion" id="Actproducto">
+                <h2>Editar producto</h2>
+                <input type="text" maxlength="50" class="full" name="ActNombre" placeholder="Nombre" value="${nombre}" oninput="actualizarEstadoBotonProducto()">
+                <div class="full">
+                    <select class="js-example-basic-single" name="Actcategoria" onchange="actualizarEstadoBotonProducto()">
+                        <option value="" disabled>Seleccione una categoría</option>
+                        ${opcionesCategoria} <!-- Opciones dinámicas -->
+                    </select>
+                </div>
+                <select class="medio" name="Acttipo" id="tipo" onchange="actualizarEstadoBotonProducto()">
+                    <option value="suelto" ${tipo === "suelto" ? "selected" : ""}>Suelto</option>
+                    <option value="unitario" ${tipo === "unitario" ? "selected" : ""}>Unitario</option>
+                </select>
+                <input type="number" class="medio" name="Actprecio" placeholder="Precio" value="${precio}" oninput="actualizarEstadoBotonProducto()">
+                <ul class="full error"></ul>
+                <button type="button" class="full" onclick="actualizarProducto(${Id}, event)">Enviar</button>
+            </form>`;
+
+  // Mostrar el popup
   cont.style.display = "flex";
 
+  // Inicializar el select2 para la selección de categorías
   $(".js-example-basic-single").select2({
     placeholder: "Selecciona o agrega una categoría",
-    tags: true,
-    allowClear: true,
-    width: "100%"
-  }).on('select2:select select2:unselect change', function () {
-    actualizarEstadoBotonProducto();
+    tags: true, // Permite agregar nuevas opciones
+    allowClear: true, // Habilita limpiar la selección
+    width: "100%" // Asegura que se ajuste al diseño
   });
 
-  actualizarEstadoBotonProducto();
+  actualizarEstadoBotonProducto(); // Configura el estado inicial del botón
 }
-
 
 
 
