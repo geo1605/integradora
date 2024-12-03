@@ -99,7 +99,7 @@
     cursor: pointer;
     font-weight: bold;
     margin-left: 80%;
-    color: white;
+    color: var(--color-secondary);
 }
 #salirP:hover {
     color: var(--color-primary);

@@ -196,9 +196,10 @@ fetchClientes();
     </main>
     
     <div id="addPopup" class="Popup">
+        <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
+
         <form action="" id="clienteForm" class="modificacion">
             <h2>Añadir Cliente</h2>
-            <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
             <input type="text" maxlength="50" class="tercio" name="NombreC" placeholder="Nombre(s)">
             <input type="text" maxlength="50" class="tercio" name="PaternoC" placeholder="Apellido Paterno">
             <input type="text" maxlength="50" class="tercio" name="MaternoC" placeholder="Apellido Materno">

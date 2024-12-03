@@ -193,9 +193,10 @@
     </main>
 
     <div id="addPopup" class="Popup">
+        <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
         <form action="" class="modificacion" id="empleadoForm" onsubmit="">
             <h2>Añadir Empleado</h2>
-            <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
+            
             <input type="text" maxlength="50" class="tercio" name="Nombres" placeholder="Nombre(s)">
             <input type="text" maxlength="50" class="tercio" name="Apellido_P" placeholder="Apellido Paterno">
             <input type="text" maxlength="50" class="tercio" name="Apellido_M" placeholder="Apellido Materno">
@@ -205,7 +206,7 @@
                 <option value="admin">Admin</option>
             </select>
             <input type="text" maxlength="10" class="medio" name="telefono" placeholder="Teléfono">
-            <input type="email" class="full" name="correo" placeholder="Correo">
+            <input type="email"maxlength="100" class="full" name="correo" placeholder="Correo">
             <input type="submit" class="full" value="Enviar">
         </form>
     </div>

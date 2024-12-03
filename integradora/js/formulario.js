@@ -634,5 +634,11 @@ function cargarZonas() {
 
 function eliminarCampoDireccion(button) {
   let direccion = button.parentNode; // Obtiene el div contenedor de la dirección
+  let zonaSelect = direccion.querySelector("select"); // Obtiene el select correspondiente
+  
+  if (zonaSelect) {
+    zonaSelect.remove(); // Elimina el select de la zona
+  }
+
   direccion.remove(); // Elimina el div contenedor
 }
