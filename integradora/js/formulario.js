@@ -261,16 +261,16 @@ function validarFormularioProducto() {
   return true; // El formulario es válido
 }
 
-// Habilitar o deshabilitar el botón de envío para productos
 function actualizarEstadoBotonProducto() {
   const form = document.querySelector("#Actproducto");
   const botonEnviar = form.querySelector("button[type='button']");
-  const esValido = validarFormularioProducto();
-  
+  const esValido = validarFormularioProducto(); // Llamamos a la validación
+
   console.log("Formulario válido:", esValido); // Depurar el estado de la validación
   botonEnviar.disabled = !esValido; // Deshabilitar si el formulario no es válido
   console.log("Estado del botón:", botonEnviar.disabled ? "Deshabilitado" : "Habilitado");
 }
+
 
 
 
@@ -284,7 +284,6 @@ function actualizarProducto(id, event) {
   }
 }
 
-// Función para mostrar el formulario de producto y configurar validaciones dinámicas
 function updateProducto(id) {
   // Obtener datos del producto específico
   let Id = document.getElementById(`ID${id}`).innerText;
@@ -304,38 +303,41 @@ function updateProducto(id) {
 
   // Crear el formulario dinámico con las opciones de categorías cargadas
   cont.innerHTML = `
-                <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
+    <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
 
-                <form action="" class="modificacion" id="Actproducto">
-                <h2>Editar producto</h2>
-                <input type="text" maxlength="50" class="full" name="ActNombre" placeholder="Nombre" value="${nombre}" oninput="actualizarEstadoBotonProducto()">
-                <div class="full">
-                    <select class="js-example-basic-single" name="Actcategoria" onchange="actualizarEstadoBotonProducto()">
-                        <option value="" disabled>Seleccione una categoría</option>
-                        ${opcionesCategoria} <!-- Opciones dinámicas -->
-                    </select>
-                </div>
-                <select class="medio" name="Acttipo" id="tipo" onchange="actualizarEstadoBotonProducto()">
-                    <option value="suelto" ${tipo === "suelto" ? "selected" : ""}>Suelto</option>
-                    <option value="unitario" ${tipo === "unitario" ? "selected" : ""}>Unitario</option>
-                </select>
-                <input type="number" class="medio" name="Actprecio" placeholder="Precio" value="${precio}" oninput="actualizarEstadoBotonProducto()">
-                <ul class="full error"></ul>
-                <button type="button" class="full" onclick="actualizarProducto(${Id}, event)">Enviar</button>
-            </form>`;
+    <form action="" class="modificacion" id="Actproducto">
+      <h2>Editar producto</h2>
+      <input type="text" maxlength="50" class="full" name="ActNombre" placeholder="Nombre" value="${nombre}" oninput="actualizarEstadoBotonProducto()">
+      <div class="full">
+        <select class="js-example-basic-single" name="Actcategoria" onchange="actualizarEstadoBotonProducto()">
+          <option value="" disabled>Seleccione una categoría</option>
+          ${opcionesCategoria} <!-- Opciones dinámicas -->
+        </select>
+      </div>
+      <select class="medio" name="Acttipo" id="tipo" onchange="actualizarEstadoBotonProducto()">
+        <option value="suelto" ${tipo === "suelto" ? "selected" : ""}>Suelto</option>
+        <option value="unitario" ${tipo === "unitario" ? "selected" : ""}>Unitario</option>
+      </select>
+      <input type="number" class="medio" name="Actprecio" placeholder="Precio" value="${precio}" oninput="actualizarEstadoBotonProducto()">
+      <ul class="full error"></ul>
+      <button type="button" class="full" onclick="actualizarProducto(${Id}, event)">Enviar</button>
+    </form>`;
 
   // Mostrar el popup
   cont.style.display = "flex";
 
-  // Inicializar el select2 para la selección de categorías
+  // Inicializar select2 para la selección de categorías
   $(".js-example-basic-single").select2({
     placeholder: "Selecciona o agrega una categoría",
-    tags: true, // Permite agregar nuevas opciones
-    allowClear: true, // Habilita limpiar la selección
+    tags: true,
+    allowClear: true,
     width: "100%" // Asegura que se ajuste al diseño
+  }).on('change', function() {
+    actualizarEstadoBotonProducto(); // Llamar a la función de validación
   });
 
-  actualizarEstadoBotonProducto(); // Configura el estado inicial del botón
+  // Llamar a la validación al abrir el formulario para actualizar el estado del botón
+  actualizarEstadoBotonProducto(); 
 }
 
 
