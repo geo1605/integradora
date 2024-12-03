@@ -135,3 +135,22 @@ document.addEventListener("DOMContentLoaded", function () {
     verificarFormularioValido(productoForm, listaErrores, campos);
   });
 });
+
+
+// Función para permitir solo números y un solo punto decimal
+function soloNumerosYDecimal(event) {
+  const input = event.target;
+  // Expresión regular para números (enteros y decimales)
+  const regex = /^[0-9]*\.?[0-9]*$/;
+
+  if (!regex.test(input.value)) {
+    // Si el valor no coincide con la expresión regular, lo revertimos
+    input.value = input.value.slice(0, -1);
+  }
+}
+
+// Agregar el evento de input al campo precio
+document.addEventListener("DOMContentLoaded", function () {
+  const precio = document.querySelector('input[name="precio"]');
+  precio.addEventListener("input", soloNumerosYDecimal);
+});
