@@ -21,7 +21,7 @@
         cargarTopEmpleados(fechaInicio, fechaFin);
         cargarTopClientes(fechaInicio, fechaFin);
         cargarVentasPorDia(fechaInicio, fechaFin);
-        cargarActivas(fechaInicio, fechaFin);
+        cargarCompletas(fechaInicio, fechaFin);
         cargarPendientes(fechaInicio, fechaFin);
         cargarCanceladas(fechaInicio, fechaFin);
         cargarActivas(fechaInicio, fechaFin);
@@ -231,7 +231,7 @@ function cargarVentasPorDia(fechaInicio, fechaFin) {
         .catch(error => console.error('Error al cargar los datos de ventas:', error));
 }
 
-function cargarActivas(fechaInicio, fechaFin) {
+function cargarCompletas(fechaInicio, fechaFin) {
     const bloque = document.getElementById("Ocompleta");
     
     fetch(`https://latosca.up.railway.app/cantidadOrdenesPorEstatus?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}&estatus=completado`)
@@ -247,7 +247,7 @@ function cargarActivas(fechaInicio, fechaFin) {
             bloque.textContent = ` ${cantidad}`;
         })
         .catch(error => {
-            console.error('Error en cargarActivas:', error);
+            console.error('Error en cargarCompletas:', error);
             bloque.textContent = 'Error al cargar las órdenes activas';
         });
 }
