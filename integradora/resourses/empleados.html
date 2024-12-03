@@ -196,15 +196,15 @@
         <form action="" class="modificacion" id="empleadoForm" onsubmit="">
             <h2>Añadir Empleado</h2>
             <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
-            <input type="text" class="tercio" name="Nombres" placeholder="Nombre(s)">
-            <input type="text" class="tercio" name="Apellido_P" placeholder="Apellido Paterno">
-            <input type="text" class="tercio" name="Apellido_M" placeholder="Apellido Materno">
+            <input type="text" maxlength="50" class="tercio" name="Nombres" placeholder="Nombre(s)">
+            <input type="text" maxlength="50" class="tercio" name="Apellido_P" placeholder="Apellido Paterno">
+            <input type="text" maxlength="50" class="tercio" name="Apellido_M" placeholder="Apellido Materno">
             <select class="medio" name="Cargo" id="cargo">
                 <option value="cargo" selected disabled>Cargo</option>
                 <option value="empleado">Empleado</option>
                 <option value="admin">Admin</option>
             </select>
-            <input type="text" class="medio" name="telefono" placeholder="Teléfono">
+            <input type="text" maxlength="10" class="medio" name="telefono" placeholder="Teléfono">
             <input type="email" class="full" name="correo" placeholder="Correo">
             <input type="submit" class="full" value="Enviar">
         </form>

@@ -68,16 +68,16 @@
             <h2>Añadir Direcciones</h2>
             <button id="salirP" type="button" onclick="colapsePopup('addPopup')">X</button>
 
-            <input type="text" class="medio" name="calle" placeholder="Calle">
-            <input type="text" class="medio" name="colonia" placeholder="Colonia">
+            <input type="text" maxlength="100" class="medio" name="calle" placeholder="Calle">
+            <input type="text" maxlength="100" class="medio" name="colonia" placeholder="Colonia">
             <div class="contSel cuarto">
                 <select class="js-example-basic-single zonas" name="Szonas">
                     <option value="" selected disabled>Zona</option>
                 </select>
             </div>
-            <input type="text" name="numeroEX" class="cuarto" placeholder="Numero Exterior">
-            <input type="text" name="numeroIC" class="cuarto" placeholder="Numero Interior">
-            <input type="text" name="CP" class="cuarto" placeholder="Codigo Postal">
+            <input type="text" maxlength="10" name="numeroEX" class="cuarto" placeholder="Numero Exterior">
+            <input type="text" maxlength="10" name="numeroIC" class="cuarto" placeholder="Numero Interior">
+            <input type="text" maxlength="10" name="CP" class="cuarto" placeholder="Codigo Postal">
             <input type="submit" value="Enviar" class="full">
         </form>
     </div>

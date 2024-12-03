@@ -100,14 +100,14 @@ function updateEmp(id) {
         <form action="" class="modificacion" id="empleados">
             <h2>Editar empleado</h2>
             <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
-            <input type="text" class="tercio" name="ActNombre" placeholder="Nombre(s)" value="${name}" oninput="actualizarEstadoBoton()">
-            <input type="text" class="tercio" name="ActPaterno" placeholder="Apellido Paterno" value="${ApeP}" oninput="actualizarEstadoBoton()">
-            <input type="text" class="tercio" name="ActMaterno" placeholder="Apellido Materno" value="${ApeM}" oninput="actualizarEstadoBoton()">
+            <input type="text" maxlength="50" class="tercio" name="ActNombre" placeholder="Nombre(s)" value="${name}" oninput="actualizarEstadoBoton()">
+            <input type="text" maxlength="50" class="tercio" name="ActPaterno" placeholder="Apellido Paterno" value="${ApeP}" oninput="actualizarEstadoBoton()">
+            <input type="text" maxlength="50" class="tercio" name="ActMaterno" placeholder="Apellido Materno" value="${ApeM}" oninput="actualizarEstadoBoton()">
             <select class="medio" name="Actcargo" id="cargo" onchange="actualizarEstadoBoton()">
                 <option value="empleado" ${cargo === "empleado" ? "selected" : ""}>empleado</option>
                 <option value="admin" ${cargo === "admin" ? "selected" : ""}>admin</option>
             </select>
-            <input type="text" class="medio" name="Acttelefono" placeholder="Teléfono" value="${numero}" oninput="actualizarEstadoBoton()">
+            <input type="text" maxlength="10" class="medio" name="Acttelefono" placeholder="Teléfono" value="${numero}" oninput="actualizarEstadoBoton()">
             <input type="email" class="full" name="Actcorreo" placeholder="Correo" value="${correo}" oninput="actualizarEstadoBoton()">
             <ul class="full error"></ul>
             <button type="button" class="full" onclick="actualizarEmpleado(${id}, event)">Enviar</button>
@@ -200,10 +200,10 @@ function updateCliente(id) {
         <form action="" class="modificacion" id="Actcliente">
             <h2>Editar cliente</h2>
             <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
-            <input type="text" class="tercio" name="ActNombreC" placeholder="Nombre(s)" value="${nombre}" oninput="actualizarEstadoBotonCliente()">
-            <input type="text" class="tercio" name="ActPaternoC" placeholder="Apellido Paterno" value="${ApeP}" oninput="actualizarEstadoBotonCliente()">
-            <input type="text" class="tercio" name="ActMaternoC" placeholder="Apellido Materno" value="${ApeM}" oninput="actualizarEstadoBotonCliente()">
-            <input type="text" class="medio" name="Acttelefono" placeholder="Teléfono" value="${telefono}" oninput="actualizarEstadoBotonCliente()">
+            <input type="text" maxlength="50" class="tercio" name="ActNombreC" placeholder="Nombre(s)" value="${nombre}" oninput="actualizarEstadoBotonCliente()">
+            <input type="text" maxlength="50" class="tercio" name="ActPaternoC" placeholder="Apellido Paterno" value="${ApeP}" oninput="actualizarEstadoBotonCliente()">
+            <input type="text" maxlength="50" class="tercio" name="ActMaternoC" placeholder="Apellido Materno" value="${ApeM}" oninput="actualizarEstadoBotonCliente()">
+            <input type="text" maxlength="10" class="medio" name="Acttelefono" placeholder="Teléfono" value="${telefono}" oninput="actualizarEstadoBotonCliente()">
             <input type="email" class="medio" name="Actcorreo" placeholder="Correo" value="${correo}" oninput="actualizarEstadoBotonCliente()">
             <ul class="full error"></ul>
             <button type="button" class="full" onclick="actualizarCliente(${id}, event)">Enviar</button>
@@ -304,7 +304,7 @@ function updateProducto(id) {
   cont.innerHTML = `<form action="" class="modificacion" id="Actproducto">
                 <h2>Editar producto</h2>
                 <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
-                <input type="text" class="full" name="ActNombre" placeholder="Nombre" value="${nombre}" oninput="actualizarEstadoBotonProducto()">
+                <input type="text" maxlength="50" class="full" name="ActNombre" placeholder="Nombre" value="${nombre}" oninput="actualizarEstadoBotonProducto()">
                 <div class="full">
                     <select class="js-example-basic-single" name="Actcategoria" onchange="actualizarEstadoBotonProducto()">
                         <option value="" disabled>Seleccione una categoría</option>
@@ -402,7 +402,7 @@ function updateZona(id) {
   cont.innerHTML = `<form action="" class="modificacion" id="Actzona">
                 <h2>Editar zona</h2>
                 <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
-                <input type="text" class="medio" name="nombre_colonia" placeholder="Nombre de la colonia" value="${nombre_colonia}" oninput="actualizarEstadoBotonZona()">
+                <input type="text" maxlength="50" class="medio" name="nombre_colonia" placeholder="Nombre de la colonia" value="${nombre_colonia}" oninput="actualizarEstadoBotonZona()">
                 <input type="number" class="medio" name="costo_zona" placeholder="Costo de la zona" value="${costo_zona}" oninput="actualizarEstadoBotonZona()">
                 <ul class="error full" id="errorU"></ul>
                 <button type="button" class="full" onclick="actualizarZona(${id}, event)">Enviar</button>
@@ -503,10 +503,10 @@ function updateDireccion(id, id_C) {
   cont.innerHTML = `<form action="" class="modificacion" id="direccion">
                 <h2>Editar dirección</h2>
                 <button id="salirP" type="button" onclick="colapsePopup('upPopup')">X</button>
-                <input type="text" class="tercio" name="Actcalle" placeholder="Calle" value="${calle}" oninput="actualizarEstadoBotonDireccion()">
-                <input type="text" class="tercio" name="Actnum_ext" placeholder="Número Exterior" value="${num_ext}" oninput="actualizarEstadoBotonDireccion()">
-                <input type="text" class="tercio" name="Actnum_int" placeholder="Número Interior" value="${num_int}" oninput="actualizarEstadoBotonDireccion()">
-                <input type="text" class="tercio" name="Actcolonia" placeholder="Colonia" value="${colonia}" oninput="actualizarEstadoBotonDireccion()">
+                <input type="text" maxlength="100" class="tercio" name="Actcalle" placeholder="Calle" value="${calle}" oninput="actualizarEstadoBotonDireccion()">
+                <input type="text" maxlength="10" class="tercio" name="Actnum_ext" placeholder="Número Exterior" value="${num_ext}" oninput="actualizarEstadoBotonDireccion()">
+                <input type="text" maxlength="10" class="tercio" name="Actnum_int" placeholder="Número Interior" value="${num_int}" oninput="actualizarEstadoBotonDireccion()">
+                <input type="text" maxlength="100" class="tercio" name="Actcolonia" placeholder="Colonia" value="${colonia}" oninput="actualizarEstadoBotonDireccion()">
                 <input type="number" class="tercio" name="ActCP" placeholder="Código Postal" value="${CP}" oninput="actualizarEstadoBotonDireccion()">
                 <div class="tercio">
                   <select class="js-example-basic-single zonas" name="Actzonas" onchange="actualizarEstadoBotonDireccion()">
@@ -553,16 +553,16 @@ function agregarDireccion() {
   // Configurar el contenido HTML del nuevo contenedor
   nuevaDireccion.innerHTML = `
     <h2>Dirección</h2>
-    <input type="text" class="medio" name="calle" placeholder="Calle">
-    <input type="text" class="medio" name="colonia" placeholder="Colonia">
+    <input type="text" maxlength="100" class="medio" name="calle" placeholder="Calle">
+    <input type="text" maxlength="100" class="medio" name="colonia" placeholder="Colonia">
     <div class="contSel cuarto">
       <select class="js-example-basic-single zonas" id="zona${i}" name="zonas${i}">
           <option value="" selected disabled>Zona</option>
       </select>
     </div>
-    <input type="text" name="numeroEX" class="cuarto" placeholder="Número Exterior">
-    <input type="text" name="numeroIC" class="cuarto" placeholder="Número Interior">
-    <input type="text" name="CP" class="cuarto" placeholder="Código Postal">
+    <input type="text" maxlength="10" name="numeroEX" class="cuarto" placeholder="Número Exterior">
+    <input type="text" maxlength="10" name="numeroIC" class="cuarto" placeholder="Número Interior">
+    <input type="text" maxlength="5" name="CP" class="cuarto" placeholder="Código Postal">
     <button type="button" id="B_direcciones" onclick="eliminarCampoDireccion(this)">Eliminar dirección</button><br>
   `;
 
