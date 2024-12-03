@@ -264,13 +264,14 @@ function validarFormularioProducto() {
 // Habilitar o deshabilitar el botón de envío para productos
 function actualizarEstadoBotonProducto() {
   const form = document.querySelector("#Actproductos");
-  const botonEnviar = form.querySelector("button[type='button']");
+  const botonEnviar = form.querySelector(".BOTenviar");  // Seleccionar el botón con la clase 'enviar'
   const esValido = validarFormularioProducto();
   
   console.log("Formulario válido:", esValido); // Depurar el estado de la validación
   botonEnviar.disabled = !esValido; // Deshabilitar si el formulario no es válido
   console.log("Estado del botón:", botonEnviar.disabled ? "Deshabilitado" : "Habilitado");
 }
+
 
 
 
@@ -321,7 +322,7 @@ function updateProducto(id) {
                 </select>
                 <input type="number" class="medio" name="Actprecio" placeholder="Precio" value="${precio}" oninput="actualizarEstadoBotonProducto()">
                 <ul class="full error"></ul>
-                <button type="button" class="full" onclick="actualizarProducto(${Id}, event)">Enviar</button>
+                <button type="button" class="full BOTenviar" onclick="actualizarProducto(${Id}, event)">Enviar</button>
             </form>`;
 
   // Mostrar el popup
