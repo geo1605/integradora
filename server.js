@@ -107,7 +107,7 @@ app.post('/login', (req, res) => {
 
             try {
                 // Comparar la contraseña proporcionada con el hash almacenado
-               /* const isMatch = await bcrypt.compare(password, usuario.password);
+                const isMatch = await bcrypt.compare(password, usuario.password);
                 if (isMatch) {
                     req.session.user = usuario;
 
@@ -117,7 +117,7 @@ app.post('/login', (req, res) => {
                         if (err) {
                             console.error("Error al establecer la variable de sesión en MySQL:", err);
                         }
-                    }); */
+                    });
 
                     res.status(200).send({ mensaje: "Inicio de sesión exitoso", usuario });
                 } else {
