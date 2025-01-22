@@ -116,8 +116,8 @@ app.post('/login', (req, res) => {
                     db.query(setSessionQuery, [usuario.ID_Empleados], (err) => {
                         if (err) {
                             console.error("Error al establecer la variable de sesión en MySQL:", err);
-                        }*/
-                    }); 
+                        }
+                    }); */
 
                     res.status(200).send({ mensaje: "Inicio de sesión exitoso", usuario });
                 } else {
