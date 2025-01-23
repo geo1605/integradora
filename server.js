@@ -480,7 +480,7 @@ app.get("/empleados", verificarSesion, (req, res) => {
 // Registrar Empleado
 
 
-app.post('/empleado/registrar',  verificarSesion,  async (req, res) => {
+app.post('/empleado/registrar', /* verificarSesion */,  async (req, res) => {
   const { Nombres, Apellido_P, Apellido_M, Cargo, correo, Telefono, password, estatus } = req.body;
 
   try {
