@@ -108,7 +108,7 @@ app.post('/login', (req, res) => {
             try {
                 // Comparar la contraseña proporcionada con el hash almacenado
                 const isMatch = await bcrypt.compare(password, usuario.password);
-                if (isMatch) {
+                /*if (isMatch) {
                     req.session.user = usuario;
 
                     // Configurar la variable global en MySQL para el usuario actual
@@ -122,7 +122,7 @@ app.post('/login', (req, res) => {
                     res.status(200).send({ mensaje: "Inicio de sesión exitoso", usuario });
                 } else {
                     res.status(401).send({ mensaje: "Correo o contraseña incorrectos" });
-                }
+                } */
             } catch (error) {
                 console.error("Error al comparar contraseñas:", error);
                 res.status(500).send({ mensaje: "Error interno al procesar la solicitud" });
